@@ -1,0 +1,5 @@
+export enum SessionState {
+  PENDING = 'PENDING',
+  CONNECTED = 'CONNECTED',
+  DISCONNECTED = 'DISCONNECTED',
+}
