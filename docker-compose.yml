@@ -1,0 +1,10 @@
+version: '3.8'
+
+services:
+  front:
+      image: jbloup/node16
+      ports:
+        - 4200:4200
+      volumes:
+        - .:/home/node/app
+      command: sh -c "top"
