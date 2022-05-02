@@ -33,7 +33,10 @@
             "styles": [
               "src/styles.scss"
             ],
-            "scripts": []
+            "scripts": [
+              "node_modules/@gouvfr/dsfr/dist/dsfr.module.min.js",
+              "node_modules/@gouvfr/dsfr/dist/dsfr.nomodule.min.js"
+            ]
           },
           "configurations": {
             "production": {
