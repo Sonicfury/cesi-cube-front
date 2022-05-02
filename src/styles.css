@@ -1,3 +1,7 @@
+@import "@gouvfr/dsfr/dist/dsfr.min.css";
+@import "@gouvfr/dsfr/dist/utility/utility.min.css";
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/*# sourceMappingURL=styles.css.map */
