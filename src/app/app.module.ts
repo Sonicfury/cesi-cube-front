@@ -8,6 +8,8 @@ import {ReactiveFormsModule} from "@angular/forms";
 import { HomeComponent } from './components/home/home.component';
 import { NavTopComponent } from './components/layouts/nav-top/nav-top.component';
 import { ProfilComponent } from './components/profil/profil.component';
+import { ProfilInfoComponent } from './components/profil-info/profil-info.component';
+import { ProfilRessourcesComponent } from './components/profil-ressources/profil-ressources.component';
 
 @NgModule({
   declarations: [
@@ -15,7 +17,9 @@ import { ProfilComponent } from './components/profil/profil.component';
     LoginFormComponent,
     HomeComponent,
     NavTopComponent,
-    ProfilComponent
+    ProfilComponent,
+    ProfilInfoComponent,
+    ProfilRessourcesComponent
   ],
   imports: [
     BrowserModule,

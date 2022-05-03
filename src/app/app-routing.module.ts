@@ -8,8 +8,9 @@ import {AuthGuard} from "./services/auth.guard";
 
 const routes: Routes = [
   {path: '', component: HomeComponent},
-  {path: 'profil', component: ProfilComponent, canActivate: [AuthGuard]},
+  {path: 'profil', component: ProfilComponent},
   {path: 'login', component: LoginFormComponent, canActivate: [LoginGuard]},
+
   {
     path: '',
     pathMatch: 'full',
