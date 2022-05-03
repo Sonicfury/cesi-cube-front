@@ -7,13 +7,15 @@ import { LoginFormComponent } from './components/login-form/login-form.component
 import {ReactiveFormsModule} from "@angular/forms";
 import { HomeComponent } from './components/home/home.component';
 import { NavTopComponent } from './components/layouts/nav-top/nav-top.component';
+import { ProfilComponent } from './components/profil/profil.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginFormComponent,
     HomeComponent,
-    NavTopComponent
+    NavTopComponent,
+    ProfilComponent
   ],
   imports: [
     BrowserModule,
