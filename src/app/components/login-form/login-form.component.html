@@ -1,17 +1,28 @@
-<div>
-  Login Form
-
-  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+<div class="w-full flex flex-col items-center gap-2 md:gap-4">
+  <h1 class="fr-h1">Se connecter</h1>
+  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="flex flex-col w-3/4 gap-4 items-center">
     <div>
-      <label>Email</label>
-      <input type="text" name="email" formControlName="email" required>
+      <label class="fr-label" for="email-input">Email</label>
+      <input class="fr-input" type="text" id="email-input" name="email-input" required formControlName="email">
     </div>
     <div>
-      <label>Password</label>
-      <input type="password" name="password" formControlName="password">
+      <label class="fr-label" for="pass-input">Mot de passe</label>
+      <input class="fr-input" type="password" id="pass-input" name="pass-input" required formControlName="password">
     </div>
-    <div>
-      <button type="submit">Login</button>
+    <div class="flex flex-col flex-col-reverse justify-center items-center md:flex-row gap-4 mt-4 md:mt-16 md:items-start">
+      <div class="fr-connect-group">
+        <button class="fr-connect">
+          <span class="fr-connect__login">S’identifier avec</span>
+          <span class="fr-connect__brand">FranceConnect</span>
+        </button>
+        <p>
+          <a href="https://franceconnect.gouv.fr/" target="_blank" rel="noopener"
+             title="Qu’est ce que FranceConnect ? - nouvelle fenêtre">Qu’est ce que FranceConnect ?</a>
+        </p>
+      </div>
+      <button class="fr-btn w-full md:w-52 h-14 justify-center">
+        Login
+      </button>
     </div>
   </form>
 </div>
