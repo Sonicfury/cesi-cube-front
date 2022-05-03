@@ -4,6 +4,11 @@
 
 export const environment = {
   production: false,
+
+  appName: '(Re)sources Relationnelles',
+  description: 'La plateforme pour améliorer vos relations',
+  version: '1.0.0',
+
   apiUrl: 'http://localhost:82',
 };
 
