@@ -28,7 +28,6 @@ export class AuthenticationService extends BaseService<SessionState> {
    * Attempt to login user and store Jwt jwt in LocalStorage if authenticated
    * @param email
    * @param password
-   * @param mode
    * @returns {Observable<HttpResponse<Jwt>>}
    */
   signIn(email: string, password: string): Observable<HttpResponse<Jwt>> {
@@ -40,7 +39,6 @@ export class AuthenticationService extends BaseService<SessionState> {
       password: password
     }
 
-    console.log(body);
     return this._http.post<Jwt>(this._url, body, {observe: 'response', headers: this.headers})
       .pipe(
         map(resp => {

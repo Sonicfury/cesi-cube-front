@@ -3,16 +3,23 @@ import {BaseService} from "./base.service";
 import {SessionState} from "./session-state";
 import {Observable, of} from "rxjs";
 import {User} from "../models/user";
+import {Jwt} from "../models/jwt";
 
 @Injectable({
   providedIn: 'root'
 })
 export class SessionService extends BaseService<{ state: SessionState, user?: User }> {
   private _currentUser: User;
+  private _jwt: Jwt | null = null;
 
   constructor() {
     super();
     this._currentUser = this.getCurrentUserFromLocalStorage();
+    const token = localStorage.getItem(SessionService.TOKEN);
+
+    if (token) {
+      this._jwt = new Jwt(token);
+    }
   }
 
   private getCurrentUserFromLocalStorage(): User {
@@ -29,7 +36,6 @@ export class SessionService extends BaseService<{ state: SessionState, user?: Us
 
     return of(true);
   }
-
 
   storeInLocalStorage(key: string, item: object | boolean | string | any) {
     localStorage.setItem(key, JSON.stringify(item));
@@ -67,5 +73,9 @@ export class SessionService extends BaseService<{ state: SessionState, user?: Us
     this._currentUser = user;
     this.storeInLocalStorage(SessionService.USER, user);
     this.emit({state: SessionState.CONNECTED, user: user});
+  }
+
+  get jwt(): Jwt | null {
+    return this._jwt;
   }
 }
