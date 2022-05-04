@@ -30,6 +30,7 @@ export class SessionService extends BaseService<{ state: SessionState, user?: Us
   logout(): Observable<boolean> {
     this.removeItemFromLocalStorage(SessionService.USER);
     this.removeItemFromLocalStorage(SessionService.TOKEN);
+    this._jwt = null;
     this.emit({state: SessionState.DISCONNECTED});
 
     sessionStorage.clear();
