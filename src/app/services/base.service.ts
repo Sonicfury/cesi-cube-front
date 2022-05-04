@@ -17,7 +17,7 @@ export class BaseService<T> {
   protected constructor() {
     this.headers = new HttpHeaders({
       'Content-Type': 'application/json',
-      'Accept': 'application/ld+json'
+      'Accept': 'application/ld+json',
     });
 
     this._subject = new Subject<T>();

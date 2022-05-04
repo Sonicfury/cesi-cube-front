@@ -18,11 +18,12 @@ export class ProfilComponent extends BaseComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.userService.searchJPH()
+    this.userService.search("")
       .pipe(
         tap(users => console.table(users))
       )
       .subscribe(users => this.users = users)
+
 
   }
 

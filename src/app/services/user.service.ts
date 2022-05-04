@@ -14,20 +14,12 @@ export class UserService extends BaseService<User> {
     super()
   }
 
-  // search(query: string): Observable<User[]> {
-  //
-  //   return this._http.get<HttpResponse<User[]>>(`${this._url}/?${query}`).pipe(
-  //     map(resp => resp.body ?? [])
-  //     // todo implement hydra
-  //   );
-  // }
+  search(query: string): Observable<User[]> {
 
-  searchJPH(): Observable<any> {
-    return this._http.get("https://jsonplaceholder.typicode.com/users")
-  }
-
-  searchPostJPH(id: number): Observable<any> {
-    return this._http.get("https://jsonplaceholder.typicode.com/users/1/posts?userId=" + id)
+    return this._http.get<HttpResponse<User[]>>(`${this._url}/?${query}`).pipe(
+      map(resp => resp.body ?? [])
+      // todo implement hydra
+    );
   }
 
   findByEmail(email: string): Observable<User> {
