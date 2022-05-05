@@ -60,10 +60,12 @@ export class LoginFormComponent extends BaseComponent implements OnInit {
       {
         email: this._formBuilder.control(null, [
           Validators.required,
+          Validators.email
 
         ]),
         password: this._formBuilder.control(null, [
-          Validators.required
+          Validators.required,
+          Validators.min(8)
         ])
       }
     )

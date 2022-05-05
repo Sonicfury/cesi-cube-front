@@ -3,7 +3,7 @@
   <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="flex flex-col w-3/4 gap-4 items-center">
     <div>
       <label class="fr-label" for="email-input">Email</label>
-      <input class="fr-input" type="text" id="email-input" name="email-input" required formControlName="email">
+      <input class="fr-input" type="email" id="email-input" name="email-input" required formControlName="email">
     </div>
     <div>
       <label class="fr-label" for="pass-input">Mot de passe</label>
@@ -23,6 +23,7 @@
       <button class="fr-btn w-full md:w-52 h-14 justify-center">
         Login
       </button>
+      <a class="fr-link fr-fi-lock-line" [routerLink]="['/register']">Créer un compte</a>
     </div>
   </form>
 </div>

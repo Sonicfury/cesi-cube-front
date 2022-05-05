@@ -10,6 +10,9 @@ import { ProfilComponent } from './components/profil/profil.component';
 import { ProfilInfoComponent } from './components/profil-info/profil-info.component';
 import { ProfilRessourcesComponent } from './components/profil-ressources/profil-ressources.component';
 import {NavComponent} from "./components/nav/nav.component";
+import { RegisterFormComponent } from './components/register-form/register-form.component';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import {MatStepperModule} from "@angular/material/stepper";
 
 @NgModule({
   declarations: [
@@ -19,13 +22,16 @@ import {NavComponent} from "./components/nav/nav.component";
     HomeComponent,
     ProfilComponent,
     ProfilInfoComponent,
-    ProfilRessourcesComponent
+    ProfilRessourcesComponent,
+    RegisterFormComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NoopAnimationsModule,
+    MatStepperModule
   ],
   providers: [],
   bootstrap: [AppComponent]
