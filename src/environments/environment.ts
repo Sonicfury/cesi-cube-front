@@ -9,7 +9,7 @@ export const environment = {
   description: 'La plateforme pour améliorer vos relations',
   version: '1.0.0',
 
-  apiUrl: 'http://localhost:82',
+  apiUrl: 'http://localhost:8000',
 };
 
 /*
