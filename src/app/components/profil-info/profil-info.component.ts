@@ -1,7 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {AuthorizationService} from "../../services/authorization.service";
-import {UserService} from "../../services/user.service";
 import {BaseComponent} from "../base-component";
+import {CitoyenService} from "../../services/citoyen.service";
 
 @Component({
   selector: 'app-profil-info',
@@ -9,9 +9,9 @@ import {BaseComponent} from "../base-component";
   styleUrls: ['./profil-info.component.scss']
 })
 export class ProfilInfoComponent extends BaseComponent implements OnInit {
-  @Input() user: any
+  @Input() citoyen: any
 
-  constructor(private _authorizationService: AuthorizationService, private userService: UserService) {
+  constructor(private _authorizationService: AuthorizationService, private citoyenService: CitoyenService) {
     super('profil-info', _authorizationService)
   }
 

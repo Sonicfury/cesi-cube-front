@@ -1,8 +1,8 @@
-<div *ngIf="user">
-  <h1>{{user.name|uppercase}}</h1>
-  <h1>{{user.username|uppercase}}</h1>
-  <h2>{{user.email}}</h2>
-  <h2>{{user.phone}}</h2>
-  <h2>{{user.address.city}}</h2>
+<div *ngIf="citoyen">
+  <h1>{{citoyen.firstname|uppercase}}</h1>
+  <h1>{{citoyen.lastname|uppercase}}</h1>
+  <h2>{{citoyen.birthdate}}</h2>
+  <h2>{{citoyen.adress1}}</h2>
+  <h2>{{citoyen.address2}}</h2>
 </div>
 

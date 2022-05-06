@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {User} from "../models/user";
 import {BaseService} from "./base.service";
 import {HttpClient, HttpResponse} from "@angular/common/http";
-import {map, Observable} from "rxjs";
+import {map, Observable, tap} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
@@ -14,10 +14,10 @@ export class UserService extends BaseService<User> {
     super()
   }
 
-  search(query: string): Observable<User[]> {
+  search(query: string): Observable<HttpResponse<User[]>> {
 
     return this._http.get<HttpResponse<User[]>>(`${this._url}/?${query}`).pipe(
-      map(resp => resp.body ?? [])
+      tap(resp => resp.body ?? [])
       // todo implement hydra
     );
   }
@@ -27,5 +27,11 @@ export class UserService extends BaseService<User> {
     return this._http.get<HttpResponse<User>>(`${this._url}/${email}`).pipe(
       map(resp => resp.body as User)
     );
+  }
+
+  register(email: string, password: string) {
+    return this._http.post<User>(this._url, JSON.stringify({email, password}), {observe: 'response', headers: this.headers}).pipe(
+      map(resp => resp.body as User)
+    )
   }
 }

@@ -2,9 +2,13 @@ import {Component, OnInit} from '@angular/core';
 import {BaseComponent} from "../base-component";
 import {SessionService} from "../../services/session.service";
 import {UserService} from "../../services/user.service";
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Router} from "@angular/router";
 import {AuthorizationService} from "../../services/authorization.service";
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {switchMap, tap} from "rxjs";
+import {User} from "../../models/user";
+import {CitoyenService} from "../../services/citoyen.service";
+import {Citoyen, CitoyenInterface} from "../../models/citoyen";
 
 @Component({
   selector: 'app-register-form',
@@ -24,6 +28,7 @@ export class RegisterFormComponent extends BaseComponent implements OnInit {
     private _userService: UserService,
     private _formBuilder: FormBuilder,
     private _router: Router,
+    private _citoyenService: CitoyenService,
   ) {
     super('register-form', _authorizationService)
   }
@@ -35,7 +40,6 @@ export class RegisterFormComponent extends BaseComponent implements OnInit {
   onSubmit() {
     if (this.nameFormGroup.valid && this.contactFormGroup.valid && this.credentialsFormGroup.valid) {
       this.isLoading = true;
-      console.log(this.nameFormGroup, this.credentialsFormGroup, this.contactFormGroup)
       const [
         firstname,
         lastname,
@@ -61,6 +65,26 @@ export class RegisterFormComponent extends BaseComponent implements OnInit {
         this.credentialsFormGroup.get('email')?.value,
         this.credentialsFormGroup.get('password')?.value,
       ]
+
+      const citoyen = {
+        firstname,
+        lastname,
+        address1,
+        address2,
+        zipCode,
+        city,
+        primaryPhone,
+        secondaryPhone,
+        birthdate } as CitoyenInterface
+      console.log(citoyen)
+
+      this._userService.register(email, password)
+        .pipe(
+          tap(user => console.log(user)),
+          switchMap((user: User) => this._citoyenService.register(citoyen, user.id)),
+          tap(citoyen => console.log(citoyen))
+        )
+        .subscribe(_ => this._router.navigate(["/profil"]))
     }
   }
 
@@ -71,45 +95,37 @@ export class RegisterFormComponent extends BaseComponent implements OnInit {
     this.nameFormGroup = this._formBuilder.group(
       {
         firstname: this._formBuilder.control(null, [
-          Validators.required,
-          Validators.pattern(stringPattern)
         ]),
 
         lastname: this._formBuilder.control(null, [
-          Validators.required,
-          Validators.pattern(stringPattern)
         ]),
 
         birthdate: this._formBuilder.control(null, [
-          Validators.required
+
         ]),
       }
     )
     this.contactFormGroup = this._formBuilder.group(
       {
         address1: this._formBuilder.control(null, [
-          Validators.required,
+
         ]),
 
         address2: this._formBuilder.control(null, [
         ]),
 
         zipCode: this._formBuilder.control(null, [
-          Validators.required,
+
         ]),
 
         city: this._formBuilder.control(null, [
-          Validators.required,
-          Validators.pattern(stringPattern)
+
         ]),
 
         primaryPhone: this._formBuilder.control(null, [
-          Validators.required,
-          Validators.pattern(phonePattern)
         ]),
 
         secondaryPhone: this._formBuilder.control(null, [
-          Validators.pattern(phonePattern)
         ]),
       }
     )
@@ -117,13 +133,10 @@ export class RegisterFormComponent extends BaseComponent implements OnInit {
     this.credentialsFormGroup = this._formBuilder.group(
       {
         email: this._formBuilder.control(null, [
-          Validators.required,
-          Validators.email
-
+            Validators.email
         ]),
         password: this._formBuilder.control(null, [
-          Validators.required,
-          Validators.min(8)
+
         ])
       }
     )

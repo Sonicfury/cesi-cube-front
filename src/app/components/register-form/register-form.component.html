@@ -2,19 +2,21 @@
   <mat-step [stepControl]="nameFormGroup" label="Qui êtes vous ?">
     <form [formGroup]="nameFormGroup" class="flex flex-col w-3/4 gap-4 items-center">
       <div>
-        <label class="fr-label" for="firstname-input">Prenom</label>
-        <input class="fr-input" type="text" id="firstname-input" name="firstname-input" required
+        <label class="fr-label" for="firstname-input">Prenom *</label>
+        <input class="fr-input fr-input--error" type="text" id="firstname-input" name="firstname-input" required
                formControlName="firstname">
       </div>
       <div>
-        <label class="fr-label" for="lastname-input">Nom</label>
+        <label class="fr-label" for="lastname-input">Nom *</label>
         <input class="fr-input" type="text" id="lastname-input" name="lastname-input" required
                formControlName="lastname">
       </div>
       <div>
-        <label class="fr-label" for="birthdate-input">Date de Naissance</label>
-        <input class="fr-input" type="date" id="birthdate-input" name="birthdate-input" required
-               formControlName="birthdate">
+        <label class="fr-label" for="birthdate-input">Date de Naissance *</label>
+        <div class="fr-input-wrap fr-fi-calendar-line">
+          <input class="fr-input" type="date" id="birthdate-input" name="birthdate-input" required
+                 formControlName="birthdate">
+        </div>
       </div>
       <button class="fr-btn w-full md:w-52 h-14 justify-center" matStepperNext>Suivant</button>
     </form>
@@ -60,7 +62,8 @@
       </div>
       <div>
         <label class="fr-label" for="pass-input">Mot de passe</label>
-        <input class="fr-input" type="password" id="pass-input" name="pass-input" required formControlName="password">
+        <input class="fr-input" type="password" minlength="10" id="pass-input" name="pass-input" required
+               formControlName="password">
       </div>
       <button class="fr-btn w-full md:w-52 h-14 justify-center" matStepperPrevious>Précedent</button>
       <button class="fr-btn w-full md:w-52 h-14 justify-center" (click)="onSubmit()">Valider</button>

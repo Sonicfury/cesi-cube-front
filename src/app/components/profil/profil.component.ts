@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {tap} from "rxjs";
-import {UserService} from "../../services/user.service";
 import {AuthorizationService} from "../../services/authorization.service";
 import {BaseComponent} from "../base-component";
+import {CitoyenService} from "../../services/citoyen.service";
 
 
 @Component({
@@ -11,18 +11,18 @@ import {BaseComponent} from "../base-component";
   styleUrls: ['./profil.component.scss']
 })
 export class ProfilComponent extends BaseComponent implements OnInit {
-  users: any = []
+  citoyens: any = []
 
-  constructor(private _authorizationService: AuthorizationService, private userService: UserService) {
+  constructor(private _authorizationService: AuthorizationService, private citoyenService: CitoyenService) {
     super('profil', _authorizationService)
   }
 
   ngOnInit(): void {
-    this.userService.search("")
+    this.citoyenService.search("")
       .pipe(
-        tap(users => console.table(users))
+        tap(citoyens => console.table(citoyens))
       )
-      .subscribe(users => this.users = users)
+      .subscribe(citoyens => this.citoyens = citoyens)
 
 
   }
