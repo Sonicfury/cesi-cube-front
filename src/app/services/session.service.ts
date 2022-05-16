@@ -4,6 +4,7 @@ import {SessionState} from "./session-state";
 import {Observable, of} from "rxjs";
 import {User} from "../models/user";
 import {Jwt} from "../models/jwt";
+import {Router} from "@angular/router";
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,7 @@ export class SessionService extends BaseService<{ state: SessionState, user?: Us
   private _currentUser: User;
   private _jwt: Jwt | null = null;
 
-  constructor() {
+  constructor(private _router: Router) {
     super();
     this._currentUser = this.getCurrentUserFromLocalStorage();
     const token = localStorage.getItem(SessionService.TOKEN);

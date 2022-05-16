@@ -8,14 +8,12 @@
       </div>
       <div>
         <label class="fr-label" for="lastname-input">Nom *</label>
-        <input class="fr-input" type="text" id="lastname-input" name="lastname-input" required
-               formControlName="lastname">
+        <input class="fr-input" type="text" id="lastname-input" name="lastname-input" required formControlName="lastname">
       </div>
       <div>
         <label class="fr-label" for="birthdate-input">Date de Naissance *</label>
         <div class="fr-input-wrap fr-fi-calendar-line">
-          <input class="fr-input" type="date" id="birthdate-input" name="birthdate-input" required
-                 formControlName="birthdate">
+          <input class="fr-input" type="date" id="birthdate-input" name="birthdate-input" required formControlName="birthdate">
         </div>
       </div>
       <button class="fr-btn w-full md:w-52 h-14 justify-center" matStepperNext>Suivant</button>
@@ -25,8 +23,7 @@
     <form [formGroup]="contactFormGroup" class="flex flex-col w-3/4 gap-4 items-center">
       <div>
         <label class="fr-label" for="address1-input">Adresse</label>
-        <input class="fr-input" type="text" id="address1-input" name="address1-input" required
-               formControlName="address1">
+        <input class="fr-input" type="text" id="address1-input" name="address1-input" required formControlName="address1">
       </div>
       <div>
         <label class="fr-label" for="address2-input">Complément Adresse</label>
@@ -42,13 +39,11 @@
       </div>
       <div>
         <label class="fr-label" for="primaryPhone-input">Tel 1</label>
-        <input class="fr-input" type="text" id="primaryPhone-input" name="primaryPhone-input" required
-               formControlName="primaryPhone">
+        <input class="fr-input" type="text" id="primaryPhone-input" name="primaryPhone-input" required formControlName="primaryPhone">
       </div>
       <div>
         <label class="fr-label" for="secondaryPhone-input">Tel 2</label>
-        <input class="fr-input" type="text" id="secondaryPhone-input" name="secondaryPhone-input"
-               formControlName="secondaryPhone">
+        <input class="fr-input" type="text" id="secondaryPhone-input" name="secondaryPhone-input" formControlName="secondaryPhone">
       </div>
       <button class="fr-btn w-full md:w-52 h-14 justify-center" matStepperPrevious>Précedent</button>
       <button class="fr-btn w-full md:w-52 h-14 justify-center" matStepperNext>Suivant</button>
@@ -62,7 +57,7 @@
       </div>
       <div>
         <label class="fr-label" for="pass-input">Mot de passe</label>
-        <input class="fr-input" type="password" minlength="10" id="pass-input" name="pass-input" required
+        <input class="fr-input" type="password" id="pass-input" name="pass-input" required
                formControlName="password">
       </div>
       <button class="fr-btn w-full md:w-52 h-14 justify-center" matStepperPrevious>Précedent</button>

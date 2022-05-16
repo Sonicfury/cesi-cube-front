@@ -6,11 +6,11 @@ import {RessourceService} from "../../services/ressource.service";
 
 
 @Component({
-  selector: 'app-profil-ressources',
-  templateUrl: './profil-ressources.component.html',
-  styleUrls: ['./profil-ressources.component.scss']
+  selector: 'app-profile-ressources',
+  templateUrl: './profile-ressources.component.html',
+  styleUrls: ['./profile-ressources.component.scss']
 })
-export class ProfilRessourcesComponent extends BaseComponent implements OnInit {
+export class ProfileRessourcesComponent extends BaseComponent implements OnInit {
   private _user: any
   @Input() set user(value: any) {
     this._user = value
@@ -21,9 +21,12 @@ export class ProfilRessourcesComponent extends BaseComponent implements OnInit {
       )
       .subscribe(ressources => this.ressources = ressources)
   }
+
   ressources: any = []
+
+
   constructor(private _authorizationService: AuthorizationService, private ressourceService: RessourceService) {
-    super('profil-ressources', _authorizationService)
+    super('profile-ressources', _authorizationService)
   }
 
 

@@ -1,11 +1,19 @@
 export class User {
 
   constructor(
-    public id: number,
     public email: string,
-    public roles: string[],
-    public createdAt: Date,
-    public lastUpdatedAt: Date
+    public password: string,
+    public lastname: string,
+    public firstname: string,
+    public address1: string,
+    public zipCode: string,
+    public city: string,
+    public primaryPhone: string,
+    public secondaryPhone?: string,
+    public address2?: string,
+    public birthDate?: Date,
+    public createdAt?: Date,
+    public lastUpdatedAt?: Date
   ) {
   }
 }

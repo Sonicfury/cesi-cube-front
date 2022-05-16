@@ -25,6 +25,10 @@ export class NavComponent extends BaseComponent implements OnInit {
 
   logout() {
     this._sessionService.logout();
+    // todo : snackbar message
   }
 
+  get sessionService(): SessionService {
+    return this._sessionService;
+  }
 }

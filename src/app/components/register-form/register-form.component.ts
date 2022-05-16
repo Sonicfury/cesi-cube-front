@@ -5,10 +5,10 @@ import {UserService} from "../../services/user.service";
 import {Router} from "@angular/router";
 import {AuthorizationService} from "../../services/authorization.service";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {switchMap, tap} from "rxjs";
+import {tap} from "rxjs";
 import {User} from "../../models/user";
-import {CitoyenService} from "../../services/citoyen.service";
-import {Citoyen, CitoyenInterface} from "../../models/citoyen";
+import {AuthenticationService} from "../../services/authentication.service";
+import {SessionState} from "../../services/session-state";
 
 @Component({
   selector: 'app-register-form',
@@ -24,11 +24,11 @@ export class RegisterFormComponent extends BaseComponent implements OnInit {
 
   constructor(
     private _authorizationService: AuthorizationService,
+    private _authenticationService: AuthenticationService,
     private _sessionService: SessionService,
     private _userService: UserService,
     private _formBuilder: FormBuilder,
-    private _router: Router,
-    private _citoyenService: CitoyenService,
+    private _router: Router
   ) {
     super('register-form', _authorizationService)
   }
@@ -40,49 +40,39 @@ export class RegisterFormComponent extends BaseComponent implements OnInit {
   onSubmit() {
     if (this.nameFormGroup.valid && this.contactFormGroup.valid && this.credentialsFormGroup.valid) {
       this.isLoading = true;
-      const [
-        firstname,
-        lastname,
-        address1,
-        address2,
-        zipCode,
-        city,
-        primaryPhone,
-        secondaryPhone,
-        birthdate,
+
+      const firstname = this.nameFormGroup.get('firstname')?.value
+      const lastname = this.nameFormGroup.get('lastname')?.value
+      const address1 = this.nameFormGroup.get('address1')?.value
+      const birthdate = this.nameFormGroup.get('birthdate')?.value
+      const address2 = this.contactFormGroup.get('address2')?.value
+      const zipCode = this.contactFormGroup.get('zipCode')?.value
+      const city = this.contactFormGroup.get('city')?.value
+      const primaryPhone = this.contactFormGroup.get('primaryPhone')?.value
+      const secondaryPhone = this.contactFormGroup.get('secondaryPhone')?.value
+      const email = this.credentialsFormGroup.get('email')?.value
+      const password = this.credentialsFormGroup.get('password')?.value
+
+      const user = new User(
         email,
-        password
-      ] = [
-        this.nameFormGroup.get('firstname')?.value,
-        this.nameFormGroup.get('lastname')?.value,
-        this.nameFormGroup.get('birthdate')?.value,
-        this.contactFormGroup.get('address1')?.value,
-        this.contactFormGroup.get('address2')?.value,
-        this.contactFormGroup.get('zipCode')?.value,
-        this.contactFormGroup.get('city')?.value,
-        this.contactFormGroup.get('primaryPhone')?.value,
-        this.contactFormGroup.get('secondaryPhone')?.value,
-        this.credentialsFormGroup.get('email')?.value,
-        this.credentialsFormGroup.get('password')?.value,
-      ]
-
-      const citoyen = {
-        firstname,
+        password,
         lastname,
+        firstname,
         address1,
-        address2,
         zipCode,
         city,
         primaryPhone,
-        secondaryPhone,
-        birthdate } as CitoyenInterface
-      console.log(citoyen)
+        secondaryPhone ?? '',
+        address2 ?? '',
+        birthdate ?? ''
+      )
 
-      this._userService.register(email, password)
+      this._userService.register(user)
         .pipe(
           tap(user => console.log(user)),
-          switchMap((user: User) => this._citoyenService.register(citoyen, user.id)),
-          tap(citoyen => console.log(citoyen))
+          tap(user => this._authenticationService.signIn(user.email, user.password)),
+          tap(user => this._sessionService.currentUser = user),
+          tap(user => this._authenticationService.state = SessionState.CONNECTED)
         )
         .subscribe(_ => this._router.navigate(["/profil"]))
     }
@@ -94,50 +84,26 @@ export class RegisterFormComponent extends BaseComponent implements OnInit {
 
     this.nameFormGroup = this._formBuilder.group(
       {
-        firstname: this._formBuilder.control(null, [
-        ]),
-
-        lastname: this._formBuilder.control(null, [
-        ]),
-
-        birthdate: this._formBuilder.control(null, [
-
-        ]),
+        firstname: this._formBuilder.control(null, []),
+        lastname: this._formBuilder.control(null, []),
+        birthdate: this._formBuilder.control(null, []),
       }
     )
     this.contactFormGroup = this._formBuilder.group(
       {
-        address1: this._formBuilder.control(null, [
-
-        ]),
-
-        address2: this._formBuilder.control(null, [
-        ]),
-
-        zipCode: this._formBuilder.control(null, [
-
-        ]),
-
-        city: this._formBuilder.control(null, [
-
-        ]),
-
-        primaryPhone: this._formBuilder.control(null, [
-        ]),
-
-        secondaryPhone: this._formBuilder.control(null, [
-        ]),
+        address1: this._formBuilder.control(null, []),
+        address2: this._formBuilder.control(null, []),
+        zipCode: this._formBuilder.control(null, []),
+        city: this._formBuilder.control(null, []),
+        primaryPhone: this._formBuilder.control(null, []),
+        secondaryPhone: this._formBuilder.control(null, []),
       }
     )
 
     this.credentialsFormGroup = this._formBuilder.group(
       {
-        email: this._formBuilder.control(null, [
-            Validators.email
-        ]),
-        password: this._formBuilder.control(null, [
-
-        ])
+        email: this._formBuilder.control(null, [Validators.email]),
+        password: this._formBuilder.control(null, [])
       }
     )
 

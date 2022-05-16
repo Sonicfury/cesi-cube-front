@@ -39,8 +39,7 @@ export class LoginFormComponent extends BaseComponent implements OnInit {
     if (this.loginForm.valid) {
       this.isLoading = true;
 
-      const email = this.loginForm.get('email')?.value;
-      const password = this.loginForm.get('password')?.value;
+      const [email, password] = [this.loginForm.get('email')?.value, this.loginForm.get('password')?.value];
 
       this._authenticate(email, password)
         .pipe(
@@ -79,6 +78,7 @@ export class LoginFormComponent extends BaseComponent implements OnInit {
       .pipe(
         switchMap(() => this._userService.findByEmail(email)),
         map((user: User) => {
+          // todo : add hydra types
           this._sessionService.currentUser = user;
           this._authenticationService.state = SessionState.CONNECTED;
 

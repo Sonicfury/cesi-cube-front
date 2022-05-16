@@ -34,12 +34,22 @@
         <div class="fr-header__tools">
           <div class="fr-header__tools-links">
             <ul class="fr-links-group">
-              <li>
-                <a class="fr-link fr-fi-lock-line" [routerLink]="['/login']">Se connecter</a>
-              </li>
-              <li>
-                <a class="fr-link fr-fi-account-line" [routerLink]="['/register']">S’enregistrer</a>
-              </li>
+              <ng-container *ngIf="!this.sessionService.currentUser">
+                <li>
+                  <a class="fr-link fr-fi-lock-line" [routerLink]="['/login']">Se connecter</a>
+                </li>
+                <li>
+                  <a class="fr-link fr-fi-account-line" [routerLink]="['/register']">S’enregistrer</a>
+                </li>
+              </ng-container>
+              <ng-container *ngIf="this.sessionService.currentUser">
+                <li>
+                  <a class="fr-link fr-fi-account-line" [routerLink]="['/profile']">Mon profil</a>
+                </li>
+                <li>
+                  <a class="fr-link fr-icon-logout-box-r-line" [routerLink]="['/profile']" (click)="logout()" >Se déconnecter</a>
+                </li>
+              </ng-container>
             </ul>
           </div>
           <div class="fr-header__search fr-modal" id="modal-866">
