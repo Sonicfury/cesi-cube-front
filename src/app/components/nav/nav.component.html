@@ -34,7 +34,7 @@
         <div class="fr-header__tools">
           <div class="fr-header__tools-links">
             <ul class="fr-links-group">
-              <ng-container *ngIf="!this.sessionService.currentUser">
+              <ng-container *ngIf="!this.isConnected">
                 <li>
                   <a class="fr-link fr-fi-lock-line" [routerLink]="['/login']">Se connecter</a>
                 </li>
@@ -42,7 +42,7 @@
                   <a class="fr-link fr-fi-account-line" [routerLink]="['/register']">S’enregistrer</a>
                 </li>
               </ng-container>
-              <ng-container *ngIf="this.sessionService.currentUser">
+              <ng-container *ngIf="this.isConnected">
                 <li>
                   <a class="fr-link fr-fi-account-line" [routerLink]="['/profile']">Mon profil</a>
                 </li>
