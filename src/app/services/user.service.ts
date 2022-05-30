@@ -4,6 +4,7 @@ import {BaseService} from "./base.service";
 import {HttpClient, HttpResponse} from "@angular/common/http";
 import {map, Observable, tap} from "rxjs";
 import {SpdrQueryBuilder} from "@sonicfury/spider-query-builder";
+import {HydraCollectionInterface} from "../models/hydra";
 
 @Injectable({
   providedIn: 'root'
@@ -15,19 +16,18 @@ export class UserService extends BaseService<User> {
     super()
   }
 
-  search(query: string): Observable<HttpResponse<User[]>> {
+  search(query: string): Observable<HydraCollectionInterface<User>> {
 
-    return this._http.get<HttpResponse<User[]>>(`${this._url}/?${query}`).pipe(
-      tap(resp => resp.body ?? [])
-      // todo implement hydra
+    return this._http.get<HydraCollectionInterface<User>>(`${this._url}/?${query}`).pipe(
+      map(resp => resp)
     );
   }
 
   findByEmail(email: string): Observable<User> {
     const qb = new SpdrQueryBuilder().search('email', [email]);
 
-    return this._http.get<HttpResponse<User>>(`${this._url}?${qb.query}`).pipe(
-      map(resp => resp.body as User)
+    return this._http.get<HydraCollectionInterface<User>>(`${this._url}?${qb.query}`).pipe(
+      map(resp => resp["hydra:member"][0])
     );
   }
 
