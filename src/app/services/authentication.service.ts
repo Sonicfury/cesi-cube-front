@@ -4,6 +4,7 @@ import {SessionState} from "./session-state";
 import {HttpClient, HttpResponse} from "@angular/common/http";
 import {map, Observable} from "rxjs";
 import {Jwt} from "../models/jwt";
+import {User} from "../models/user";
 
 @Injectable({
   providedIn: 'root'
@@ -14,6 +15,11 @@ export class AuthenticationService extends BaseService<SessionState> {
 
   constructor(private _http: HttpClient) {
     super();
+    const token = localStorage.getItem(AuthenticationService.TOKEN);
+    const user = localStorage.getItem(AuthenticationService.USER);
+    if (token && user){
+      this._state = SessionState.CONNECTED
+    }
   }
 
   /**

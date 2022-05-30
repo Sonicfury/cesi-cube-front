@@ -5,6 +5,7 @@ import {BaseComponent} from "../base-component";
 import {AuthorizationService} from "../../services/authorization.service";
 import {User} from "../../models/user";
 import {SessionState} from "../../services/session-state";
+import {AuthenticationService} from "../../services/authentication.service";
 
 @Component({
   selector: 'app-nav',
@@ -18,9 +19,13 @@ export class NavComponent extends BaseComponent implements OnInit {
   appDescription: string = environment.description;
   isConnected: boolean = false;
 
-  constructor(private _authorizationService: AuthorizationService, private _sessionService: SessionService) {
+  constructor(private _authorizationService: AuthorizationService,
+              private _sessionService: SessionService,
+              private authenticationService: AuthenticationService) {
     super('Navigation', _authorizationService);
-    this.sessionService.watch((data: { state: SessionState, user?: User }) => this.isConnected = data.state === SessionState.CONNECTED)
+    this.isConnected = this.authenticationService.state === SessionState.CONNECTED;
+    this.authenticationService.watch((state: SessionState) => this.isConnected = state === SessionState.CONNECTED)
+    console.log(this.isConnected)
   }
 
   ngOnInit(): void {
