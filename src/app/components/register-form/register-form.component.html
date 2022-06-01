@@ -1,67 +1,67 @@
 <mat-stepper [linear]=true>
   <mat-step [stepControl]="nameFormGroup" label="Qui êtes vous ?">
-    <form [formGroup]="nameFormGroup" class="flex flex-col w-3/4 gap-4 items-center">
-      <div>
-        <label class="fr-label" for="firstname-input">Prenom *</label>
-        <input class="fr-input fr-input--error" type="text" id="firstname-input" name="firstname-input" required
-               formControlName="firstname">
-      </div>
-      <div>
-        <label class="fr-label" for="lastname-input">Nom *</label>
-        <input class="fr-input" type="text" id="lastname-input" name="lastname-input" required formControlName="lastname">
-      </div>
-      <div>
-        <label class="fr-label" for="birthdate-input">Date de Naissance *</label>
-        <div class="fr-input-wrap fr-fi-calendar-line">
-          <input class="fr-input" type="date" id="birthdate-input" name="birthdate-input" required formControlName="birthdate">
-        </div>
-      </div>
-      <button class="fr-btn w-full md:w-52 h-14 justify-center" matStepperNext>Suivant</button>
+    <form [formGroup]="nameFormGroup" class="flex flex-col w-3/4 gap-4 items-center mx-auto">
+      <mat-form-field>
+        <mat-label>Prenom</mat-label>
+        <input matInput type="text" id="firstname-input" name="firstname-input" formControlName="firstname">
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Nom</mat-label>
+        <input matInput type="text" id="lastname-input" name="lastname-input" formControlName="lastname">
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Date de Naissance</mat-label>
+        <input matInput type="date" id="birthdate-input" name="birthdate-input" formControlName="birthdate">
+      </mat-form-field>
+      <button mat-raised-button matStepperNext>Suivant</button>
     </form>
   </mat-step>
   <mat-step [stepControl]="contactFormGroup" label="Contact">
-    <form [formGroup]="contactFormGroup" class="flex flex-col w-3/4 gap-4 items-center">
-      <div>
-        <label class="fr-label" for="address1-input">Adresse</label>
-        <input class="fr-input" type="text" id="address1-input" name="address1-input" required formControlName="address1">
-      </div>
-      <div>
-        <label class="fr-label" for="address2-input">Complément Adresse</label>
-        <input class="fr-input" type="text" id="address2-input" name="address2-input" formControlName="address2">
-      </div>
-      <div>
-        <label class="fr-label" for="zipCode-input">Code Postal</label>
-        <input class="fr-input" type="text" id="zipCode-input" name="zipCode-input" required formControlName="zipCode">
-      </div>
-      <div>
-        <label class="fr-label" for="city-input">Ville</label>
-        <input class="fr-input" type="text" id="city-input" name="city-input" required formControlName="city">
-      </div>
-      <div>
-        <label class="fr-label" for="primaryPhone-input">Tel 1</label>
-        <input class="fr-input" type="text" id="primaryPhone-input" name="primaryPhone-input" required formControlName="primaryPhone">
-      </div>
-      <div>
-        <label class="fr-label" for="secondaryPhone-input">Tel 2</label>
-        <input class="fr-input" type="text" id="secondaryPhone-input" name="secondaryPhone-input" formControlName="secondaryPhone">
-      </div>
-      <button class="fr-btn w-full md:w-52 h-14 justify-center" matStepperPrevious>Précedent</button>
-      <button class="fr-btn w-full md:w-52 h-14 justify-center" matStepperNext>Suivant</button>
+    <form [formGroup]="contactFormGroup" class="flex flex-col w-3/4 gap-4 items-center mx-auto">
+      <mat-form-field>
+        <mat-label>Adresse</mat-label>
+        <input matInput type="text" id="address1-input" name="address1-input" formControlName="address1">
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Complément Adresse</mat-label>
+        <input matInput type="text" id="address2-input" name="address2-input" formControlName="address2">
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Code Postal</mat-label>
+        <input matInput type="text" id="zipCode-input" name="zipCode-input" formControlName="zipCode">
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Ville</mat-label>
+        <input matInput type="text" id="city-input" name="city-input" formControlName="city">
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Tel 1</mat-label>
+        <input matInput type="text" id="primaryPhone-input" name="primaryPhone-input" formControlName="primaryPhone">
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Tel 2</mat-label>
+        <input matInput type="text" id="secondaryPhone-input" name="secondaryPhone-input" formControlName="secondaryPhone">
+      </mat-form-field>
+      <button mat-raised-button matStepperPrevious>Précedent</button>
+      <button mat-raised-button matStepperNext>Suivant</button>
     </form>
   </mat-step>
   <mat-step [stepControl]="credentialsFormGroup" label="Identifiants">
-    <form [formGroup]="credentialsFormGroup" class="flex flex-col w-3/4 gap-4 items-center">
-      <div>
-        <label class="fr-label" for="email-input">Email</label>
-        <input class="fr-input" type="email" id="email-input" name="email-input" required formControlName="email">
-      </div>
-      <div>
-        <label class="fr-label" for="pass-input">Mot de passe</label>
-        <input class="fr-input" type="password" id="pass-input" name="pass-input" required
-               formControlName="password">
-      </div>
-      <button class="fr-btn w-full md:w-52 h-14 justify-center" matStepperPrevious>Précedent</button>
-      <button class="fr-btn w-full md:w-52 h-14 justify-center" (click)="onSubmit()">Valider</button>
+    <form [formGroup]="credentialsFormGroup" class="flex flex-col w-3/4 gap-4 items-center mx-auto">
+      <mat-form-field>
+        <mat-label>Email</mat-label>
+        <input matInput type="email" id="email-input" name="email-input" formControlName="email">
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Mot de passe</mat-label>
+        <input matInput type="password" id="pass-input" name="pass-input" formControlName="password">
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Confirmation Mot de passe</mat-label>
+        <input matInput type="password" id="pass-confirm-input" name="pass-confirm-input" formControlName="passwordConfirm">
+      </mat-form-field>
+      <button mat-raised-button matStepperPrevious>Précedent</button>
+      <button mat-raised-button (click)="onSubmit()">Valider</button>
     </form>
   </mat-step>
 </mat-stepper>

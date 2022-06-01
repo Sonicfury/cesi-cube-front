@@ -52,6 +52,7 @@ export class RegisterFormComponent extends BaseComponent implements OnInit {
       const secondaryPhone = this.contactFormGroup.get('secondaryPhone')?.value
       const email = this.credentialsFormGroup.get('email')?.value
       const password = this.credentialsFormGroup.get('password')?.value
+      const passwordConfirm = this.credentialsFormGroup.get('passwordConfirm')?.value
 
       const user = new User(
         email,
@@ -84,30 +85,74 @@ export class RegisterFormComponent extends BaseComponent implements OnInit {
 
     this.nameFormGroup = this._formBuilder.group(
       {
-        firstname: this._formBuilder.control(null, []),
-        lastname: this._formBuilder.control(null, []),
-        birthdate: this._formBuilder.control(null, []),
+        firstname: this._formBuilder.control(null, [
+          Validators.required
+        ]),
+        lastname: this._formBuilder.control(null, [
+          Validators.required
+        ]),
+        birthdate: this._formBuilder.control(null, [
+          Validators.required
+        ]),
       }
     )
     this.contactFormGroup = this._formBuilder.group(
       {
-        address1: this._formBuilder.control(null, []),
+        address1: this._formBuilder.control(null, [
+          Validators.required
+        ]),
         address2: this._formBuilder.control(null, []),
-        zipCode: this._formBuilder.control(null, []),
-        city: this._formBuilder.control(null, []),
-        primaryPhone: this._formBuilder.control(null, []),
+        zipCode: this._formBuilder.control(null, [
+          Validators.required
+        ]),
+        city: this._formBuilder.control(null, [
+          Validators.required
+        ]),
+        primaryPhone: this._formBuilder.control(null, [
+          Validators.required
+        ]),
         secondaryPhone: this._formBuilder.control(null, []),
       }
     )
 
     this.credentialsFormGroup = this._formBuilder.group(
       {
-        email: this._formBuilder.control(null, [Validators.email]),
-        password: this._formBuilder.control(null, [])
-      }
+        email: this._formBuilder.control(null, [
+          Validators.required,
+          Validators.email
+        ]),
+        password: this._formBuilder.control(null, [
+          Validators.required,
+          Validators.min(8)
+        ]),
+        passwordConfirm: this._formBuilder.control(null, [
+          Validators.required,
+          Validators.min(8)
+        ])
+      },
+      this.mustMatch('password', 'passwordConfirm')
     )
 
     this.isLoading = false;
+  }
+
+
+  mustMatch(controlPassword: string, matchingPasswordConfirm: string) {
+    return (formGroup: FormGroup) => {
+      const control = formGroup.controls[controlPassword];
+      const matchingControl = formGroup.controls[matchingPasswordConfirm];
+
+      if (matchingControl.errors && !matchingControl.errors['mustMatch']) {
+        return;
+      }
+
+      if (control.value !== matchingControl.value) {
+        matchingControl.setErrors({mustMatch: true});
+      } else {
+        matchingControl.setErrors(null);
+      }
+      return null;
+    };
   }
 
 }
