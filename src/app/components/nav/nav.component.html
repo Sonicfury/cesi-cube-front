@@ -2,9 +2,9 @@
 
   <div class="gap-4 hidden md:flex">
     <a [matTooltip]="headerLinkTitle" class="text-blue-700 text-sm" [routerLink]="['/']">{{appName}}</a>
-    <a class="text-blue-700 text-sm" [routerLink]="['/dashboard']" target="_self">Dashboard</a>
-    <a class="text-blue-700 text-sm" [routerLink]="['/statistics']" target="_self">Statistiques</a>
-    <a class="text-blue-700 text-sm" [routerLink]="['/statistics']" target="_self">Liste des utilisateurs</a>
+    <a class="text-blue-700 text-sm" [routerLink]="['/dashboard']">Dashboard</a>
+    <a class="text-blue-700 text-sm" [routerLink]="['/statistics']">Statistiques</a>
+    <a class="text-blue-700 text-sm" [routerLink]="['/statistics']">Liste des utilisateurs</a>
   </div>
 
   <div *ngIf="!isConnected" class="md:flex gap-4 hidden ">
@@ -17,7 +17,7 @@
   </div>
 
   <div *ngIf="isConnected" class="md:flex gap-4 hidden ">
-    <a class="text-blue-700" [routerLink]="['/profile']" target="_self">
+    <a class="text-blue-700" [routerLink]="['/profile']">
       <button class="bg-blue-700 text-white" mat-button matTooltip="Mon profil">
         <mat-icon>account_circle</mat-icon>
       </button>
@@ -36,28 +36,26 @@
 <div
   class="absolute {{isSidenavOpen ? 'left-0' :'-left-[100%]'}} flex flex-col justify-between z-40 transition-all duration-300 h-[calc(100vh-56px)] w-3/4 p-4 bg-gray-50 shadow">
   <div class="flex flex-col gap-4">
-    <a class="text-blue-700" [routerLink]="['/dashboard']" target="_self">Dashboard</a>
-    <a class="text-blue-700" [routerLink]="['/statistics']" target="_self">Statistiques</a>
-    <a class="text-blue-700" [routerLink]="['/statistics']" target="_self">Liste des utilisateurs</a>
+    <a class="text-blue-700" [routerLink]="['/dashboard']">Dashboard</a>
+    <a class="text-blue-700" [routerLink]="['/statistics']">Statistiques</a>
+    <a class="text-blue-700" [routerLink]="['/statistics']">Liste des utilisateurs</a>
   </div>
 
   <div *ngIf="!isConnected" class="flex flex-col gap-4">
-    <button class="bg-blue-700 text-white" mat-button matTooltip="S'enregistrer">
+    <a mat-button matTooltip="S'enregistrer" class="bg-blue-700 text-white" [routerLink]="['/register']">
       <mat-icon>badge</mat-icon>
-    </button>
-    <button class="bg-blue-700 text-white" mat-button matTooltip="Se connecter">
+    </a>
+    <a mat-button matTooltip="Se connecter" class="bg-blue-700 text-white" [routerLink]="['/login']">
       <mat-icon>login</mat-icon>
-    </button>
+    </a>
   </div>
 
   <div *ngIf="isConnected" class="flex flex-col gap-4">
     <button class="bg-blue-700 text-white" mat-button matTooltip="Se déconnecter" (click)="logout()">
       <mat-icon>logout</mat-icon>
     </button>
-    <a class="text-blue-700" [routerLink]="['/profile']" target="_self">
-      <button class="bg-blue-700 text-white" mat-button matTooltip="Mon profil">
-        <mat-icon>account_circle</mat-icon>
-      </button>
+    <a [routerLink]="['/profile']" class="bg-blue-700 text-white" mat-button matTooltip="Mon profil">
+      <mat-icon>account_circle</mat-icon>
     </a>
   </div>
 </div>
