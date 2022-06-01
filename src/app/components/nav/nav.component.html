@@ -1,95 +1,30 @@
-<header role="banner" class="fr-header">
-  <div class="fr-header__body">
-    <div class="fr-container">
-      <div class="fr-header__body-row">
-        <div class="fr-header__brand fr-enlarge-link">
-          <div class="fr-header__brand-top">
-            <div class="fr-header__logo">
-              <p class="fr-logo flex items-center gap-2 md:block">
-                République
-                <br>Française
-              </p>
-            </div>
-            <div class="fr-header__operator hidden md:block">
-              <img src="../../../assets/ressources-relationnelles-logo.png" class="fr-responsive-img"
-                   style="max-width:9.0625rem;" alt="logo ressources relationnelles"/>
-            </div>
-            <div class="fr-header__navbar">
-              <button class="fr-btn--search fr-btn" data-fr-opened="false" aria-controls="modal-866" title="Rechercher">
-                Rechercher
-              </button>
-              <button class="fr-btn--menu fr-btn" data-fr-opened="false" aria-controls="modal-870" aria-haspopup="menu"
-                      title="Menu" id="fr-btn-menu-mobile-4">
-                Menu
-              </button>
-            </div>
-          </div>
-          <div class="fr-header__service">
-            <a href="/" [title]="headerLinkTitle">
-              <p class="fr-header__service-title">{{appName}}</p>
-            </a>
-            <p class="fr-header__service-tagline">{{appDescription}}</p>
-          </div>
-        </div>
-        <div class="fr-header__tools">
-          <div class="fr-header__tools-links">
-            <ul class="fr-links-group">
-              <ng-container *ngIf="!this.isConnected">
-                <li>
-                  <a class="fr-link fr-fi-lock-line" [routerLink]="['/login']">Se connecter</a>
-                </li>
-                <li>
-                  <a class="fr-link fr-fi-account-line" [routerLink]="['/register']">S’enregistrer</a>
-                </li>
-              </ng-container>
-              <ng-container *ngIf="this.isConnected">
-                <li>
-                  <a class="fr-link fr-fi-account-line" [routerLink]="['/profile']">Mon profil</a>
-                </li>
-                <li>
-                  <a class="fr-link fr-icon-logout-box-r-line" [routerLink]="['/profile']" (click)="logout()" >Se déconnecter</a>
-                </li>
-              </ng-container>
-            </ul>
-          </div>
-          <div class="fr-header__search fr-modal" id="modal-866">
-            <div class="fr-container fr-container-lg--fluid">
-              <button class="fr-link--close fr-link" aria-controls="modal-866">Fermer</button>
-              <div class="fr-search-bar" id="search-865" role="search">
-                <label class="fr-label" for="search-865-input">Recherche
-                </label>
-                <input class="fr-input" placeholder="Rechercher" type="search" id="search-865-input"
-                       name="search-865-input">
-                <button class="fr-btn" title="Rechercher">
-                  Rechercher
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+<mat-toolbar class="flex justify-between">
+  <div class="gap-2 hidden md:flex">
+    <a class="text-blue-800" [routerLink]="['/']">{{appName}}</a>
+    <a class="text-blue-800" [routerLink]="['/profile']" target="_self">Profil</a>
+    <a class="text-blue-800" [routerLink]="['/dashboard']" target="_self">Dashboard</a>
+    <a class="text-blue-800" [routerLink]="['/statistics']" target="_self">Statistiques</a>
+    <a class="text-blue-800" [routerLink]="['/statistics']" target="_self">Liste des utilisateurs</a>
   </div>
-  <div class="fr-header__menu fr-modal" id="modal-870" aria-labelledby="fr-btn-menu-mobile-4">
-    <div class="fr-container">
-      <button class="fr-link--close fr-link" aria-controls="modal-870">Fermer</button>
-      <div class="fr-header__menu-links"></div>
-      <nav class="fr-nav" id="navigation-869" role="navigation" aria-label="Menu principal">
-        <ul class="fr-nav__list">
-          <li class="fr-nav__item">
-            <a class="fr-nav__link" routerLink="/profil" target="_self">Profil</a>
-          </li>
-          <li class="fr-nav__item">
-            <a class="fr-nav__link" routerLink="/dashboard" target="_self">Dashboard</a>
-          </li>
-          <li *ngIf="this.isRouteGranted('/statistics')" class="fr-nav__item">
-            <a class="fr-nav__link" routerLink="/statistics" target="_self">Statistiques</a>
-          </li>
-          <li *ngIf="this.isRouteGranted('/users')" class="fr-nav__item">
-            <a class="fr-nav__link" routerLink="/statistics" target="_self">Liste des utilisateurs</a>
-          </li>
-        </ul>
-      </nav>
-    </div>
+
+  <div class="md:flex gap-2 hidden ">
+    <button class="bg-blue-800 text-white" mat-button matTooltip="Se connecter">
+      <mat-icon>login</mat-icon>
+    </button>
+    <button class="bg-blue-800 text-white"  mat-button matTooltip="S'enregistrer">
+      <mat-icon>badge</mat-icon>
+    </button>
   </div>
-</header>
+
+  <button class="bg-blue-800 text-white" mat-button>
+    <mat-icon>menu</mat-icon>
+  </button>
+</mat-toolbar>
+
+<div class="h-full">
+  <li>sidenav</li>
+  <li>sidenav</li
+  <li>sidenav</li>
+  <li>sidenav</li>
+  <li>sidenav</li>
+</div>

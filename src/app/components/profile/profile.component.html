@@ -1,4 +1,23 @@
-<!--<div>-->
-<!--  <app-profil-info [citoyen]="citoyens['hydra:member'][1]"></app-profil-info>-->
-<!--&lt;!&ndash;  <app-profil-ressources [user]="users['hydra-member'][1]"></app-profil-ressources>&ndash;&gt;-->
-<!--</div>-->
+<div>
+  <div class="flex flex-col md:flex-row gap-2">
+    <label class="fr-label">
+      Nom
+      <input class="fr-input" type="lastname" id="lastname-input" name="lastname-input"
+             required formControlName="lastname">
+    </label>
+
+    <label class="fr-label">
+      Prénom
+      <input class="fr-input" type="lastname" id="firstname-input" name="firstname-input"
+             required formControlName="firstname">
+    </label>
+  </div>
+
+  <label class="fr-label">
+    Date de naissance
+    <input type="date" [value]="currentUser.birthDate | date:'YYYY-MM-dd'" class="fr-input">
+  </label>
+
+  <h2>{{currentUser.birthDate | date:'dd/MM/YYYY'}}</h2>
+  <div>{{currentUser.address1}}</div>
+</div>

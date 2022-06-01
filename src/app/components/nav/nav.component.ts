@@ -13,7 +13,6 @@ import {AuthenticationService} from "../../services/authentication.service";
   styleUrls: ['./nav.component.scss']
 })
 export class NavComponent extends BaseComponent implements OnInit {
-
   headerLinkTitle: string = `Accueil - ${environment.appName}`;
   appName: string = environment.appName;
   appDescription: string = environment.description;
@@ -25,7 +24,6 @@ export class NavComponent extends BaseComponent implements OnInit {
     super('Navigation', _authorizationService);
     this.isConnected = this.authenticationService.state === SessionState.CONNECTED;
     this.authenticationService.watch((state: SessionState) => this.isConnected = state === SessionState.CONNECTED)
-    console.log(this.isConnected)
   }
 
   ngOnInit(): void {
