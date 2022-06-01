@@ -103,15 +103,23 @@ export class RegisterFormComponent extends BaseComponent implements OnInit {
         ]),
         address2: this._formBuilder.control(null, []),
         zipCode: this._formBuilder.control(null, [
-          Validators.required
+          Validators.required,
+          Validators.pattern("^[0-9]*$")
         ]),
         city: this._formBuilder.control(null, [
           Validators.required
         ]),
         primaryPhone: this._formBuilder.control(null, [
-          Validators.required
+          Validators.required,
+          Validators.pattern("^[0-9]*$"),
+          Validators.minLength(10),
+          Validators.maxLength(12)
         ]),
-        secondaryPhone: this._formBuilder.control(null, []),
+        secondaryPhone: this._formBuilder.control(null, [
+          Validators.pattern("^[0-9]*$"),
+          Validators.minLength(10),
+          Validators.maxLength(12)
+        ]),
       }
     )
 
@@ -123,14 +131,16 @@ export class RegisterFormComponent extends BaseComponent implements OnInit {
         ]),
         password: this._formBuilder.control(null, [
           Validators.required,
-          Validators.min(8)
+          Validators.minLength(8)
         ]),
         passwordConfirm: this._formBuilder.control(null, [
           Validators.required,
-          Validators.min(8)
+          Validators.minLength(8)
         ])
       },
-      this.mustMatch('password', 'passwordConfirm')
+      {
+        validators:this.mustMatch('password', 'passwordConfirm')
+      }
     )
 
     this.isLoading = false;
