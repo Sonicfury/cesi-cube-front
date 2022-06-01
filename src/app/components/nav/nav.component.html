@@ -1,30 +1,64 @@
-<mat-toolbar class="flex justify-between">
-  <div class="gap-2 hidden md:flex">
-    <a class="text-blue-800" [routerLink]="['/']">{{appName}}</a>
-    <a class="text-blue-800" [routerLink]="['/profile']" target="_self">Profil</a>
-    <a class="text-blue-800" [routerLink]="['/dashboard']" target="_self">Dashboard</a>
-    <a class="text-blue-800" [routerLink]="['/statistics']" target="_self">Statistiques</a>
-    <a class="text-blue-800" [routerLink]="['/statistics']" target="_self">Liste des utilisateurs</a>
+<mat-toolbar class="flex justify-between bg-gray-50 shadow z-50">
+
+  <div class="gap-4 hidden md:flex">
+    <a [matTooltip]="headerLinkTitle" class="text-blue-700 text-sm" [routerLink]="['/']">{{appName}}</a>
+    <a class="text-blue-700 text-sm" [routerLink]="['/dashboard']" target="_self">Dashboard</a>
+    <a class="text-blue-700 text-sm" [routerLink]="['/statistics']" target="_self">Statistiques</a>
+    <a class="text-blue-700 text-sm" [routerLink]="['/statistics']" target="_self">Liste des utilisateurs</a>
   </div>
 
-  <div class="md:flex gap-2 hidden ">
-    <button class="bg-blue-800 text-white" mat-button matTooltip="Se connecter">
+  <div *ngIf="!isConnected" class="md:flex gap-4 hidden ">
+    <button class="bg-blue-700 text-white" mat-button matTooltip="Se connecter">
       <mat-icon>login</mat-icon>
     </button>
-    <button class="bg-blue-800 text-white"  mat-button matTooltip="S'enregistrer">
+    <button class="bg-blue-700 text-white" mat-button matTooltip="S'enregistrer">
       <mat-icon>badge</mat-icon>
     </button>
   </div>
 
-  <button class="bg-blue-800 text-white" mat-button>
-    <mat-icon>menu</mat-icon>
-  </button>
+  <div *ngIf="isConnected" class="md:flex gap-4 hidden ">
+    <a class="text-blue-700" [routerLink]="['/profile']" target="_self">
+      <button class="bg-blue-700 text-white" mat-button matTooltip="Mon profil">
+        <mat-icon>account_circle</mat-icon>
+      </button>
+    </a>
+    <button class="bg-blue-700 text-white" mat-button matTooltip="Se déconnecter" (click)="logout()">
+      <mat-icon>logout</mat-icon>
+    </button>
+  </div>
+  <div class="md:hidden">
+    <button (click)="isSidenavOpen = !isSidenavOpen" class="bg-blue-700 text-white" mat-button>
+      <mat-icon>{{isSidenavOpen ? 'menu_open' : 'menu'}}</mat-icon>
+    </button>
+  </div>
 </mat-toolbar>
 
-<div class="h-full">
-  <li>sidenav</li>
-  <li>sidenav</li
-  <li>sidenav</li>
-  <li>sidenav</li>
-  <li>sidenav</li>
+<div
+  class="absolute {{isSidenavOpen ? 'left-0' :'-left-[100%]'}} flex flex-col justify-between z-40 transition-all duration-300 h-[calc(100vh-56px)] w-3/4 p-4 bg-gray-50 shadow">
+  <div class="flex flex-col gap-4">
+    <a class="text-blue-700" [routerLink]="['/dashboard']" target="_self">Dashboard</a>
+    <a class="text-blue-700" [routerLink]="['/statistics']" target="_self">Statistiques</a>
+    <a class="text-blue-700" [routerLink]="['/statistics']" target="_self">Liste des utilisateurs</a>
+  </div>
+
+  <div *ngIf="!isConnected" class="flex flex-col gap-4">
+    <button class="bg-blue-700 text-white" mat-button matTooltip="S'enregistrer">
+      <mat-icon>badge</mat-icon>
+    </button>
+    <button class="bg-blue-700 text-white" mat-button matTooltip="Se connecter">
+      <mat-icon>login</mat-icon>
+    </button>
+  </div>
+
+  <div *ngIf="isConnected" class="flex flex-col gap-4">
+    <button class="bg-blue-700 text-white" mat-button matTooltip="Se déconnecter" (click)="logout()">
+      <mat-icon>logout</mat-icon>
+    </button>
+    <a class="text-blue-700" [routerLink]="['/profile']" target="_self">
+      <button class="bg-blue-700 text-white" mat-button matTooltip="Mon profil">
+        <mat-icon>account_circle</mat-icon>
+      </button>
+    </a>
+  </div>
 </div>
+

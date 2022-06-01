@@ -3,7 +3,6 @@ import {SessionService} from "../../services/session.service";
 import {environment} from "../../../environments/environment";
 import {BaseComponent} from "../base-component";
 import {AuthorizationService} from "../../services/authorization.service";
-import {User} from "../../models/user";
 import {SessionState} from "../../services/session-state";
 import {AuthenticationService} from "../../services/authentication.service";
 
@@ -15,8 +14,8 @@ import {AuthenticationService} from "../../services/authentication.service";
 export class NavComponent extends BaseComponent implements OnInit {
   headerLinkTitle: string = `Accueil - ${environment.appName}`;
   appName: string = environment.appName;
-  appDescription: string = environment.description;
   isConnected: boolean = false;
+  isSidenavOpen: boolean = false;
 
   constructor(private _authorizationService: AuthorizationService,
               private _sessionService: SessionService,
