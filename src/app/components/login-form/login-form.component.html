@@ -1,5 +1,5 @@
 <div class="w-full flex flex-col items-center gap-2 md:gap-4">
-  <h1 class="fr-h1">Se connecter</h1>
+  <h1>Se connecter</h1>
   <form *ngIf="!isLoading; else spinner" [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="flex flex-col w-3/4 gap-4 items-center">
     <mat-form-field appearance="fill">
       <mat-label>Email</mat-label>

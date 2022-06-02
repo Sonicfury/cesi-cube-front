@@ -6,7 +6,7 @@ import {HttpClientModule} from "@angular/common/http";
 import {LoginFormComponent} from './components/login-form/login-form.component';
 import {ReactiveFormsModule} from "@angular/forms";
 import {HomeComponent} from './components/home/home.component';
-import {ProfileComponent} from './components/profile/profile.component';
+import {AccountComponent} from './components/account/account.component';
 import {ProfileRessourcesComponent} from './components/profile-ressources/profile-ressources.component';
 import {NavComponent} from "./components/nav/nav.component";
 import {RegisterFormComponent} from './components/register-form/register-form.component';
@@ -30,7 +30,7 @@ import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
     NavComponent,
     LoginFormComponent,
     HomeComponent,
-    ProfileComponent,
+    AccountComponent,
     ProfileRessourcesComponent,
     RegisterFormComponent
   ],
