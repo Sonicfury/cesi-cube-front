@@ -1,67 +1,103 @@
-<mat-stepper [linear]=true>
+<mat-stepper *ngIf="!isLoading; else spinner" [linear]=true class="w-1/2 mx-auto">
   <mat-step [stepControl]="nameFormGroup" label="Qui êtes vous ?">
-    <form [formGroup]="nameFormGroup" class="flex flex-col w-3/4 gap-4 items-center mx-auto">
-      <mat-form-field>
-        <mat-label>Prenom</mat-label>
-        <input matInput type="text" id="firstname-input" name="firstname-input" formControlName="firstname">
-      </mat-form-field>
-      <mat-form-field>
-        <mat-label>Nom</mat-label>
-        <input matInput type="text" id="lastname-input" name="lastname-input" formControlName="lastname">
-      </mat-form-field>
-      <mat-form-field>
+    <form [formGroup]="nameFormGroup" class="flex flex-col w-3/4 gap-4 items-start justify-center mx-auto mt-4">
+      <div class="flex gap-4">
+        <mat-form-field appearance="fill">
+          <mat-label>Prenom</mat-label>
+          <input matInput type="text" id="firstname-input" name="firstname-input" formControlName="firstname">
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Nom</mat-label>
+          <input matInput type="text" id="lastname-input" name="lastname-input" formControlName="lastname">
+        </mat-form-field>
+      </div>
+      <mat-form-field appearance="fill">
         <mat-label>Date de Naissance</mat-label>
         <input matInput type="date" id="birthdate-input" name="birthdate-input" formControlName="birthdate">
       </mat-form-field>
-      <button mat-raised-button matStepperNext>Suivant</button>
+      <div class="flex justify-end w-full">
+        <button mat-raised-button class="bg-blue-700 text-white" matStepperNext>Suivant
+        </button>
+      </div>
     </form>
   </mat-step>
+
   <mat-step [stepControl]="contactFormGroup" label="Contact">
-    <form [formGroup]="contactFormGroup" class="flex flex-col w-3/4 gap-4 items-center mx-auto">
-      <mat-form-field>
+    <form [formGroup]="contactFormGroup" class="flex flex-col w-3/4 gap-4 items-start justify-center mx-auto mt-4">
+      <mat-form-field class="w-full" appearance="fill">
         <mat-label>Adresse</mat-label>
         <input matInput type="text" id="address1-input" name="address1-input" formControlName="address1">
       </mat-form-field>
-      <mat-form-field>
+      <mat-form-field class="w-full" appearance="fill">
         <mat-label>Complément Adresse</mat-label>
         <input matInput type="text" id="address2-input" name="address2-input" formControlName="address2">
       </mat-form-field>
-      <mat-form-field>
-        <mat-label>Code Postal</mat-label>
-        <input matInput type="text" id="zipCode-input" name="zipCode-input" formControlName="zipCode">
-      </mat-form-field>
-      <mat-form-field>
-        <mat-label>Ville</mat-label>
-        <input matInput type="text" id="city-input" name="city-input" formControlName="city">
-      </mat-form-field>
-      <mat-form-field>
-        <mat-label>Tel 1</mat-label>
-        <input matInput type="text" id="primaryPhone-input" name="primaryPhone-input" formControlName="primaryPhone">
-      </mat-form-field>
-      <mat-form-field>
-        <mat-label>Tel 2</mat-label>
-        <input matInput type="text" id="secondaryPhone-input" name="secondaryPhone-input" formControlName="secondaryPhone">
-      </mat-form-field>
-      <button mat-raised-button matStepperPrevious>Précedent</button>
-      <button mat-raised-button matStepperNext>Suivant</button>
+
+      <div class="flex gap-4 justify-start">
+        <mat-form-field appearance="fill">
+          <mat-label>Code Postal</mat-label>
+          <input matInput type="text" id="zipCode-input" name="zipCode-input" formControlName="zipCode">
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Ville</mat-label>
+          <input matInput type="text" id="city-input" name="city-input" formControlName="city">
+        </mat-form-field>
+      </div>
+
+      <div class="flex gap-4 justify-start">
+        <mat-form-field appearance="fill">
+          <mat-label>Téléphone principal</mat-label>
+          <mat-hint>06 ou 03, sans espace</mat-hint>
+          <input matInput type="text" id="primaryPhone-input" name="primaryPhone-input" formControlName="primaryPhone">
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Téléphone secondaire</mat-label>
+          <mat-hint>06 ou 03, sans espace</mat-hint>
+          <input matInput type="text" id="secondaryPhone-input" name="secondaryPhone-input"
+                 formControlName="secondaryPhone">
+        </mat-form-field>
+      </div>
+
+      <div class="flex gap-4 w-full justify-between">
+        <button mat-raised-button matStepperPrevious>
+          Précedent
+        </button>
+        <button mat-raised-button class="bg-blue-700 text-white" matStepperNext>Suivant</button>
+      </div>
     </form>
   </mat-step>
+
   <mat-step [stepControl]="credentialsFormGroup" label="Identifiants">
-    <form [formGroup]="credentialsFormGroup" class="flex flex-col w-3/4 gap-4 items-center mx-auto">
-      <mat-form-field>
+    <form [formGroup]="credentialsFormGroup" class="flex flex-col w-3/4 gap-4 items-center mx-auto mt-4">
+      <mat-form-field class="w-full" appearance="fill">
         <mat-label>Email</mat-label>
-        <input matInput type="email" id="email-input" name="email-input" formControlName="email">
+        <input matInput type="email" id="email-input" name="email-input" placeholder="pierre.dupont@mail.fr" formControlName="email">
       </mat-form-field>
-      <mat-form-field>
-        <mat-label>Mot de passe</mat-label>
-        <input matInput type="password" id="pass-input" name="pass-input" formControlName="password">
-      </mat-form-field>
-      <mat-form-field>
-        <mat-label>Confirmation</mat-label>
-        <input matInput type="password" id="pass-confirm-input" name="pass-confirm-input" formControlName="passwordConfirm">
-      </mat-form-field>
-      <button mat-raised-button matStepperPrevious>Précedent</button>
-      <button mat-raised-button (click)="onSubmit()">Valider</button>
+
+      <div class="flex gap-4 w-full justify-start">
+        <mat-form-field appearance="fill">
+          <mat-label>Mot de passe</mat-label>
+          <mat-hint>8 caractères minimum</mat-hint>
+          <input matInput type="password" id="pass-input" name="pass-input" formControlName="password">
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Confirmation</mat-label>
+          <mat-error>Les mots de passe ne correspondent pas</mat-error>
+          <input matInput type="password" id="pass-confirm-input" name="pass-confirm-input"
+                 formControlName="passwordConfirm">
+        </mat-form-field>
+      </div>
+
+      <div class="flex gap-4 w-full justify-between">
+        <button mat-raised-button matStepperPrevious>
+          Précedent
+        </button>
+        <button mat-raised-button class="bg-blue-700 text-white" (click)="onSubmit()">Valider</button>
+      </div>
     </form>
   </mat-step>
 </mat-stepper>
+
+<ng-template #spinner>
+  <mat-spinner diameter="50" class="m-auto" color="primary"></mat-spinner>
+</ng-template>

@@ -19,10 +19,14 @@ import {MatButtonModule} from "@angular/material/button";
 import {MatIconModule} from "@angular/material/icon";
 import {MatTooltipModule} from "@angular/material/tooltip";
 import {MatSidenavModule} from "@angular/material/sidenav";
+import {SnackBarComponent} from "./components/snackbar/snackbar.component";
+import {MatSnackBarModule} from "@angular/material/snack-bar";
+import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 
 @NgModule({
   declarations: [
     AppComponent,
+    SnackBarComponent,
     NavComponent,
     LoginFormComponent,
     HomeComponent,
@@ -36,6 +40,7 @@ import {MatSidenavModule} from "@angular/material/sidenav";
     HttpClientModule,
     ReactiveFormsModule,
     NoopAnimationsModule,
+    MatSnackBarModule,
     MatStepperModule,
     MatFormFieldModule,
     MatInputModule,
@@ -43,7 +48,8 @@ import {MatSidenavModule} from "@angular/material/sidenav";
     MatButtonModule,
     MatIconModule,
     MatTooltipModule,
-    MatSidenavModule
+    MatSidenavModule,
+    MatProgressSpinnerModule
   ],
   providers: [],
   bootstrap: [AppComponent]

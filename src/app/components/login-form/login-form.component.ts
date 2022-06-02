@@ -2,13 +2,13 @@ import {Component, OnInit} from '@angular/core';
 import {BaseComponent} from "../base-component";
 import {AuthorizationService} from "../../services/authorization.service";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {finalize, map, Observable, switchMap} from "rxjs";
+import {catchError, map, Observable, switchMap, throwError} from "rxjs";
 import {User} from "../../models/user";
 import {Router} from "@angular/router";
 import {AuthenticationService} from "../../services/authentication.service";
-import {SessionState} from "../../services/session-state";
 import {SessionService} from "../../services/session.service";
 import {UserService} from "../../services/user.service";
+import {SnackbarService} from "../../services/snackbar.service";
 
 @Component({
   selector: 'app-login-form',
@@ -27,6 +27,7 @@ export class LoginFormComponent extends BaseComponent implements OnInit {
     private _userService: UserService,
     private _formBuilder: FormBuilder,
     private _router: Router,
+    private _snackbarService: SnackbarService
   ) {
     super('login-form', _authorizationService);
   }
@@ -41,15 +42,20 @@ export class LoginFormComponent extends BaseComponent implements OnInit {
 
       const [email, password] = [this.loginForm.get('email')?.value, this.loginForm.get('password')?.value];
 
-      this._authenticate(email, password)
-        .pipe(
-          finalize(() => this.isLoading = false)
-        ).subscribe({
+      this._authenticate(email, password).subscribe({
         next: (user: User) => {
+          this.isLoading = false
           this._router.navigate(['/'])
-          this.isLoading = false;
+          this._snackbarService.success(`Bienvenue, ${user.firstname} !`)
         },
-        error: (error) => (this.isLoading = false) && console.log(error)
+        error: (error) => {
+          let message = 'Les identifiants sont incorrects, merci de réessayer'
+          if (error.status !== 401) {
+            message = 'Un problème est survenu pendant la connexion'
+          }
+          this._snackbarService.error(message) && console.log(error)
+          this.isLoading = false
+        },
       });
     }
   }
@@ -76,11 +82,10 @@ export class LoginFormComponent extends BaseComponent implements OnInit {
 
     return this._authenticationService.signIn(email, password)
       .pipe(
+        catchError(err => throwError(err)),
         switchMap(() => this._userService.findByEmail(email)),
         map((user: User) => {
-          // todo : add hydra types
           this._sessionService.currentUser = user;
-          this._authenticationService.state = SessionState.CONNECTED;
 
           return user;
         })

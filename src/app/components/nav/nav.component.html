@@ -7,16 +7,18 @@
     <a class="text-blue-700 text-sm" [routerLink]="['/statistics']">Liste des utilisateurs</a>
   </div>
 
-  <div *ngIf="!isConnected" class="md:flex gap-4 hidden ">
-    <button class="bg-blue-700 text-white" mat-button matTooltip="Se connecter">
-      <mat-icon>login</mat-icon>
-    </button>
-    <button class="bg-blue-700 text-white" mat-button matTooltip="S'enregistrer">
-      <mat-icon>badge</mat-icon>
-    </button>
-  </div>
+  <ng-template #registerBtns>
+    <div class="md:flex gap-4 hidden ">
+      <button class="bg-blue-700 text-white" mat-button matTooltip="Se connecter">
+        <mat-icon>login</mat-icon>
+      </button>
+      <button class="bg-blue-700 text-white" mat-button matTooltip="S'enregistrer">
+        <mat-icon>badge</mat-icon>
+      </button>
+    </div>
+  </ng-template>
 
-  <div *ngIf="isConnected" class="md:flex gap-4 hidden ">
+  <div *ngIf="isConnected | async; else registerBtns" class="md:flex gap-4 hidden ">
     <a class="text-blue-700" [routerLink]="['/profile']">
       <button class="bg-blue-700 text-white" mat-button matTooltip="Mon profil">
         <mat-icon>account_circle</mat-icon>
@@ -41,16 +43,18 @@
     <a class="text-blue-700" [routerLink]="['/statistics']">Liste des utilisateurs</a>
   </div>
 
-  <div *ngIf="!isConnected" class="flex flex-col gap-4">
-    <a mat-button matTooltip="S'enregistrer" class="bg-blue-700 text-white" [routerLink]="['/register']">
-      <mat-icon>badge</mat-icon>
-    </a>
-    <a mat-button matTooltip="Se connecter" class="bg-blue-700 text-white" [routerLink]="['/login']">
-      <mat-icon>login</mat-icon>
-    </a>
-  </div>
+  <ng-template #registerBtnsSm>
+    <div class="flex flex-col gap-4">
+      <a mat-button matTooltip="S'enregistrer" class="bg-blue-700 text-white" [routerLink]="['/register']">
+        <mat-icon>badge</mat-icon>
+      </a>
+      <a mat-button matTooltip="Se connecter" class="bg-blue-700 text-white" [routerLink]="['/login']">
+        <mat-icon>login</mat-icon>
+      </a>
+    </div>
+  </ng-template>
 
-  <div *ngIf="isConnected" class="flex flex-col gap-4">
+  <div *ngIf="isConnected | async; else registerBtnsSm" class="flex flex-col gap-4">
     <button class="bg-blue-700 text-white" mat-button matTooltip="Se déconnecter" (click)="logout()">
       <mat-icon>logout</mat-icon>
     </button>

@@ -1,0 +1,14 @@
+<div class="flex flex-row">
+
+  <mat-icon class="md-24 icon" color="warn" *ngIf="data.css == 'error'" aria-label="close skill icon">warning</mat-icon>
+  <mat-icon class="md-24 icon" color="accent" *ngIf="data.css == 'success'" aria-label="close skill icon">check</mat-icon>
+  <mat-icon class="md-24 icon" color="primary" *ngIf="data.css == 'info'" aria-label="close skill icon">info_outline</mat-icon>
+
+  <div id="message" class="{{data.css}}" [innerHTML]="data.message"></div>
+
+
+  <button mat-icon-button (click)="dismiss()" class="close">
+    <mat-icon class="md-24" aria-label="close skill icon">close</mat-icon>
+  </button>
+
+</div>

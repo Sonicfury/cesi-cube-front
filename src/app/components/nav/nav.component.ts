@@ -4,7 +4,9 @@ import {environment} from "../../../environments/environment";
 import {BaseComponent} from "../base-component";
 import {AuthorizationService} from "../../services/authorization.service";
 import {SessionState} from "../../services/session-state";
-import {AuthenticationService} from "../../services/authentication.service";
+import {Observable, of} from "rxjs";
+import {SnackbarService} from "../../services/snackbar.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-nav',
@@ -14,15 +16,16 @@ import {AuthenticationService} from "../../services/authentication.service";
 export class NavComponent extends BaseComponent implements OnInit {
   headerLinkTitle: string = `Accueil - ${environment.appName}`;
   appName: string = environment.appName;
-  isConnected: boolean = false;
+  isConnected: Observable<boolean> = of(false);
   isSidenavOpen: boolean = false;
 
   constructor(private _authorizationService: AuthorizationService,
               private _sessionService: SessionService,
-              private authenticationService: AuthenticationService) {
+              private _snackbarService: SnackbarService,
+              private _router: Router) {
     super('Navigation', _authorizationService);
-    this.isConnected = this.authenticationService.state === SessionState.CONNECTED;
-    this.authenticationService.watch((state: SessionState) => this.isConnected = state === SessionState.CONNECTED)
+    this.isConnected = of(this._sessionService.state === SessionState.CONNECTED);
+    this._sessionService.watch((state: SessionState) => this.isConnected = of(state === SessionState.CONNECTED))
   }
 
   ngOnInit(): void {
@@ -30,7 +33,10 @@ export class NavComponent extends BaseComponent implements OnInit {
   }
 
   logout() {
-    this._sessionService.logout();
+    this._sessionService.logout().subscribe(_ => {
+      this._snackbarService.success('Deconnecté')
+      this._router.navigate(['/'])
+    });
     // todo : snackbar message
   }
 

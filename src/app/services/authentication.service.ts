@@ -1,25 +1,19 @@
-import { Injectable } from '@angular/core';
-import { BaseService } from './base.service';
+import {Injectable} from '@angular/core';
+import {BaseService} from './base.service';
 import {SessionState} from "./session-state";
 import {HttpClient, HttpResponse} from "@angular/common/http";
 import {map, Observable} from "rxjs";
 import {Jwt} from "../models/jwt";
-import {User} from "../models/user";
+import {SessionService} from "./session.service";
 
 @Injectable({
   providedIn: 'root'
 })
-export class AuthenticationService extends BaseService<SessionState> {
+export class AuthenticationService extends BaseService<any> {
   private readonly _url = `${AuthenticationService.BASE_API_URL}/authentication_token`;
-  private _state: SessionState = SessionState.DISCONNECTED;
 
-  constructor(private _http: HttpClient) {
+  constructor(private _http: HttpClient, private _sessionService: SessionService) {
     super();
-    const token = localStorage.getItem(AuthenticationService.TOKEN);
-    const user = localStorage.getItem(AuthenticationService.USER);
-    if (token && user){
-      this._state = SessionState.CONNECTED
-    }
   }
 
   /**
@@ -27,7 +21,7 @@ export class AuthenticationService extends BaseService<SessionState> {
    * @returns {boolean}
    */
   isAuthenticated(): boolean {
-    return !!AuthenticationService.getToken() && AuthenticationService.getToken() !== null;
+    return this._sessionService.state === SessionState.CONNECTED;
   }
 
   /**
@@ -38,7 +32,7 @@ export class AuthenticationService extends BaseService<SessionState> {
    */
   signIn(email: string, password: string): Observable<HttpResponse<Jwt>> {
 
-    AuthenticationService._clearToken(); // always
+    this._sessionService.removeItemFromLocalStorage(AuthenticationService.TOKEN)
 
     const body = {
       email: email,
@@ -49,8 +43,8 @@ export class AuthenticationService extends BaseService<SessionState> {
       .pipe(
         map(resp => {
           if (resp.status === 200 && resp.body && resp.body.token) {
-            AuthenticationService._storeToken(resp.body.token);
-            this._state = SessionState.PENDING;
+            this._sessionService.state = SessionState.PENDING;
+            this._sessionService.storeInLocalStorage(AuthenticationService.TOKEN, resp.body.token);
           }
 
           return resp;
@@ -61,41 +55,11 @@ export class AuthenticationService extends BaseService<SessionState> {
   /**
    * Disconnect user an clear session information
    */
-  signOut(clearLocalStorage?: boolean): void {
-
-    if (clearLocalStorage) {
-      localStorage.clear();
-    } else {
-      AuthenticationService._clearToken();
-      AuthenticationService._clearUser();
-    }
-
-    this.state = SessionState.DISCONNECTED;
+  signOut(): void {
+    this._sessionService.destroySession();
   }
 
   public static getToken(): string | null {
     return localStorage.getItem(AuthenticationService.TOKEN);
-  }
-
-  private static _storeToken(token: string): void {
-    localStorage.setItem(AuthenticationService.TOKEN, token);
-  }
-
-  private static _clearToken(): void {
-    localStorage.removeItem(AuthenticationService.TOKEN);
-  }
-
-
-  private static _clearUser(): void {
-    localStorage.removeItem(AuthenticationService.USER);
-  }
-
-  get state(): SessionState {
-    return this._state;
-  }
-
-  set state(value: SessionState) {
-    this._state = value;
-    this.emit(this._state);
   }
 }

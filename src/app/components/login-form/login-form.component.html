@@ -1,18 +1,23 @@
 <div class="w-full flex flex-col items-center gap-2 md:gap-4">
   <h1 class="fr-h1">Se connecter</h1>
-    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="flex flex-col w-3/4 gap-4 items-center">
-      <mat-form-field appearance="outline">
-        <mat-label>Email</mat-label>
-        <input matInput type="email" id="email-input" name="email-input" formControlName="email">
-      </mat-form-field>
-      <mat-form-field appearance="outline">
-        <mat-label>Mot de passe</mat-label>
-        <input matInput type="password" id="pass-input" name="pass-input" formControlName="password">
-      </mat-form-field>
+  <form *ngIf="!isLoading; else spinner" [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="flex flex-col w-3/4 gap-4 items-center">
+    <mat-form-field appearance="fill">
+      <mat-label>Email</mat-label>
+      <input matInput type="email" id="email-input" name="email-input" formControlName="email">
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>Mot de passe</mat-label>
+      <input matInput type="password" id="pass-input" name="pass-input" formControlName="password">
+    </mat-form-field>
+    <div class="flex gap-4">
+      <a mat-raised-button [routerLink]="['/register']">Créer un compte</a>
       <button mat-raised-button color="primary">
         Se connecter
       </button>
-      <a mat-raised-button [routerLink]="['/register']">Créer un compte</a>
-    </form>
+    </div>
+  </form>
 </div>
 
+<ng-template #spinner>
+  <mat-spinner color="primary" diameter="50" class="m-auto" mode="indeterminate"></mat-spinner>
+</ng-template>

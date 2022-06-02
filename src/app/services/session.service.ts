@@ -9,8 +9,9 @@ import {Router} from "@angular/router";
 @Injectable({
   providedIn: 'root'
 })
-export class SessionService extends BaseService<{ state: SessionState, user?: User }> {
+export class SessionService extends BaseService<SessionState> {
   private _currentUser: User;
+  private _state: SessionState = SessionState.DISCONNECTED;
   private _jwt: Jwt | null = null;
 
   constructor(private _router: Router) {
@@ -20,6 +21,10 @@ export class SessionService extends BaseService<{ state: SessionState, user?: Us
 
     if (token) {
       this._jwt = new Jwt(token);
+    }
+
+    if (this._currentUser && this._jwt) {
+      this._state = SessionState.CONNECTED
     }
   }
 
@@ -32,11 +37,17 @@ export class SessionService extends BaseService<{ state: SessionState, user?: Us
     this.removeItemFromLocalStorage(SessionService.USER);
     this.removeItemFromLocalStorage(SessionService.TOKEN);
     this._jwt = null;
-    this.emit({state: SessionState.DISCONNECTED});
+    this.state = SessionState.DISCONNECTED;
 
     sessionStorage.clear();
 
     return of(true);
+  }
+
+  destroySession() {
+    this._jwt = null;
+    sessionStorage.clear();
+    this.state = SessionState.DISCONNECTED;
   }
 
   storeInLocalStorage(key: string, item: object | boolean | string | any) {
@@ -74,10 +85,19 @@ export class SessionService extends BaseService<{ state: SessionState, user?: Us
   set currentUser(user: User) {
     this._currentUser = user;
     this.storeInLocalStorage(SessionService.USER, user);
-    this.emit({state: SessionState.CONNECTED, user: user});
+    this.state = SessionState.CONNECTED;
   }
 
   get jwt(): Jwt | null {
     return this._jwt;
+  }
+
+  get state(): SessionState {
+    return this._state;
+  }
+
+  set state(value: SessionState) {
+    this._state = value;
+    this.emit(this._state)
   }
 }

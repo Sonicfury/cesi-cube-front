@@ -4,11 +4,12 @@ import {SessionService} from "../../services/session.service";
 import {UserService} from "../../services/user.service";
 import {Router} from "@angular/router";
 import {AuthorizationService} from "../../services/authorization.service";
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {tap} from "rxjs";
+import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
+import {catchError, tap, throwError} from "rxjs";
 import {User} from "../../models/user";
 import {AuthenticationService} from "../../services/authentication.service";
-import {SessionState} from "../../services/session-state";
+import {mustMatch} from "../../directives/must-match.directive";
+import {SnackbarService} from "../../services/snackbar.service";
 
 @Component({
   selector: 'app-register-form',
@@ -20,7 +21,31 @@ export class RegisterFormComponent extends BaseComponent implements OnInit {
   nameFormGroup!: FormGroup;
   contactFormGroup!: FormGroup;
   credentialsFormGroup!: FormGroup;
-  isLoading = true
+  isLoading = true;
+
+  firstnameFormControl = new FormControl(null, [Validators.required])
+  lastnameFormControl = new FormControl(null, [Validators.required])
+  birthdateFormControl = new FormControl(null, [Validators.required])
+
+  address1FormControl = new FormControl(null, [Validators.required])
+  address2FormControl = new FormControl('', [])
+  zipCodeFormControl = new FormControl(null, [Validators.required])
+  cityFormControl = new FormControl(null, [Validators.required])
+  primaryPhoneFormControl = new FormControl(null, [
+    Validators.required,
+    Validators.pattern("^[0-9]*$"),
+    Validators.minLength(10),
+    Validators.maxLength(12)
+  ])
+  secondaryPhoneFormControl = new FormControl('', [
+    Validators.pattern("^[0-9]*$"),
+    Validators.minLength(10),
+    Validators.maxLength(12)
+  ])
+
+  emailFormControl = new FormControl(null, [Validators.required, Validators.email])
+  passwordFormControl = new FormControl(null, [Validators.required, Validators.minLength(8)])
+  passwordConfirmFormControl = new FormControl(null, [Validators.required, mustMatch(this.passwordFormControl)])
 
   constructor(
     private _authorizationService: AuthorizationService,
@@ -28,7 +53,8 @@ export class RegisterFormComponent extends BaseComponent implements OnInit {
     private _sessionService: SessionService,
     private _userService: UserService,
     private _formBuilder: FormBuilder,
-    private _router: Router
+    private _router: Router,
+    private _snackbarService: SnackbarService
   ) {
     super('register-form', _authorizationService)
   }
@@ -41,128 +67,65 @@ export class RegisterFormComponent extends BaseComponent implements OnInit {
     if (this.nameFormGroup.valid && this.contactFormGroup.valid && this.credentialsFormGroup.valid) {
       this.isLoading = true;
 
-      const firstname = this.nameFormGroup.get('firstname')?.value
-      const lastname = this.nameFormGroup.get('lastname')?.value
-      const address1 = this.nameFormGroup.get('address1')?.value
-      const birthdate = this.nameFormGroup.get('birthdate')?.value
-      const address2 = this.contactFormGroup.get('address2')?.value
-      const zipCode = this.contactFormGroup.get('zipCode')?.value
-      const city = this.contactFormGroup.get('city')?.value
-      const primaryPhone = this.contactFormGroup.get('primaryPhone')?.value
-      const secondaryPhone = this.contactFormGroup.get('secondaryPhone')?.value
-      const email = this.credentialsFormGroup.get('email')?.value
-      const password = this.credentialsFormGroup.get('password')?.value
-      const passwordConfirm = this.credentialsFormGroup.get('passwordConfirm')?.value
-
       const user = new User(
-        email,
-        password,
-        lastname,
-        firstname,
-        address1,
-        zipCode,
-        city,
-        primaryPhone,
-        secondaryPhone ?? '',
-        address2 ?? '',
-        birthdate ?? ''
+        this.emailFormControl.value,
+        this.passwordFormControl.value,
+        this.lastnameFormControl.value,
+        this.firstnameFormControl.value,
+        this.address1FormControl.value,
+        this.zipCodeFormControl.value,
+        this.cityFormControl.value,
+        this.primaryPhoneFormControl.value,
+        this.secondaryPhoneFormControl.value,
+        this.address2FormControl.value,
+        this.birthdateFormControl.value
       )
 
       this._userService.register(user)
         .pipe(
-          tap(user => console.log(user)),
           tap(user => this._authenticationService.signIn(user.email, user.password)),
-          tap(user => this._sessionService.currentUser = user),
-          tap(user => this._authenticationService.state = SessionState.CONNECTED)
+          catchError(err => throwError(err)),
+          tap(user => this._sessionService.currentUser = user)
         )
-        .subscribe(_ => this._router.navigate(["/profil"]))
+        .subscribe({
+            next: (user) => {
+              this._snackbarService.success(`Bienvenue, ${user.firstname} !`)
+              this._router.navigate(["/profile"])
+              this.isLoading = false
+            },
+            error: _ => {
+              this._snackbarService.error('Un problème est survenu pendant la création du compte, veuillez réessayer')
+              this.isLoading = false
+            },
+          }
+        )
     }
   }
 
   buildForm() {
-    const stringPattern = '^([a-zA-Z])+$'
-    const phonePattern = '^(?:0|\\(?\\+33\\)?\\s?|0033\\s?)[1-79](?:[\\.\\-\\s]?\\d\\d){4}$\n'
-
-    this.nameFormGroup = this._formBuilder.group(
+    this.nameFormGroup = new FormGroup(
       {
-        firstname: this._formBuilder.control(null, [
-          Validators.required
-        ]),
-        lastname: this._formBuilder.control(null, [
-          Validators.required
-        ]),
-        birthdate: this._formBuilder.control(null, [
-          Validators.required
-        ]),
+        firstname: this.firstnameFormControl,
+        lastname: this.lastnameFormControl,
+        birthdate: this.birthdateFormControl,
       }
     )
-    this.contactFormGroup = this._formBuilder.group(
+    this.contactFormGroup = new FormGroup(
       {
-        address1: this._formBuilder.control(null, [
-          Validators.required
-        ]),
-        address2: this._formBuilder.control(null, []),
-        zipCode: this._formBuilder.control(null, [
-          Validators.required,
-          Validators.pattern("^[0-9]*$")
-        ]),
-        city: this._formBuilder.control(null, [
-          Validators.required
-        ]),
-        primaryPhone: this._formBuilder.control(null, [
-          Validators.required,
-          Validators.pattern("^[0-9]*$"),
-          Validators.minLength(10),
-          Validators.maxLength(12)
-        ]),
-        secondaryPhone: this._formBuilder.control(null, [
-          Validators.pattern("^[0-9]*$"),
-          Validators.minLength(10),
-          Validators.maxLength(12)
-        ]),
+        address1: this.address1FormControl,
+        address2: this.address2FormControl,
+        zipCode: this.zipCodeFormControl,
+        city: this.cityFormControl,
+        primaryPhone: this.primaryPhoneFormControl,
+        secondaryPhone: this.secondaryPhoneFormControl,
       }
     )
-
-    this.credentialsFormGroup = this._formBuilder.group(
-      {
-        email: this._formBuilder.control(null, [
-          Validators.required,
-          Validators.email
-        ]),
-        password: this._formBuilder.control(null, [
-          Validators.required,
-          Validators.minLength(8)
-        ]),
-        passwordConfirm: this._formBuilder.control(null, [
-          Validators.required,
-          Validators.minLength(8)
-        ])
-      },
-      {
-        validators:this.mustMatch('password', 'passwordConfirm')
-      }
-    )
+    this.credentialsFormGroup = new FormGroup({
+      email: this.emailFormControl,
+      password: this.passwordFormControl,
+      passwordConfirm: this.passwordConfirmFormControl
+    })
 
     this.isLoading = false;
   }
-
-
-  mustMatch(controlPassword: string, matchingPasswordConfirm: string) {
-    return (formGroup: FormGroup) => {
-      const control = formGroup.controls[controlPassword];
-      const matchingControl = formGroup.controls[matchingPasswordConfirm];
-
-      if (matchingControl.errors && !matchingControl.errors['mustMatch']) {
-        return;
-      }
-
-      if (control.value !== matchingControl.value) {
-        matchingControl.setErrors({mustMatch: true});
-      } else {
-        matchingControl.setErrors(null);
-      }
-      return null;
-    };
-  }
-
 }
