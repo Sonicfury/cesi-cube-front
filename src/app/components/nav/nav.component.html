@@ -2,27 +2,25 @@
 
   <div class="gap-4 hidden md:flex">
     <a [matTooltip]="headerLinkTitle" class="text-blue-700 text-sm" [routerLink]="['/']">{{appName}}</a>
-    <a class="text-blue-700 text-sm" [routerLink]="['/dashboard']">Dashboard</a>
-    <a class="text-blue-700 text-sm" [routerLink]="['/statistics']">Statistiques</a>
-    <a class="text-blue-700 text-sm" [routerLink]="['/statistics']">Liste des utilisateurs</a>
+    <a class="text-blue-700 text-sm" [routerLinkActive]="['font-bold', 'underline']" [routerLink]="['/dashboard']">Dashboard</a>
+    <a class="text-blue-700 text-sm" [routerLinkActive]="['font-bold', 'underline']" [routerLink]="['/statistics']">Statistiques</a>
+    <a class="text-blue-700 text-sm" [routerLinkActive]="['font-bold', 'underline']" [routerLink]="['/users']">Liste des utilisateurs</a>
   </div>
 
   <ng-template #registerBtns>
     <div class="md:flex gap-4 hidden ">
-      <button class="bg-blue-700 text-white" mat-button matTooltip="Se connecter">
+      <a [routerLink]="['/login']" class="bg-blue-700 text-white" mat-button matTooltip="Se connecter">
         <mat-icon>login</mat-icon>
-      </button>
-      <button class="bg-blue-700 text-white" mat-button matTooltip="S'enregistrer">
+      </a>
+      <a [routerLink]="['/register']" class="bg-blue-700 text-white" mat-button matTooltip="S'enregistrer">
         <mat-icon>badge</mat-icon>
-      </button>
+      </a>
     </div>
   </ng-template>
 
   <div *ngIf="isConnected | async; else registerBtns" class="md:flex gap-4 hidden ">
-    <a class="text-blue-700" [routerLink]="['/profile']">
-      <button class="bg-blue-700 text-white" mat-button matTooltip="Mon profil">
-        <mat-icon>account_circle</mat-icon>
-      </button>
+    <a [routerLink]="['/account']" class="bg-blue-700 text-white" mat-button matTooltip="Mon profil">
+      <mat-icon>account_circle</mat-icon>
     </a>
     <button class="bg-blue-700 text-white" mat-button matTooltip="Se déconnecter" (click)="logout()">
       <mat-icon>logout</mat-icon>
@@ -40,7 +38,8 @@
   <div class="flex flex-col gap-4">
     <a class="text-blue-700" [routerLink]="['/dashboard']">Dashboard</a>
     <a class="text-blue-700" [routerLink]="['/statistics']">Statistiques</a>
-    <a class="text-blue-700" [routerLink]="['/statistics']">Liste des utilisateurs</a>
+    <!--    back office-->
+    <a class="text-blue-700" [routerLink]="['/users']">Liste des utilisateurs</a>
   </div>
 
   <ng-template #registerBtnsSm>
@@ -58,7 +57,7 @@
     <button class="bg-blue-700 text-white" mat-button matTooltip="Se déconnecter" (click)="logout()">
       <mat-icon>logout</mat-icon>
     </button>
-    <a [routerLink]="['/profile']" class="bg-blue-700 text-white" mat-button matTooltip="Mon profil">
+    <a [routerLink]="['/account']" class="bg-blue-700 text-white" mat-button matTooltip="Mon profil">
       <mat-icon>account_circle</mat-icon>
     </a>
   </div>

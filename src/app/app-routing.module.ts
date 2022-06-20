@@ -6,14 +6,37 @@ import {AccountComponent} from "./components/account/account.component";
 import {RegisterFormComponent} from "./components/register-form/register-form.component";
 import {CanActivateApp} from "./services/can-activate-app.guard";
 import {CanActivateLogin} from "./services/can-activate-login.guard";
+import {PageNotFoundComponent} from "./components/page-not-found/page-not-found.component";
 
 const routes: Routes = [
-  {path: '', component: HomeComponent},
-  {path: 'account', component: AccountComponent, canActivate: [CanActivateApp]},
-  {path: 'login', component: LoginFormComponent, canActivate: [CanActivateLogin]},
-  {path: 'register', component: RegisterFormComponent, canActivate: [CanActivateLogin]},
-  {path: '', pathMatch: 'full', redirectTo: '/'},
-  {path: '**', redirectTo: '/'}
+  {
+    path: 'home',
+    component: HomeComponent,
+  },
+  {
+    path: 'account',
+    component: AccountComponent,
+    canActivate: [CanActivateApp]
+  },
+  {
+    path: 'login',
+    component: LoginFormComponent,
+    canActivate: [CanActivateLogin]
+  },
+  {
+    path: 'register',
+    component: RegisterFormComponent,
+    canActivate: [CanActivateLogin]
+  },
+  {
+    path: '',
+    pathMatch: 'full',
+    redirectTo: 'home'
+  },
+  {
+    path: '**',
+    component: PageNotFoundComponent
+  }
 ];
 
 @NgModule({

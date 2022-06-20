@@ -22,6 +22,7 @@ import {MatSidenavModule} from "@angular/material/sidenav";
 import {SnackBarComponent} from "./components/snackbar/snackbar.component";
 import {MatSnackBarModule} from "@angular/material/snack-bar";
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
+import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
     HomeComponent,
     AccountComponent,
     ProfileRessourcesComponent,
-    RegisterFormComponent
+    RegisterFormComponent,
+    PageNotFoundComponent
   ],
   imports: [
     BrowserModule,
