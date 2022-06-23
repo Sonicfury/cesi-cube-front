@@ -3,7 +3,6 @@ import {BaseService} from "./base.service";
 import {Ressource} from "../models/ressource";
 import {HttpClient, HttpResponse} from "@angular/common/http";
 import {map, Observable} from "rxjs";
-import {User} from "../models/user";
 
 @Injectable({
   providedIn: 'root'
@@ -19,7 +18,6 @@ export class RessourceService extends BaseService<Ressource>{
 
     return this._http.get<HttpResponse<Ressource[]>>(`${this._url}/?${query}`).pipe(
       map(resp => resp.body ?? [])
-      // todo implement hydra
     );
   }
 }

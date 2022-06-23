@@ -2,7 +2,7 @@ import {NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
-import {HttpClientModule} from "@angular/common/http";
+import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import {LoginFormComponent} from './components/login-form/login-form.component';
 import {ReactiveFormsModule} from "@angular/forms";
 import {HomeComponent} from './components/home/home.component';
@@ -23,6 +23,7 @@ import {SnackBarComponent} from "./components/snackbar/snackbar.component";
 import {MatSnackBarModule} from "@angular/material/snack-bar";
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
+import {TokenizerInterceptor} from "./interceptors/tokenizer.interceptor";
 
 @NgModule({
   declarations: [
@@ -53,7 +54,9 @@ import { PageNotFoundComponent } from './components/page-not-found/page-not-foun
     MatSidenavModule,
     MatProgressSpinnerModule
   ],
-  providers: [],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: TokenizerInterceptor, multi: true },
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {

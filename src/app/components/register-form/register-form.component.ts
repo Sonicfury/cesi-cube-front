@@ -81,14 +81,13 @@ export class RegisterFormComponent extends BaseComponent implements OnInit {
         this.birthdateFormControl.value
       )
 
-      this._userService.register(user)
+      this._authenticationService.register(user)
         .pipe(
-          tap(user => this._authenticationService.signIn(user.email, user.password)),
           catchError(err => throwError(err)),
-          tap(user => this._sessionService.currentUser = user)
+          tap(_ => this._sessionService.currentUser = user)
         )
         .subscribe({
-            next: (user) => {
+            next: _ => {
               this._snackbarService.success(`Bienvenue, ${user.firstname} !`)
               this._router.navigate(["/profile"])
               this.isLoading = false

@@ -9,6 +9,8 @@ import {AuthenticationService} from "../../services/authentication.service";
 import {SessionService} from "../../services/session.service";
 import {UserService} from "../../services/user.service";
 import {SnackbarService} from "../../services/snackbar.service";
+import {HttpResponse} from "@angular/common/http";
+import {AuthResponse} from "../../models/auth-response";
 
 @Component({
   selector: 'app-login-form',
@@ -83,7 +85,7 @@ export class LoginFormComponent extends BaseComponent implements OnInit {
     return this._authenticationService.signIn(email, password)
       .pipe(
         catchError(err => throwError(err)),
-        switchMap(() => this._userService.findByEmail(email)),
+        switchMap((resp: HttpResponse<AuthResponse>) => this._userService.get(resp.body?.data['id'] as number)),
         map((user: User) => {
           this._sessionService.currentUser = user;
 

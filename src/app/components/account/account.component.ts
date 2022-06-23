@@ -4,6 +4,8 @@ import {BaseComponent} from "../base-component";
 import {SessionService} from "../../services/session.service";
 import {User} from "../../models/user";
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
+import {UserService} from "../../services/user.service";
+import {SnackbarService} from "../../services/snackbar.service";
 
 
 @Component({
@@ -32,6 +34,8 @@ export class AccountComponent extends BaseComponent implements OnInit {
 
   constructor(private _authorizationService: AuthorizationService,
               private _sessionService: SessionService,
+              private _userService: UserService,
+              private _snackbarService: SnackbarService,
               private _formBuilder: FormBuilder) {
     super('profile', _authorizationService)
     this.currentUser = this._sessionService.currentUser;
@@ -86,7 +90,6 @@ export class AccountComponent extends BaseComponent implements OnInit {
   onSubmit() {
     const user = new User(
       this.currentUser.email,
-      // todo: modal to get current password. put the current password if it isn't updated
       this.lastnameFormControl.value,
       this.firstnameFormControl.value,
       this.address1FormControl.value,
@@ -97,5 +100,10 @@ export class AccountComponent extends BaseComponent implements OnInit {
       this.address2FormControl.value,
       this.birthdateFormControl.value
     )
+
+    this._userService.update(user)
+      .subscribe({
+
+      })
   }
 }

@@ -92,6 +92,11 @@ export class SessionService extends BaseService<SessionState> {
     return this._jwt;
   }
 
+  set jwt(value: Jwt | null) {
+    this._jwt = value;
+    this.storeInLocalStorage(SessionService.TOKEN, this._jwt?.token);
+  }
+
   get state(): SessionState {
     return this._state;
   }

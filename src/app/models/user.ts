@@ -13,7 +13,7 @@ export class User {
     public address2?: string,
     public birthDate?: Date,
     public createdAt?: Date,
-    public lastUpdatedAt?: Date
+    public updatedAt?: Date
   ) {
   }
 }
