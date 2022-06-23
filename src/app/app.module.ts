@@ -10,7 +10,7 @@ import {AccountComponent} from './components/account/account.component';
 import {ProfileRessourcesComponent} from './components/profile-ressources/profile-ressources.component';
 import {NavComponent} from "./components/nav/nav.component";
 import {RegisterFormComponent} from './components/register-form/register-form.component';
-import {NoopAnimationsModule} from '@angular/platform-browser/animations';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MatStepperModule} from "@angular/material/stepper";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatInputModule} from "@angular/material/input";
@@ -24,6 +24,7 @@ import {MatSnackBarModule} from "@angular/material/snack-bar";
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 import {TokenizerInterceptor} from "./interceptors/tokenizer.interceptor";
+import {CommonModule} from "@angular/common";
 
 @NgModule({
   declarations: [
@@ -38,11 +39,12 @@ import {TokenizerInterceptor} from "./interceptors/tokenizer.interceptor";
     PageNotFoundComponent
   ],
   imports: [
+    CommonModule,
     BrowserModule,
+    BrowserAnimationsModule,
     AppRoutingModule,
     HttpClientModule,
     ReactiveFormsModule,
-    NoopAnimationsModule,
     MatSnackBarModule,
     MatStepperModule,
     MatFormFieldModule,
