@@ -84,10 +84,10 @@ export class RegisterFormComponent extends BaseComponent implements OnInit {
       this._authenticationService.register(user)
         .pipe(
           catchError(err => throwError(err)),
-          tap(_ => this._sessionService.currentUser = user)
+          tap(user => this._sessionService.currentUser = user)
         )
         .subscribe({
-            next: _ => {
+            next: user => {
               this._snackbarService.success(`Bienvenue, ${user.firstname} !`)
               this._router.navigate(["/profile"])
               this.isLoading = false
@@ -128,3 +128,4 @@ export class RegisterFormComponent extends BaseComponent implements OnInit {
     this.isLoading = false;
   }
 }
+

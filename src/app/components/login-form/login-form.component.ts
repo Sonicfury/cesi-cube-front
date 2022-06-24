@@ -85,7 +85,6 @@ export class LoginFormComponent extends BaseComponent implements OnInit {
     return this._authenticationService.signIn(email, password)
       .pipe(
         catchError(err => throwError(err)),
-        switchMap((resp: HttpResponse<LaravelResponse<AuthData>>) => this._userService.get(Number(resp.body?.data['id']))),
         map((user: User) => {
           this._sessionService.currentUser = user;
 

@@ -1,3 +1,5 @@
+import {User} from "./user";
+
 export interface LaravelResponse<T> {
   success: string
   data: T
@@ -6,5 +8,5 @@ export interface LaravelResponse<T> {
 
 export interface AuthData {
   token: string
-  id: string
+  user: User
 }

@@ -33,7 +33,7 @@ export class AuthenticationService extends BaseService<any> {
    * @param password
    * @returns {Observable<HttpResponse<LaravelResponse<AuthData>>>}
    */
-  signIn(email: string, password: string): Observable<HttpResponse<LaravelResponse<AuthData>>> {
+  signIn(email: string, password: string): Observable<User> {
 
     this._sessionService.removeItemFromLocalStorage(AuthenticationService.TOKEN)
 
@@ -50,7 +50,9 @@ export class AuthenticationService extends BaseService<any> {
             this._sessionService.jwt = new Jwt(resp.body.data.token);
           }
 
-          return resp;
+          if (!resp.body?.data.user) throw new Error('Undefined user')
+
+          return resp.body.data.user;
         })
       );
   }
@@ -59,7 +61,7 @@ export class AuthenticationService extends BaseService<any> {
    * Registers and logins user
    * @param user
    */
-  register(user: User): Observable<HttpResponse<LaravelResponse<AuthData>>> {
+  register(user: User): Observable<User> {
 
     return this._http.post<LaravelResponse<AuthData>>(this._registerUrl, JSON.stringify(user), {
       observe: 'response',
@@ -71,7 +73,9 @@ export class AuthenticationService extends BaseService<any> {
           this._sessionService.storeInLocalStorage(AuthenticationService.TOKEN, resp.body.data.token);
         }
 
-        return resp
+        if (!resp.body?.data.user) throw new Error('An error has occured, user shouldnt be undefined')
+
+        return resp.body.data.user
       })
     )
   }
