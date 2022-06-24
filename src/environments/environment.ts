@@ -9,6 +9,7 @@ export const environment = {
   description: 'La plateforme pour améliorer vos relations',
   version: '1.0.0',
 
+  // apiUrl: 'http://217.160.246.113:8000/api',
   apiUrl: 'http://localhost:8000/api',
 };
 

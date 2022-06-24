@@ -4,7 +4,7 @@ import {SessionState} from "./session-state";
 import {HttpClient, HttpResponse} from "@angular/common/http";
 import {map, Observable} from "rxjs";
 import {SessionService} from "./session.service";
-import {AuthResponse} from "../models/auth-response";
+import {AuthData, LaravelResponse} from "../models/laravel-response";
 import {User} from "../models/user";
 import {Jwt} from "../models/jwt";
 
@@ -31,9 +31,9 @@ export class AuthenticationService extends BaseService<any> {
    * Attempt to login user and store Jwt jwt in LocalStorage if authenticated
    * @param email
    * @param password
-   * @returns {Observable<HttpResponse<AuthResponse>>}
+   * @returns {Observable<HttpResponse<LaravelResponse<AuthData>>>}
    */
-  signIn(email: string, password: string): Observable<HttpResponse<AuthResponse>> {
+  signIn(email: string, password: string): Observable<HttpResponse<LaravelResponse<AuthData>>> {
 
     this._sessionService.removeItemFromLocalStorage(AuthenticationService.TOKEN)
 
@@ -42,7 +42,7 @@ export class AuthenticationService extends BaseService<any> {
       password: password
     }
 
-    return this._http.post<AuthResponse>(this._loginUrl, body, {observe: 'response', headers: this.headers})
+    return this._http.post<LaravelResponse<AuthData>>(this._loginUrl, body, {observe: 'response', headers: this.headers})
       .pipe(
         map(resp => {
           if (resp.status === 200 && resp.body && resp.body.data.token) {
@@ -55,9 +55,13 @@ export class AuthenticationService extends BaseService<any> {
       );
   }
 
-  register(user: User): Observable<HttpResponse<AuthResponse>> {
+  /**
+   * Registers and logins user
+   * @param user
+   */
+  register(user: User): Observable<HttpResponse<LaravelResponse<AuthData>>> {
 
-    return this._http.post<AuthResponse>(this._registerUrl, JSON.stringify(user), {
+    return this._http.post<LaravelResponse<AuthData>>(this._registerUrl, JSON.stringify(user), {
       observe: 'response',
       headers: this.headers
     }).pipe(

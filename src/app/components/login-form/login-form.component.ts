@@ -10,7 +10,7 @@ import {SessionService} from "../../services/session.service";
 import {UserService} from "../../services/user.service";
 import {SnackbarService} from "../../services/snackbar.service";
 import {HttpResponse} from "@angular/common/http";
-import {AuthResponse} from "../../models/auth-response";
+import {AuthData, LaravelResponse} from "../../models/laravel-response";
 
 @Component({
   selector: 'app-login-form',
@@ -85,7 +85,7 @@ export class LoginFormComponent extends BaseComponent implements OnInit {
     return this._authenticationService.signIn(email, password)
       .pipe(
         catchError(err => throwError(err)),
-        switchMap((resp: HttpResponse<AuthResponse>) => this._userService.get(resp.body?.data['id'] as number)),
+        switchMap((resp: HttpResponse<LaravelResponse<AuthData>>) => this._userService.get(Number(resp.body?.data['id']))),
         map((user: User) => {
           this._sessionService.currentUser = user;
 
