@@ -9,7 +9,7 @@ import {SnackbarService} from "../../services/snackbar.service";
 import {MatDialog} from "@angular/material/dialog";
 import {environment} from "../../../environments/environment";
 import {SessionState} from "../../services/session-state";
-import {Subject} from "rxjs";
+import {Subject, switchMap, tap} from "rxjs";
 
 
 @Component({
@@ -36,7 +36,6 @@ export class AccountComponent extends BaseComponent implements OnInit {
   primaryPhoneFormControl!: FormControl
   secondaryPhoneFormControl!: FormControl
   avatar!: File
-  avatarBase64: string = ''
 
   nameFormGroup!: FormGroup
   contactFormGroup!: FormGroup
@@ -52,10 +51,6 @@ export class AccountComponent extends BaseComponent implements OnInit {
     this.currentUser = this._sessionService.currentUser;
     this._sessionService.watch((state: SessionState) => this.currentUser = this._sessionService.currentUser)
     this.fileReader.onload = (event: any) => this.onloadFile$.next(event)
-    this.onloadFile$.subscribe((event: any) => {
-      this.avatarBase64 = event.target.result
-      console.log(this.avatarBase64)
-    })
   }
 
   ngOnInit(): void {
@@ -113,6 +108,7 @@ export class AccountComponent extends BaseComponent implements OnInit {
   onSubmit() {
     const user = new User()
 
+
     user.id = this.currentUser.id
     user.email = this.emailFormControl.value ?? this.currentUser.email
     user.lastname = this.lastnameFormControl.value ?? this.currentUser.lastname
@@ -124,14 +120,18 @@ export class AccountComponent extends BaseComponent implements OnInit {
     user.secondaryPhone = this.secondaryPhoneFormControl.value ?? this.currentUser.secondaryPhone
     user.address2 = this.address2FormControl.value ?? this.currentUser.address2
     user.birthDate = this.birthdateFormControl.value ?? this.currentUser.birthDate
-    user.avatar = this.avatarBase64 ?? this.currentUser.avatar
+
+    this.onloadFile$
+      .pipe(
+        tap((event: any) => {
+          user.avatar = event.target.result ?? user.avatar
+        }),
+        switchMap(_ => this._userService.update(user))
+      ).subscribe(user => {
+      this._sessionService.currentUser = user
+      this._snackbarService.success('Votre profil a correctement été mis à jour !')
+    })
 
     this.fileReader.readAsDataURL(this.avatar)
-
-    this._userService.update(user)
-      .subscribe(user => {
-        this._sessionService.currentUser = user
-        this._snackbarService.success('Votre profil a correctement été mis à jour !')
-      })
   }
 }
