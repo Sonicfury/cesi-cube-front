@@ -67,19 +67,19 @@ export class RegisterFormComponent extends BaseComponent implements OnInit {
     if (this.nameFormGroup.valid && this.contactFormGroup.valid && this.credentialsFormGroup.valid) {
       this.isLoading = true;
 
-      const user = new User(
-        this.emailFormControl.value,
-        this.passwordFormControl.value,
-        this.lastnameFormControl.value,
-        this.firstnameFormControl.value,
-        this.address1FormControl.value,
-        this.zipCodeFormControl.value,
-        this.cityFormControl.value,
-        this.primaryPhoneFormControl.value,
-        this.secondaryPhoneFormControl.value,
-        this.address2FormControl.value,
-        this.birthdateFormControl.value
-      )
+      const user = new User()
+
+      user.email = this.emailFormControl.value
+      user.password = this.passwordFormControl.value
+      user.lastname = this.lastnameFormControl.value
+      user.firstname = this.firstnameFormControl.value
+      user.address1 = this.address1FormControl.value
+      user.zipCode = this.zipCodeFormControl.value
+      user.city = this.cityFormControl.value
+      user.primaryPhone = this.primaryPhoneFormControl.value
+      user.secondaryPhone = this.secondaryPhoneFormControl.value
+      user.address2 = this.address2FormControl.value
+      user.birthDate = this.birthdateFormControl.value
 
       this._authenticationService.register(user)
         .pipe(

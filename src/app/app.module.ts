@@ -25,6 +25,7 @@ import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 import {TokenizerInterceptor} from "./interceptors/tokenizer.interceptor";
 import {CommonModule} from "@angular/common";
+import {MatDialogModule} from "@angular/material/dialog";
 
 @NgModule({
   declarations: [
@@ -54,7 +55,8 @@ import {CommonModule} from "@angular/common";
     MatIconModule,
     MatTooltipModule,
     MatSidenavModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatDialogModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: TokenizerInterceptor, multi: true },
