@@ -1,15 +1,16 @@
 <div class="flex flex-col gap-4 w-3/4 mx-auto justify-center items-start">
   <h1>Mon compte</h1>
-  <div>
-  <img class="rounded-full w-40 h-40 cursor pointer shadow"
-       *ngIf="currentUser.avatar; else placeholderAvatar"
+  <div class="relative">
+  <img class="rounded-full w-40 h-40 cursor-pointer shadow"
+       *ngIf="currentUser.avatar && !avatar; else placeholderAvatar"
        (click)="avatarInput.click()"
        src="{{api.slice(0, -4)}}{{currentUser.avatar}}" alt="user avatar">
+    <mat-icon (click)="onRemoveImage()" class="absolute bottom-0 text-red-500 right-0" matTooltip="Suppimer l'image" *ngIf="currentUser.avatar">delete</mat-icon>
   <input
     type="file" name="avatarInput" id="avatarInput" #avatarInput
+    (change)="onSubmit()"
     accept="image/*"
     class="hidden" (input)="onAvatarInput($event)">
-    <pre>{{avatar}}</pre>
   </div>
   <form class="flex flex-col gap-4 w-full items-start" [formGroup]="nameFormGroup">
     <div class="flex gap-4">
@@ -26,10 +27,9 @@
         <mat-icon>edit</mat-icon>
       </button>
     </div>
-    <mat-form-field appearance="fill">
-      <mat-label>Date de Naissance</mat-label>
-      <input matInput type="date" formControlName="birthdate">
-    </mat-form-field>
+    <div>
+      Date de Naissance {{currentUser.birthDate | date : 'dd/MM/YYYY' }}
+    </div>
   </form>
 
   <form class="flex gap-4 items-top" [formGroup]="contactFormGroup">

@@ -26,7 +26,8 @@ export class UserService extends BaseService<User> {
   update(user: User): Observable<User> {
 
     return this._http.put<LaravelResponse<User>>(`${this._url}/${user.id}`, JSON.stringify(user), {
-      observe: 'response'
+      observe: 'response',
+      headers: this.headers
     }).pipe(
       map(resp => resp.body?.data as User)
     )

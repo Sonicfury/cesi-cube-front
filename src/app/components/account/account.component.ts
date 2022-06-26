@@ -20,22 +20,19 @@ import {Subject, switchMap, tap} from "rxjs";
 export class AccountComponent extends BaseComponent implements OnInit {
   currentUser: User
   api = environment.apiUrl
-  fileReader = new FileReader()
-  onloadFile$ = new Subject()
 
   isLoading = true;
 
   emailFormControl!: FormControl
   firstnameFormControl!: FormControl
   lastnameFormControl!: FormControl
-  birthdateFormControl!: FormControl
   address1FormControl!: FormControl
   address2FormControl!: FormControl
   zipCodeFormControl!: FormControl
   cityFormControl!: FormControl
   primaryPhoneFormControl!: FormControl
   secondaryPhoneFormControl!: FormControl
-  avatar!: File
+  avatar?: File
 
   nameFormGroup!: FormGroup
   contactFormGroup!: FormGroup
@@ -50,7 +47,6 @@ export class AccountComponent extends BaseComponent implements OnInit {
     super('profile', _authorizationService)
     this.currentUser = this._sessionService.currentUser;
     this._sessionService.watch((state: SessionState) => this.currentUser = this._sessionService.currentUser)
-    this.fileReader.onload = (event: any) => this.onloadFile$.next(event)
   }
 
   ngOnInit(): void {
@@ -62,7 +58,6 @@ export class AccountComponent extends BaseComponent implements OnInit {
     this.emailFormControl = new FormControl(this.currentUser.email, [Validators.required, Validators.email])
     this.firstnameFormControl = new FormControl(this.currentUser.firstname, [Validators.required])
     this.lastnameFormControl = new FormControl(this.currentUser.lastname, [Validators.required])
-    this.birthdateFormControl = new FormControl(new Date(this.currentUser.birthDate as Date).toISOString().slice(0, 10), [Validators.required])
     this.address1FormControl = new FormControl(this.currentUser.address1, [Validators.required])
     this.address2FormControl = new FormControl(this.currentUser.address2 ?? '', [])
     this.zipCodeFormControl = new FormControl(this.currentUser.zipCode, [Validators.required])
@@ -84,7 +79,6 @@ export class AccountComponent extends BaseComponent implements OnInit {
     this.nameFormGroup = new FormGroup({
       firstname: this.firstnameFormControl,
       lastname: this.lastnameFormControl,
-      birthdate: this.birthdateFormControl
     })
 
     this.contactFormGroup = new FormGroup({
@@ -107,7 +101,9 @@ export class AccountComponent extends BaseComponent implements OnInit {
 
   onSubmit() {
     const user = new User()
-
+    const fileReader = new FileReader()
+    const onloadFile$ = new Subject()
+    fileReader.onload = (event: any) => onloadFile$.next(event)
 
     user.id = this.currentUser.id
     user.email = this.emailFormControl.value ?? this.currentUser.email
@@ -119,19 +115,32 @@ export class AccountComponent extends BaseComponent implements OnInit {
     user.primaryPhone = this.primaryPhoneFormControl.value ?? this.currentUser.primaryPhone
     user.secondaryPhone = this.secondaryPhoneFormControl.value ?? this.currentUser.secondaryPhone
     user.address2 = this.address2FormControl.value ?? this.currentUser.address2
-    user.birthDate = this.birthdateFormControl.value ?? this.currentUser.birthDate
 
-    this.onloadFile$
+    onloadFile$
       .pipe(
+        tap(_ => this.avatar && this.avatar.size >= 4000000 && this._snackbarService.error('La taille d\'image maximum autorisée est de 4 Mo')),
         tap((event: any) => {
-          user.avatar = event.target.result ?? user.avatar
+          const base64 = event.target.result.split('base64,')[1]
+          user.avatar = (this.avatar && this.avatar.size < 4000000 && base64) ? base64 : user.avatar
         }),
         switchMap(_ => this._userService.update(user))
       ).subscribe(user => {
       this._sessionService.currentUser = user
+      delete this.avatar
       this._snackbarService.success('Votre profil a correctement été mis à jour !')
     })
 
-    this.fileReader.readAsDataURL(this.avatar)
+    this.avatar && fileReader.readAsDataURL(this.avatar)
+  }
+
+  onRemoveImage() {
+    delete this.currentUser.avatar
+    console.log(this.currentUser)
+    this._userService.update(this.currentUser)
+      .subscribe(user => {
+        this._sessionService.currentUser = user
+        delete this.avatar
+        this._snackbarService.success('Votre profil a correctement été mis à jour !')
+      })
   }
 }
