@@ -7,7 +7,7 @@ import {LoginFormComponent} from './components/login-form/login-form.component';
 import {ReactiveFormsModule} from "@angular/forms";
 import {HomeComponent} from './components/home/home.component';
 import {AccountComponent} from './components/account/account.component';
-import {ProfileResourcesComponent} from './components/profile-ressources/profile-resources.component';
+import {ProfileRessourcesComponent} from './components/profile-ressources/profile-ressources.component';
 import {NavComponent} from "./components/nav/nav.component";
 import {RegisterFormComponent} from './components/register-form/register-form.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
@@ -35,7 +35,7 @@ import {MatDialogModule} from "@angular/material/dialog";
     LoginFormComponent,
     HomeComponent,
     AccountComponent,
-    ProfileResourcesComponent,
+    ProfileRessourcesComponent,
     RegisterFormComponent,
     PageNotFoundComponent
   ],
