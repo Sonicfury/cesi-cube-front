@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { CanActivateLogin } from './can-activate-login.service';
+import { CanActivateLogin } from './can-activate-login.guard';
 
 describe('LoginGuard', () => {
   let guard: CanActivateLogin;

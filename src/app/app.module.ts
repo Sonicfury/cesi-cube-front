@@ -1,4 +1,4 @@
-import {NgModule} from '@angular/core';
+import {LOCALE_ID, NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
@@ -7,7 +7,7 @@ import {LoginFormComponent} from './components/login-form/login-form.component';
 import {ReactiveFormsModule} from "@angular/forms";
 import {HomeComponent} from './components/home/home.component';
 import {AccountComponent} from './components/account/account.component';
-import {ProfileRessourcesComponent} from './components/profile-ressources/profile-ressources.component';
+import {ProfileResourcesComponent} from './components/profile-ressources/profile-resources.component';
 import {NavComponent} from "./components/nav/nav.component";
 import {RegisterFormComponent} from './components/register-form/register-form.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
@@ -24,8 +24,13 @@ import {MatSnackBarModule} from "@angular/material/snack-bar";
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 import {TokenizerInterceptor} from "./interceptors/tokenizer.interceptor";
-import {CommonModule} from "@angular/common";
+import {CommonModule, registerLocaleData} from "@angular/common";
 import {MatDialogModule} from "@angular/material/dialog";
+import { ResourceComponent } from './components/resource/resource.component';
+import {CamelCaseInterceptor} from "./interceptors/camel-case.interceptor";
+import localeFr from '@angular/common/locales/fr';
+registerLocaleData(localeFr);
+
 
 @NgModule({
   declarations: [
@@ -35,9 +40,10 @@ import {MatDialogModule} from "@angular/material/dialog";
     LoginFormComponent,
     HomeComponent,
     AccountComponent,
-    ProfileRessourcesComponent,
+    ProfileResourcesComponent,
     RegisterFormComponent,
-    PageNotFoundComponent
+    PageNotFoundComponent,
+    ResourceComponent
   ],
   imports: [
     CommonModule,
@@ -60,6 +66,8 @@ import {MatDialogModule} from "@angular/material/dialog";
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: TokenizerInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: CamelCaseInterceptor, multi: true },
+    { provide: LOCALE_ID, useValue: 'fr-FR'},
   ],
   bootstrap: [AppComponent]
 })

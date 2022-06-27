@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ProfileRessourcesComponent } from './profile-ressources.component';
+import { ProfileResourcesComponent } from './profile-resources.component';
 
 describe('ProfilRessourcesComponent', () => {
-  let component: ProfileRessourcesComponent;
-  let fixture: ComponentFixture<ProfileRessourcesComponent>;
+  let component: ProfileResourcesComponent;
+  let fixture: ComponentFixture<ProfileResourcesComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ProfileRessourcesComponent ]
+      declarations: [ ProfileResourcesComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ProfileRessourcesComponent);
+    fixture = TestBed.createComponent(ProfileResourcesComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

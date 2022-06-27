@@ -135,7 +135,6 @@ export class AccountComponent extends BaseComponent implements OnInit {
 
   onRemoveImage() {
     delete this.currentUser.avatar
-    console.log(this.currentUser)
     this._userService.update(this.currentUser)
       .subscribe(user => {
         this._sessionService.currentUser = user

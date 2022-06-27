@@ -16,8 +16,9 @@ export class SessionService extends BaseService<SessionState> {
 
   constructor(private _router: Router) {
     super();
+
     this._currentUser = this.getCurrentUserFromLocalStorage();
-    const token = localStorage.getItem(SessionService.TOKEN);
+    const token = this.readLocalStorage(SessionService.TOKEN);
 
     if (token) {
       this._jwt = new Jwt(token);
@@ -94,7 +95,7 @@ export class SessionService extends BaseService<SessionState> {
 
   set jwt(value: Jwt | null) {
     this._jwt = value;
-    this.storeInLocalStorage(SessionService.TOKEN, this._jwt?.token);
+    this._jwt && this.storeInLocalStorage(SessionService.TOKEN, this._jwt.token);
   }
 
   get state(): SessionState {

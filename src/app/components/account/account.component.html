@@ -1,16 +1,20 @@
 <div class="flex flex-col gap-4 w-3/4 mx-auto justify-center items-start">
-  <h1>Mon compte</h1>
-  <div class="relative">
-  <img class="rounded-full w-40 h-40 cursor-pointer shadow object-cover"
-       *ngIf="currentUser.avatar && !avatar; else placeholderAvatar"
-       (click)="avatarInput.click()"
-       src="{{api.slice(0, -4)}}{{currentUser.avatar}}" alt="user avatar">
-    <mat-icon (click)="onRemoveImage()" class="absolute bottom-0 text-red-500 right-0" matTooltip="Suppimer l'image" *ngIf="currentUser.avatar">delete</mat-icon>
-  <input
-    type="file" name="avatarInput" id="avatarInput" #avatarInput
-    (change)="onSubmit()"
-    accept="image/*"
-    class="hidden" (input)="onAvatarInput($event)">
+  <div class="flex gap-2">
+    <h1>Mon compte</h1>
+    <div class="relative">
+      <img class="rounded-full w-40 h-40 cursor-pointer shadow object-cover"
+           *ngIf="currentUser.avatar && !avatar; else placeholderAvatar"
+           (click)="avatarInput.click()"
+           src="{{api.slice(0, -4)}}{{currentUser.avatar}}" alt="user avatar">
+      <mat-icon (click)="onRemoveImage()" class="absolute bottom-0 text-red-500 right-0" matTooltip="Suppimer l'image"
+                *ngIf="currentUser.avatar">delete
+      </mat-icon>
+      <input
+        type="file" name="avatarInput" id="avatarInput" #avatarInput
+        (change)="onSubmit()"
+        accept="image/*"
+        class="hidden" (input)="onAvatarInput($event)">
+    </div>
   </div>
   <form class="flex flex-col gap-4 w-full items-start" [formGroup]="nameFormGroup">
     <div class="flex gap-4">
@@ -22,7 +26,7 @@
         <mat-label>Prénom</mat-label>
         <input type="text" matInput formControlName="firstname">
       </mat-form-field>
-      <button mat-icon-button class="bg-blue-700 text-white"
+      <button mat-icon-button class="bg-blue-800 text-white"
               (click)="nameFormGroup.disabled ? nameFormGroup.enable() : nameFormGroup.disable()">
         <mat-icon>edit</mat-icon>
       </button>
@@ -72,14 +76,14 @@
         </mat-form-field>
       </div>
     </div>
-    <button mat-icon-button class="bg-blue-700 text-white"
+    <button mat-icon-button class="bg-blue-800 text-white"
             (click)="contactFormGroup.disabled ? contactFormGroup.enable() : contactFormGroup.disable()">
       <mat-icon>edit</mat-icon>
     </button>
   </form>
 
   <button (click)="onSubmit()"
-          mat-button class="bg-blue-700 text-white">
+          mat-button class="bg-blue-800 text-white">
     Enregistrer les modifications
   </button>
 </div>

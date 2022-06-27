@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { CanActivateApp } from './can-activate-app.service';
+import { CanActivateApp } from './can-activate-app.guard';
 
 describe('AuthGuard', () => {
   let guard: CanActivateApp;
