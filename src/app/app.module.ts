@@ -3,6 +3,8 @@ import {BrowserModule} from '@angular/platform-browser';
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
+import localeFr from '@angular/common/locales/fr';
+registerLocaleData(localeFr);
 import {LoginFormComponent} from './components/login-form/login-form.component';
 import {ReactiveFormsModule} from "@angular/forms";
 import {HomeComponent} from './components/home/home.component';
@@ -27,9 +29,9 @@ import {TokenizerInterceptor} from "./interceptors/tokenizer.interceptor";
 import {CommonModule, registerLocaleData} from "@angular/common";
 import {MatDialogModule} from "@angular/material/dialog";
 import { ResourceComponent } from './components/resource/resource.component';
-import {CamelCaseInterceptor} from "./interceptors/camel-case.interceptor";
-import localeFr from '@angular/common/locales/fr';
-registerLocaleData(localeFr);
+import { CreateResourceComponent } from './components/create-resource/create-resource.component';
+import {MatSelectModule} from "@angular/material/select";
+import { ProfileCardComponent } from './components/profile-card/profile-card.component';
 
 
 @NgModule({
@@ -43,7 +45,9 @@ registerLocaleData(localeFr);
     ProfileResourcesComponent,
     RegisterFormComponent,
     PageNotFoundComponent,
-    ResourceComponent
+    ResourceComponent,
+    CreateResourceComponent,
+    ProfileCardComponent
   ],
   imports: [
     CommonModule,
@@ -62,11 +66,11 @@ registerLocaleData(localeFr);
     MatTooltipModule,
     MatSidenavModule,
     MatProgressSpinnerModule,
-    MatDialogModule
+    MatDialogModule,
+    MatSelectModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: TokenizerInterceptor, multi: true },
-    { provide: HTTP_INTERCEPTORS, useClass: CamelCaseInterceptor, multi: true },
     { provide: LOCALE_ID, useValue: 'fr-FR'},
   ],
   bootstrap: [AppComponent]

@@ -1,0 +1,33 @@
+<form [formGroup]="resourceFormGroup" class="card shadow-xl">
+  <div class="card-body">
+    <div class="flex flex-col-reverse gap-2 md:gap-4 md:flex-row justify-between w-full">
+      <mat-form-field class="grow" appearance="fill">
+        <mat-label>Titre</mat-label>
+        <input type="text" matInput formControlName="title">
+      </mat-form-field>
+      <div class="flex justify-end gap-1 md:gap-3 items-center">
+        <mat-form-field appearance="fill">
+          <mat-label>
+            Visibilité
+          </mat-label>
+          <mat-select formControlName="scope">
+            <mat-option [value]="scope" *ngFor="let scope of scopeLabels">{{scope[1]}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+    <mat-form-field appearance="fill">
+      <mat-label>Texte</mat-label>
+      <textarea formControlName="richTextContent" matInput>
+    </textarea>
+    </mat-form-field>
+    <button class="btn w-fit gap-2">
+      <mat-icon>image</mat-icon>
+      {{resource.mediaUrl ? "Modifier l'image" : "Ajouter une image"}}
+    </button>
+  </div>
+  <figure *ngIf="resource.mediaUrl">
+        <img [src]="resource.mediaUrl" alt="figure">
+  </figure>
+<!--  <div>Image</div>-->
+</form>

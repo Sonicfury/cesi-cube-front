@@ -7,6 +7,7 @@ import {SessionState} from "../../services/session-state";
 import {ResourceService} from "../../services/resource.service";
 import {Resource} from "../../models/resource";
 import {AuthenticationService} from "../../services/authentication.service";
+import {ViewportScroller} from "@angular/common";
 
 @Component({
   selector: 'app-home',
@@ -21,7 +22,8 @@ export class HomeComponent extends BaseComponent implements OnInit {
   constructor(private _authorizationService: AuthorizationService,
               private _sessionService: SessionService,
               private _resourceService: ResourceService,
-              private _authenticationService: AuthenticationService
+              private _authenticationService: AuthenticationService,
+              private _viewPortScroller: ViewportScroller
   ) {
     super('Accueil', _authorizationService)
 
@@ -30,12 +32,20 @@ export class HomeComponent extends BaseComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.loadResources()
+  }
+
+  loadResources() {
     this.isLoadingResources = true
     this._resourceService.getAll()
-      .subscribe(resources => {
-        this.resources = resources;
+      .subscribe(_ => {
+        this.resources = Array.from(this._resourceService.resources);
         this.isLoadingResources = false
       })
   }
 
+  onRefresh(anchor: string) {
+    this._viewPortScroller.scrollToAnchor(anchor)
+    this.loadResources()
+  }
 }

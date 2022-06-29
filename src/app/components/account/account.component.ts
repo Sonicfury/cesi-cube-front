@@ -21,7 +21,8 @@ export class AccountComponent extends BaseComponent implements OnInit {
   currentUser: User
   api = environment.apiUrl
 
-  isLoading = true;
+  isLoadingData = false;
+  isLoadingImage = false;
 
   emailFormControl!: FormControl
   firstnameFormControl!: FormControl
@@ -90,31 +91,27 @@ export class AccountComponent extends BaseComponent implements OnInit {
       primaryPhone: this.primaryPhoneFormControl,
       secondaryPhone: this.secondaryPhoneFormControl
     })
-
-    this.nameFormGroup.disable()
-    this.contactFormGroup.disable()
   }
 
   onAvatarInput(event: any) {
+    this.isLoadingImage = true;
     this.avatar = event.target?.files[0] ?? null
-  }
-
-  onSubmit() {
-    const user = new User()
     const fileReader = new FileReader()
     const onloadFile$ = new Subject()
     fileReader.onload = (event: any) => onloadFile$.next(event)
 
+    const user = new User()
+
     user.id = this.currentUser.id
-    user.email = this.emailFormControl.value ?? this.currentUser.email
-    user.lastname = this.lastnameFormControl.value ?? this.currentUser.lastname
-    user.firstname = this.firstnameFormControl.value ?? this.currentUser.firstname
-    user.address1 = this.address1FormControl.value ?? this.currentUser.address1
-    user.zipCode = this.zipCodeFormControl.value ?? this.currentUser.zipCode
-    user.city = this.cityFormControl.value ?? this.currentUser.city
-    user.primaryPhone = this.primaryPhoneFormControl.value ?? this.currentUser.primaryPhone
-    user.secondaryPhone = this.secondaryPhoneFormControl.value ?? this.currentUser.secondaryPhone
-    user.address2 = this.address2FormControl.value ?? this.currentUser.address2
+    user.email = this.currentUser.email
+    user.lastname = this.currentUser.lastname
+    user.firstname = this.currentUser.firstname
+    user.address1 = this.currentUser.address1
+    user.zipCode = this.currentUser.zipCode
+    user.city = this.currentUser.city
+    user.primaryPhone = this.currentUser.primaryPhone
+    user.secondaryPhone = this.currentUser.secondaryPhone
+    user.address2 = this.currentUser.address2
 
     onloadFile$
       .pipe(
@@ -126,20 +123,47 @@ export class AccountComponent extends BaseComponent implements OnInit {
         switchMap(_ => this._userService.update(user))
       ).subscribe(user => {
       this._sessionService.currentUser = user
-      delete this.avatar
       this._snackbarService.success('Votre profil a correctement été mis à jour !')
+      this.isLoadingImage = false
+      delete this.avatar
     })
 
     this.avatar && fileReader.readAsDataURL(this.avatar)
   }
 
+  onSubmit() {
+    this.isLoadingData = true
+    const user = new User()
+
+    user.id = this.currentUser.id
+    user.avatar = this.currentUser.avatar
+    user.email = this.emailFormControl.value ?? this.currentUser.email
+    user.lastname = this.lastnameFormControl.value ?? this.currentUser.lastname
+    user.firstname = this.firstnameFormControl.value ?? this.currentUser.firstname
+    user.address1 = this.address1FormControl.value ?? this.currentUser.address1
+    user.zipCode = this.zipCodeFormControl.value ?? this.currentUser.zipCode
+    user.city = this.cityFormControl.value ?? this.currentUser.city
+    user.primaryPhone = this.primaryPhoneFormControl.value ?? this.currentUser.primaryPhone
+    user.secondaryPhone = this.secondaryPhoneFormControl.value ?? this.currentUser.secondaryPhone
+    user.address2 = this.address2FormControl.value ?? this.currentUser.address2
+
+    this._userService.update(user)
+      .subscribe(user => {
+        this._sessionService.currentUser = user
+        this._snackbarService.success('Votre profil a correctement été mis à jour !')
+        this.isLoadingData = false
+      })
+  }
+
   onRemoveImage() {
+    this.isLoadingImage = true
     delete this.currentUser.avatar
     this._userService.update(this.currentUser)
       .subscribe(user => {
         this._sessionService.currentUser = user
-        delete this.avatar
         this._snackbarService.success('Votre profil a correctement été mis à jour !')
+        this.isLoadingImage = false
+        delete this.avatar
       })
   }
 }

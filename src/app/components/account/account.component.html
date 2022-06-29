@@ -1,14 +1,16 @@
-<div class="flex flex-col gap-4 w-3/4 mx-auto justify-center items-start">
-  <div class="flex gap-2">
+<div class="flex flex-col gap-4 w-full lg:w-3/4 mx-auto justify-center items-center lg:items-start">
+  <div class="flex flex-col gap-2">
     <h1>Mon compte</h1>
-    <div class="relative">
+    <div class="relative flex lg:gap-2 justify-center lg:justify-end">
       <img class="rounded-full w-40 h-40 cursor-pointer shadow object-cover"
            *ngIf="currentUser.avatar && !avatar; else placeholderAvatar"
            (click)="avatarInput.click()"
            src="{{api.slice(0, -4)}}{{currentUser.avatar}}" alt="user avatar">
-      <mat-icon (click)="onRemoveImage()" class="absolute bottom-0 text-red-500 right-0" matTooltip="Suppimer l'image"
+      <mat-icon (click)="onRemoveImage()" class="absolute bottom-0 bg-red-500 text-white rounded-full right-0" matTooltip="Suppimer l'image"
                 *ngIf="currentUser.avatar">delete
       </mat-icon>
+      <mat-spinner *ngIf="isLoadingImage" color="primary" diameter="20" class="absolute bottom-0 right-0"
+                   mode="indeterminate"></mat-spinner>
       <input
         type="file" name="avatarInput" id="avatarInput" #avatarInput
         (change)="onSubmit()"
@@ -16,28 +18,24 @@
         class="hidden" (input)="onAvatarInput($event)">
     </div>
   </div>
-  <form class="flex flex-col gap-4 w-full items-start" [formGroup]="nameFormGroup">
-    <div class="flex gap-4">
-      <mat-form-field appearance="fill">
+  <form class="flex flex-col gap-4 w-full items-center lg:items-start" [formGroup]="nameFormGroup">
+    <div class="flex gap-2 lg:gap-4 flex-col lg:flex-row w-full lg:items-baseline">
+      <mat-form-field class="grow" appearance="fill">
         <mat-label>Nom</mat-label>
         <input type="text" matInput formControlName="lastname">
       </mat-form-field>
-      <mat-form-field appearance="fill">
+      <mat-form-field class="grow" appearance="fill">
         <mat-label>Prénom</mat-label>
         <input type="text" matInput formControlName="firstname">
       </mat-form-field>
-      <button mat-icon-button class="bg-blue-800 text-white"
-              (click)="nameFormGroup.disabled ? nameFormGroup.enable() : nameFormGroup.disable()">
-        <mat-icon>edit</mat-icon>
-      </button>
-    </div>
-    <div>
-      Date de Naissance {{currentUser.birthDate | date : 'dd/MM/YYYY' }}
+      <div class="grow text-left">
+        Né le: {{currentUser.birthDate | date : 'dd/MM/YYYY' }}
+      </div>
     </div>
   </form>
 
-  <form class="flex gap-4 items-top" [formGroup]="contactFormGroup">
-    <div class="flex flex-col gap-4 items-start">
+  <form class="flex gap-4 items-center lg:items-start w-full" [formGroup]="contactFormGroup">
+    <div class="flex flex-col gap-4 items-center w-full">
       <mat-form-field class="w-full" appearance="fill">
         <mat-label>Adresse</mat-label>
         <input matInput type="text" formControlName="address1">
@@ -47,45 +45,45 @@
         <input matInput type="text" formControlName="address2">
       </mat-form-field>
 
-      <div class="flex gap-4 justify-start">
-        <mat-form-field appearance="fill">
+      <div class="flex gap-4 justify-start w-full">
+        <mat-form-field class="w-1/3" appearance="fill">
           <mat-label>Code Postal</mat-label>
           <input matInput type="text" formControlName="zipCode">
         </mat-form-field>
-        <mat-form-field appearance="fill">
+        <mat-form-field class="grow" appearance="fill">
           <mat-label>Ville</mat-label>
           <input matInput type="text" formControlName="city">
         </mat-form-field>
       </div>
 
-      <mat-form-field appearance="fill">
+      <mat-form-field class="w-full" appearance="fill">
         <mat-label>Email</mat-label>
         <input type="email" matInput formControlName="email">
       </mat-form-field>
 
-      <div class="flex gap-4 justify-start">
-        <mat-form-field appearance="fill">
+      <div class="flex gap-4 justify-start w-full max-w-full">
+        <mat-form-field class="w-[40%] grow" appearance="fill">
           <mat-label>Téléphone principal</mat-label>
           <mat-hint *ngIf="!primaryPhoneFormControl.disabled">06 ou 03, sans espace</mat-hint>
           <input matInput type="text" formControlName="primaryPhone">
         </mat-form-field>
-        <mat-form-field appearance="fill">
+        <mat-form-field class="w-[40%] grow" appearance="fill">
           <mat-label>Téléphone secondaire</mat-label>
           <mat-hint *ngIf="!secondaryPhoneFormControl.disabled">06 ou 03, sans espace</mat-hint>
           <input matInput type="text" formControlName="secondaryPhone">
         </mat-form-field>
       </div>
     </div>
-    <button mat-icon-button class="bg-blue-800 text-white"
-            (click)="contactFormGroup.disabled ? contactFormGroup.enable() : contactFormGroup.disable()">
-      <mat-icon>edit</mat-icon>
-    </button>
   </form>
 
-  <button (click)="onSubmit()"
-          mat-button class="bg-blue-800 text-white">
-    Enregistrer les modifications
-  </button>
+  <div class="flex gap-4 w-full justify-end">
+<!--    <mat-spinner *ngIf="isLoadingData" color="primary" diameter="20" class="m-auto"-->
+<!--                 mode="indeterminate"></mat-spinner>-->
+    <button (click)="onSubmit()"
+            class="bg-blue-800 text-white btn {{isLoadingData ? 'loading': ''}}">
+      Enregistrer les modifications
+    </button>
+  </div>
 </div>
 
 <ng-template #placeholderAvatar>

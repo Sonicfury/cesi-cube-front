@@ -1,10 +1,12 @@
-<mat-toolbar class="flex justify-between bg-gray-50 shadow z-50">
+<mat-toolbar class="flex justify-between bg-gray-50 shadow z-40">
 
-  <div class="gap-4 hidden md:flex">
-    <a [matTooltip]="headerLinkTitle" class="text-blue-800 text-sm" [routerLink]="['/']">{{appName}}</a>
+  <div class="gap-4 hidden md:flex items-baseline">
+    <a [matTooltip]="headerLinkTitle" class="text-white text-sm bg-teal-400 p-2 rounded"
+       [routerLink]="['/']">{{appName}}</a>
     <a class="text-blue-800 text-sm" [routerLinkActive]="['font-bold', 'underline']" [routerLink]="['/dashboard']">Dashboard</a>
     <a class="text-blue-800 text-sm" [routerLinkActive]="['font-bold', 'underline']" [routerLink]="['/statistics']">Statistiques</a>
-    <a class="text-blue-800 text-sm" [routerLinkActive]="['font-bold', 'underline']" [routerLink]="['/users']">Liste des utilisateurs</a>
+    <a class="text-blue-800 text-sm" [routerLinkActive]="['font-bold', 'underline']" [routerLink]="['/users']">Liste des
+      utilisateurs</a>
   </div>
 
   <ng-template #registerBtns>
@@ -34,32 +36,61 @@
 </mat-toolbar>
 
 <div
-  class="absolute {{isSidenavOpen ? 'left-0' :'-left-[100%]'}} flex flex-col justify-between z-40 transition-all duration-300 h-[calc(100vh-56px)] w-3/4 p-4 bg-gray-50 shadow">
+  class="absolute {{isSidenavOpen ? 'left-0' :'-left-[100%]'}} flex flex-col justify-between z-40 transition-all duration-300 h-[calc(100vh-56px)] w-3/4 p-4 bg-gray-100 shadow">
   <div class="flex flex-col gap-4">
-    <a class="text-blue-800" [routerLink]="['/dashboard']">Dashboard</a>
-    <a class="text-blue-800" [routerLink]="['/statistics']">Statistiques</a>
+    <a class="bg-teal-400 p-2 rounded text-white flex gap-2 items-center"
+       (click)="isSidenavOpen = false"
+       [routerLink]="['/']">
+      <mat-icon>home</mat-icon>
+      <span>{{appName}}</span>
+    </a>
+    <a class="text-blue-800 flex gap-2 items-center"
+       (click)="isSidenavOpen = false"
+       [routerLink]="['/dashboard']">
+      <mat-icon>dashboard</mat-icon>
+      <span>Dashboard</span></a>
+    <a class="text-blue-800 flex gap-2 items-center"
+       (click)="isSidenavOpen = false"
+       [routerLink]="['/statistics']">
+      <mat-icon>insights</mat-icon>
+      <span>Statistiques</span></a>
     <!--    back office-->
-    <a class="text-blue-800" [routerLink]="['/users']">Liste des utilisateurs</a>
+    <a class="text-blue-800 flex gap-2 items-center"
+       (click)="isSidenavOpen = false"
+       [routerLink]="['/users']">
+      <mat-icon>group</mat-icon>
+      Liste des utilisateurs</a>
   </div>
 
   <ng-template #registerBtnsSm>
     <div class="flex flex-col gap-4">
-      <a mat-button matTooltip="S'enregistrer" class="bg-blue-800 text-white" [routerLink]="['/register']">
-        <mat-icon>badge</mat-icon>
-      </a>
-      <a mat-button matTooltip="Se connecter" class="bg-blue-800 text-white" [routerLink]="['/login']">
+      <a mat-button matTooltip="Se connecter"
+         (click)="isSidenavOpen = false"
+         class="bg-blue-800 text-white"
+         [routerLink]="['/login']">
         <mat-icon>login</mat-icon>
+      </a>
+      <a mat-button matTooltip="S'enregistrer"
+         (click)="isSidenavOpen = false"
+         class="bg-blue-800 text-white"
+         [routerLink]="['/register']">
+        <mat-icon>badge</mat-icon>
       </a>
     </div>
   </ng-template>
 
   <div *ngIf="isConnected | async; else registerBtnsSm" class="flex flex-col gap-4">
-    <button class="bg-blue-800 text-white" mat-button matTooltip="Se déconnecter" (click)="logout()">
-      <mat-icon>logout</mat-icon>
-    </button>
-    <a [routerLink]="['/account']" class="bg-blue-800 text-white" mat-button matTooltip="Mon profil">
+    <a [routerLink]="['/account']"
+       class="bg-blue-800 text-white"
+       (click)="isSidenavOpen = false"
+       mat-button matTooltip="Mon profil">
       <mat-icon>account_circle</mat-icon>
     </a>
+    <button class="bg-blue-800 text-white"
+            mat-button (click)="isSidenavOpen = false"
+            matTooltip="Se déconnecter" (click)="logout()">
+      <mat-icon>logout</mat-icon>
+    </button>
   </div>
 </div>
 

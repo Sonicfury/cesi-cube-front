@@ -8,7 +8,7 @@
 
 html, body {
   min-height: 100%;
-  @apply bg-white;
+  @apply bg-white scroll-smooth;
 }
 
 body {
@@ -37,4 +37,11 @@ h4 {
 
 button {
   @apply hover:brightness-125;
+}
+
+.btn {
+  @apply font-normal;
+}
+
+input, textarea {
 }
