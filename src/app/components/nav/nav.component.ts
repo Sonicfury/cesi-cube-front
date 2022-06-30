@@ -7,6 +7,7 @@ import {SessionState} from "../../services/session-state";
 import {Observable, of} from "rxjs";
 import {SnackbarService} from "../../services/snackbar.service";
 import {Router} from "@angular/router";
+import {AuthenticationService} from "../../services/authentication.service";
 
 @Component({
   selector: 'app-nav',
@@ -20,6 +21,7 @@ export class NavComponent extends BaseComponent implements OnInit {
   isSidenavOpen: boolean = false;
 
   constructor(private _authorizationService: AuthorizationService,
+              private _authenticationService: AuthenticationService,
               private _sessionService: SessionService,
               private _snackbarService: SnackbarService,
               private _router: Router) {
@@ -42,5 +44,9 @@ export class NavComponent extends BaseComponent implements OnInit {
 
   get sessionService(): SessionService {
     return this._sessionService;
+  }
+
+  isAuthenticated(): boolean {
+    return this._authenticationService.isAuthenticated()
   }
 }

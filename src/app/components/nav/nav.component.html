@@ -3,9 +3,18 @@
   <div class="gap-4 hidden md:flex items-baseline">
     <a [matTooltip]="headerLinkTitle" class="text-white text-sm bg-teal-400 p-2 rounded"
        [routerLink]="['/']">{{appName}}</a>
-    <a class="text-primary text-sm" [routerLinkActive]="['font-bold', 'underline']" [routerLink]="['/dashboard']">Dashboard</a>
-    <a class="text-primary text-sm" [routerLinkActive]="['font-bold', 'underline']" [routerLink]="['/users']">Liste des utilisateurs</a>
-    <a class="text-primary text-sm" [routerLinkActive]="['font-bold', 'underline']" [routerLink]="['/admin/statistics']">Statistiques</a>
+    <a class="text-primary text-sm"
+       *ngIf="isAuthenticated()"
+       [routerLinkActive]="['font-bold', 'underline']"
+       [routerLink]="['/dashboard']">Dashboard</a>
+    <a class="text-primary text-sm"
+       *ngIf="isAuthenticated()"
+       [routerLinkActive]="['font-bold', 'underline']"
+       [routerLink]="['/users']">Liste des utilisateurs</a>
+    <a class="text-primary text-sm"
+       *ngIf="isAuthenticated()"
+       [routerLinkActive]="['font-bold', 'underline']"
+       [routerLink]="['/admin/statistics']">Statistiques</a>
   </div>
 
   <ng-template #registerBtns>
@@ -44,17 +53,20 @@
       <span>{{appName}}</span>
     </a>
     <a class="text-primary flex gap-2 items-center"
+       *ngIf="isAuthenticated()"
        (click)="isSidenavOpen = false"
        [routerLink]="['/dashboard']">
       <mat-icon>dashboard</mat-icon>
       <span>Dashboard</span></a>
     <a class="text-primary flex gap-2 items-center"
+       *ngIf="isAuthenticated()"
        (click)="isSidenavOpen = false"
        [routerLink]="['/users']">
       <mat-icon>group</mat-icon>
       Liste des utilisateurs</a>
     <!--    back office-->
     <a class="text-primary flex gap-2 items-center"
+       *ngIf="isAuthenticated()"
        (click)="isSidenavOpen = false"
        [routerLink]="['/admin/statistics']">
       <mat-icon>insights</mat-icon>
