@@ -63,7 +63,6 @@ export class CreateResourceComponent extends BaseComponent implements OnInit, Af
   }
 
   ngOnInit(): void {
-    console.log(this.resource.type, this.resource.category)
     this.listenFormChanges()
   }
 
