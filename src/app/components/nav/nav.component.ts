@@ -7,7 +7,6 @@ import {SessionState} from "../../services/session-state";
 import {Observable, of} from "rxjs";
 import {SnackbarService} from "../../services/snackbar.service";
 import {Router} from "@angular/router";
-import {AuthenticationService} from "../../services/authentication.service";
 
 @Component({
   selector: 'app-nav',
@@ -15,19 +14,23 @@ import {AuthenticationService} from "../../services/authentication.service";
   styleUrls: ['./nav.component.scss']
 })
 export class NavComponent extends BaseComponent implements OnInit {
+  apiUrl = environment.apiUrl
+  currentUser = this._sessionService.currentUser
   headerLinkTitle: string = `Accueil - ${environment.appName}`;
   appName: string = environment.appName;
   isConnected: Observable<boolean> = of(false);
   isSidenavOpen: boolean = false;
 
   constructor(private _authorizationService: AuthorizationService,
-              private _authenticationService: AuthenticationService,
               private _sessionService: SessionService,
               private _snackbarService: SnackbarService,
               private _router: Router) {
     super('Navigation', _authorizationService);
     this.isConnected = of(this._sessionService.state === SessionState.CONNECTED);
-    this._sessionService.watch((state: SessionState) => this.isConnected = of(state === SessionState.CONNECTED))
+    this._sessionService.watch((state: SessionState) => {
+      this.isConnected = of(state === SessionState.CONNECTED)
+      this.currentUser = _sessionService.currentUser
+    })
   }
 
   ngOnInit(): void {
@@ -39,14 +42,9 @@ export class NavComponent extends BaseComponent implements OnInit {
       this._snackbarService.success('Deconnecté')
       this._router.navigate(['/'])
     });
-    // todo : snackbar message
   }
 
   get sessionService(): SessionService {
     return this._sessionService;
-  }
-
-  isAuthenticated(): boolean {
-    return this._authenticationService.isAuthenticated()
   }
 }

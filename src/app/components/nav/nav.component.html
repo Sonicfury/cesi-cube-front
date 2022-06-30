@@ -4,15 +4,15 @@
     <a [matTooltip]="headerLinkTitle" class="text-white text-sm bg-teal-400 p-2 rounded"
        [routerLink]="['/']">{{appName}}</a>
     <a class="text-primary text-sm"
-       *ngIf="isAuthenticated()"
+       *ngIf="isConnected | async"
        [routerLinkActive]="['font-bold', 'underline']"
        [routerLink]="['/dashboard']">Dashboard</a>
     <a class="text-primary text-sm"
-       *ngIf="isAuthenticated()"
+       *ngIf="isConnected | async"
        [routerLinkActive]="['font-bold', 'underline']"
        [routerLink]="['/users']">Liste des utilisateurs</a>
     <a class="text-primary text-sm"
-       *ngIf="isAuthenticated()"
+       *ngIf="isConnected | async"
        [routerLinkActive]="['font-bold', 'underline']"
        [routerLink]="['/admin/statistics']">Statistiques</a>
   </div>
@@ -29,8 +29,18 @@
   </ng-template>
 
   <div *ngIf="isConnected | async; else registerBtns" class="md:flex gap-4 hidden ">
+
+    <div class="flex gap-2 items-center rounded hover:bg-accent hover:text-white py-1 px-2 cursor-pointer">
+      <div class="flex gap-2 text-sm">
+        <span>{{currentUser.firstname}}</span>
+        <span>{{currentUser.lastname}}</span>
+      </div>
+      <img *ngIf="currentUser.avatar; else placeholderThumbnail"
+           class="w-10 h-10 rounded-full"
+           src="{{apiUrl.slice(0, -4)}}{{currentUser.avatar}}" alt="avatar-thumbnail">
+    </div>
     <a [routerLink]="['/account']" class="btn btn-primary" matTooltip="Mon compte">
-      <mat-icon>account_circle</mat-icon>
+      <mat-icon>manage_accounts</mat-icon>
     </a>
     <button class="btn btn-primary" matTooltip="Se déconnecter" (click)="logout()">
       <mat-icon>logout</mat-icon>
@@ -53,20 +63,20 @@
       <span>{{appName}}</span>
     </a>
     <a class="text-primary flex gap-2 items-center"
-       *ngIf="isAuthenticated()"
+       *ngIf="isConnected | async"
        (click)="isSidenavOpen = false"
        [routerLink]="['/dashboard']">
       <mat-icon>dashboard</mat-icon>
       <span>Dashboard</span></a>
     <a class="text-primary flex gap-2 items-center"
-       *ngIf="isAuthenticated()"
+       *ngIf="isConnected | async"
        (click)="isSidenavOpen = false"
        [routerLink]="['/users']">
       <mat-icon>group</mat-icon>
       Liste des utilisateurs</a>
     <!--    back office-->
     <a class="text-primary flex gap-2 items-center"
-       *ngIf="isAuthenticated()"
+       *ngIf="isConnected | async"
        (click)="isSidenavOpen = false"
        [routerLink]="['/admin/statistics']">
       <mat-icon>insights</mat-icon>
@@ -95,7 +105,7 @@
        class="bg-primary text-white"
        (click)="isSidenavOpen = false"
        mat-button matTooltip="Mon compte">
-      <mat-icon>account_circle</mat-icon>
+      <mat-icon>manage_accounts</mat-icon>
     </a>
     <button class="bg-primary text-white"
             mat-button (click)="isSidenavOpen = false"
@@ -105,3 +115,9 @@
   </div>
 </div>
 
+<ng-template #placeholderThumbnail>
+  <div
+    class="flex cursor-pointer justify-center items-center w-10 h-10 bg-blue-300 rounded-full text-white font-medium text-xl">
+    {{currentUser.firstname?.slice(0, 1) | uppercase}}{{currentUser.lastname?.slice(0, 1) | uppercase}}
+  </div>
+</ng-template>
