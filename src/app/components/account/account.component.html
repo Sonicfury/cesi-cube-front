@@ -13,7 +13,6 @@
                    mode="indeterminate"></mat-spinner>
       <input
         type="file" name="avatarInput" id="avatarInput" #avatarInput
-        (change)="onSubmit()"
         accept="image/*"
         class="hidden" (input)="onAvatarInput($event)">
     </div>

@@ -4,9 +4,8 @@
     <a [matTooltip]="headerLinkTitle" class="text-white text-sm bg-teal-400 p-2 rounded"
        [routerLink]="['/']">{{appName}}</a>
     <a class="text-blue-800 text-sm" [routerLinkActive]="['font-bold', 'underline']" [routerLink]="['/dashboard']">Dashboard</a>
-    <a class="text-blue-800 text-sm" [routerLinkActive]="['font-bold', 'underline']" [routerLink]="['/statistics']">Statistiques</a>
-    <a class="text-blue-800 text-sm" [routerLinkActive]="['font-bold', 'underline']" [routerLink]="['/users']">Liste des
-      utilisateurs</a>
+    <a class="text-blue-800 text-sm" [routerLinkActive]="['font-bold', 'underline']" [routerLink]="['/users']">Liste des utilisateurs</a>
+    <a class="text-blue-800 text-sm" [routerLinkActive]="['font-bold', 'underline']" [routerLink]="['/admin/statistics']">Statistiques</a>
   </div>
 
   <ng-template #registerBtns>
@@ -51,15 +50,15 @@
       <span>Dashboard</span></a>
     <a class="text-blue-800 flex gap-2 items-center"
        (click)="isSidenavOpen = false"
-       [routerLink]="['/statistics']">
-      <mat-icon>insights</mat-icon>
-      <span>Statistiques</span></a>
-    <!--    back office-->
-    <a class="text-blue-800 flex gap-2 items-center"
-       (click)="isSidenavOpen = false"
        [routerLink]="['/users']">
       <mat-icon>group</mat-icon>
       Liste des utilisateurs</a>
+    <!--    back office-->
+    <a class="text-blue-800 flex gap-2 items-center"
+       (click)="isSidenavOpen = false"
+       [routerLink]="['/admin/statistics']">
+      <mat-icon>insights</mat-icon>
+      <span>Statistiques</span></a>
   </div>
 
   <ng-template #registerBtnsSm>

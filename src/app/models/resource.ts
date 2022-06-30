@@ -1,4 +1,6 @@
 import {User} from "./user";
+import {Type} from "./type";
+import {Category} from "./category";
 
 export class Resource {
   public id?: number
@@ -10,8 +12,8 @@ export class Resource {
   public isExploited?: boolean
   public status?: string
   public scope?: EScope
-  public type?: string
-  public category?: string
+  public type?: Type
+  public category?: Category
   public createdAt?: Date
   public updatedAt?: Date
   public deletedAt?: Date

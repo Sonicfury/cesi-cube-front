@@ -18,8 +18,8 @@ export class TypeService extends BaseService<Type[]>{
   }
 
   getAll(): Observable<Type[]> {
-    return this._http.get<LaravelResponse<Paginated<Type>>>(this._url).pipe(
-      map(resp => resp.data.data ?? []),
+    return this._http.get<LaravelResponse<Type[]>>(this._url).pipe(
+      map(resp => resp.data ?? []),
       tap(types => this._types.push(...types))
     );
   }

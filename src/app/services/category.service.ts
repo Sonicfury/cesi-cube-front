@@ -18,12 +18,11 @@ export class CategoryService extends BaseService<Category[]>{
   }
 
   getAll(): Observable<Category[]> {
-    return this._http.get<LaravelResponse<Paginated<Category>>>(this._url).pipe(
-      map(resp => resp.data.data ?? []),
+    return this._http.get<LaravelResponse<Category[]>>(this._url).pipe(
+      map(resp => resp.data ?? []),
       tap(categories => this._categories.push(...categories))
     );
   }
-
 
   get categories(): Category[] {
     return this._categories;
