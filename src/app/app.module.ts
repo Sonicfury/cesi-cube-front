@@ -31,7 +31,6 @@ import {MatDialogModule} from "@angular/material/dialog";
 import { ResourceComponent } from './components/resource/resource.component';
 import { CreateResourceComponent } from './components/create-resource/create-resource.component';
 import {MatSelectModule} from "@angular/material/select";
-import { ProfileCardComponent } from './components/profile-card/profile-card.component';
 import {InfiniteScrollModule} from "ngx-infinite-scroll";
 import {MatProgressBarModule} from "@angular/material/progress-bar";
 
@@ -48,8 +47,7 @@ import {MatProgressBarModule} from "@angular/material/progress-bar";
     RegisterFormComponent,
     PageNotFoundComponent,
     ResourceComponent,
-    CreateResourceComponent,
-    ProfileCardComponent
+    CreateResourceComponent
   ],
   imports: [
     CommonModule,
