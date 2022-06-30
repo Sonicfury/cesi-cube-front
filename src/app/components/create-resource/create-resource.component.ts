@@ -49,7 +49,7 @@ export class CreateResourceComponent extends BaseComponent implements OnInit, Af
       richTextContent: this.richTextContentFormControl,
       scope: this.scopeFormControl,
       type: this.typeFormControl,
-      category: this.categoryFormControl
+      category: this.categoryFormControl,
     })
 
     _typeService.watch((types: Type[]) => {
@@ -75,7 +75,7 @@ export class CreateResourceComponent extends BaseComponent implements OnInit, Af
 
   listenFormChanges() {
     this.resourceFormGroup.valueChanges.subscribe(resource => {
-      this._resourceService.currentlyCreating = this.resource.mediaUrl ? {...resource, mediaUrl: this.resource.mediaUrl} : resource
+        this._resourceService.currentlyCreating = resource
     })
   }
 

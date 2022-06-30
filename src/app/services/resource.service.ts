@@ -34,7 +34,7 @@ export class ResourceService extends BaseService<Resource> {
     const url = page ? `${baseUrl}/?page=${page}` : baseUrl
 
     return this._http.get<LaravelResponse<Paginated<Resource>>>(url).pipe(
-      tap(resp => this._lastPage = resp.data.last_page ?? 1 ),
+      tap(resp => this._lastPage = resp.data.last_page ?? 1),
       map(resp => resp.data.data ?? []),
       tap(resources => resources.map(r => !this._resources.some(res => res.id === r.id) && this._resources.push(r))),
       tap(_ => sort && this._sortResources())
@@ -42,6 +42,10 @@ export class ResourceService extends BaseService<Resource> {
   }
 
   create(): Observable<Resource> {
+
+    if (this.currentlyCreatingMedia) {
+      this.currentlyCreating = {...this._currentlyCreating, mediaUrl: this.currentlyCreatingMedia.split('base64,')[1]}
+    }
 
     return this._http.post<LaravelResponse<Resource>>(this._url, JSON.stringify(this._currentlyCreating), {
       observe: 'response',

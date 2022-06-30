@@ -8,7 +8,7 @@ export class Resource {
   public title?: string
   public views?: number
   public richTextContent?: string
-  public mediaUrl?: []
+  public mediaUrl?: string
   public isExploited?: boolean
   public status?: string
   public scope?: EScope
