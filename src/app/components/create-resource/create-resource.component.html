@@ -59,7 +59,7 @@
         </button>
         <button [disabled]="!resourceFormGroup.valid"
                 type="button" (click)="onSubmit()"
-                class="btn w-fit gap-2 bg-blue-800 {{isLoadingPublish ? 'loading' : ''}}">
+                class="btn w-fit gap-2 btn-primary {{isLoadingPublish ? 'loading' : ''}}">
           <mat-icon *ngIf="!isLoadingPublish">publish</mat-icon>
           <span class="hidden md:flex">Publier</span>
         </button>

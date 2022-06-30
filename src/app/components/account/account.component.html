@@ -9,8 +9,6 @@
       <mat-icon (click)="onRemoveImage()" class="absolute bottom-0 bg-red-500 text-white rounded-full right-0" matTooltip="Suppimer l'image"
                 *ngIf="currentUser.avatar">delete
       </mat-icon>
-      <mat-spinner *ngIf="isLoadingImage" color="primary" diameter="20" class="absolute bottom-0 right-0"
-                   mode="indeterminate"></mat-spinner>
       <input
         type="file" name="avatarInput" id="avatarInput" #avatarInput
         accept="image/*"
@@ -18,7 +16,8 @@
     </div>
   </div>
   <form class="flex flex-col gap-4 w-full items-center lg:items-start" [formGroup]="nameFormGroup">
-    <div class="flex gap-2 lg:gap-4 flex-col lg:flex-row w-full lg:items-baseline">
+    <progress *ngIf="isLoadingImage" class="progress progress-primary  w-full"></progress>
+    <div class="flex gap-2 lg:gap-4 flex-col lg:flex-row w-full lg:items-baseline {{isLoadingImage ? '' : 'mt-6'}}">
       <mat-form-field class="grow" appearance="fill">
         <mat-label>Nom</mat-label>
         <input type="text" matInput formControlName="lastname">
@@ -79,7 +78,7 @@
 <!--    <mat-spinner *ngIf="isLoadingData" color="primary" diameter="20" class="m-auto"-->
 <!--                 mode="indeterminate"></mat-spinner>-->
     <button (click)="onSubmit()"
-            class="bg-blue-800 text-white btn {{isLoadingData ? 'loading': ''}}">
+            class="btn-primary btn {{isLoadingData ? 'loading': ''}}">
       Enregistrer les modifications
     </button>
   </div>

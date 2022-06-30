@@ -32,6 +32,8 @@ import { ResourceComponent } from './components/resource/resource.component';
 import { CreateResourceComponent } from './components/create-resource/create-resource.component';
 import {MatSelectModule} from "@angular/material/select";
 import { ProfileCardComponent } from './components/profile-card/profile-card.component';
+import {InfiniteScrollModule} from "ngx-infinite-scroll";
+import {MatProgressBarModule} from "@angular/material/progress-bar";
 
 
 @NgModule({
@@ -67,7 +69,9 @@ import { ProfileCardComponent } from './components/profile-card/profile-card.com
     MatSidenavModule,
     MatProgressSpinnerModule,
     MatDialogModule,
-    MatSelectModule
+    MatSelectModule,
+    InfiniteScrollModule,
+    MatProgressBarModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: TokenizerInterceptor, multi: true },

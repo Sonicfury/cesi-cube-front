@@ -16,12 +16,16 @@
         </button>
       </div>
     </div>
+    <div class="gap-4 justify-between w-full hidden md:flex">
+      <span class="badge badge-primary text-ellipsis overflow-hidden max-w-1/4">{{resource.type?.name}}</span>
+      <span class="badge badge-primary text-ellipsis overflow-hidden max-w-1/4">{{resource.category?.name}}</span>
+    </div>
     <div class="flex gap-4 justify-between w-full">
       <span>{{resource.author?.firstname}} {{resource.author?.lastname}}</span>
-      <span class="text-blue-500">{{resource.createdAt | date: 'medium' : 'CEST' : 'fr-FR'}}</span>
+      <span class="text-blue-500 text-right">{{resource.createdAt | date: 'medium' : 'CEST' : 'fr-FR'}}</span>
     </div>
     <p class="prose prose-sm max-w-none">
-    {{resource.richTextContent}}
+      {{resource.richTextContent}}
     </p>
   </div>
   <figure *ngIf="resource.mediaUrl">

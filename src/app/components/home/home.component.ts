@@ -18,6 +18,7 @@ export class HomeComponent extends BaseComponent implements OnInit {
   currentUser?: User
   resources: Resource[] = []
   isLoadingResources = false
+  page = 1
 
   constructor(private _authorizationService: AuthorizationService,
               private _sessionService: SessionService,
@@ -35,9 +36,9 @@ export class HomeComponent extends BaseComponent implements OnInit {
     this.loadResources()
   }
 
-  loadResources() {
+  loadResources(page?: number) {
     this.isLoadingResources = true
-    this._resourceService.getAll()
+    this._resourceService.getAll(page)
       .subscribe(_ => {
         this.resources = Array.from(this._resourceService.resources);
         this.isLoadingResources = false
@@ -47,5 +48,10 @@ export class HomeComponent extends BaseComponent implements OnInit {
   onRefresh(anchor: string) {
     this._viewPortScroller.scrollToAnchor(anchor)
     this.loadResources()
+  }
+
+  onScroll() {
+    this.page += 1
+    this.loadResources(this.page)
   }
 }

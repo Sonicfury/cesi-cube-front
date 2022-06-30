@@ -30,7 +30,7 @@ export class ResourceService extends BaseService<Resource> {
 
   getAll(page?: number, sort = true): Observable<Resource[]> {
     const baseUrl = this._authenticationService.isAuthenticated() ? this._url : `${ResourceService.BASE_API_URL}/public/resources`
-    const url = page ? `${baseUrl}?page=${page}` : baseUrl
+    const url = page ? `${baseUrl}/?page=${page}` : baseUrl
 
     return this._http.get<LaravelResponse<Paginated<Resource>>>(url).pipe(
       map(resp => resp.data.data ?? []),

@@ -3,32 +3,32 @@
   <div class="gap-4 hidden md:flex items-baseline">
     <a [matTooltip]="headerLinkTitle" class="text-white text-sm bg-teal-400 p-2 rounded"
        [routerLink]="['/']">{{appName}}</a>
-    <a class="text-blue-800 text-sm" [routerLinkActive]="['font-bold', 'underline']" [routerLink]="['/dashboard']">Dashboard</a>
-    <a class="text-blue-800 text-sm" [routerLinkActive]="['font-bold', 'underline']" [routerLink]="['/users']">Liste des utilisateurs</a>
-    <a class="text-blue-800 text-sm" [routerLinkActive]="['font-bold', 'underline']" [routerLink]="['/admin/statistics']">Statistiques</a>
+    <a class="text-primary text-sm" [routerLinkActive]="['font-bold', 'underline']" [routerLink]="['/dashboard']">Dashboard</a>
+    <a class="text-primary text-sm" [routerLinkActive]="['font-bold', 'underline']" [routerLink]="['/users']">Liste des utilisateurs</a>
+    <a class="text-primary text-sm" [routerLinkActive]="['font-bold', 'underline']" [routerLink]="['/admin/statistics']">Statistiques</a>
   </div>
 
   <ng-template #registerBtns>
     <div class="md:flex gap-4 hidden ">
-      <a [routerLink]="['/login']" class="bg-blue-800 text-white" mat-button matTooltip="Se connecter">
+      <a [routerLink]="['/login']" class="btn btn-primary" matTooltip="Se connecter">
         <mat-icon>login</mat-icon>
       </a>
-      <a [routerLink]="['/register']" class="bg-blue-800 text-white" mat-button matTooltip="S'enregistrer">
+      <a [routerLink]="['/register']" class="btn btn-primary" matTooltip="S'enregistrer">
         <mat-icon>badge</mat-icon>
       </a>
     </div>
   </ng-template>
 
   <div *ngIf="isConnected | async; else registerBtns" class="md:flex gap-4 hidden ">
-    <a [routerLink]="['/account']" class="bg-blue-800 text-white" mat-button matTooltip="Mon profil">
+    <a [routerLink]="['/account']" class="btn btn-primary" matTooltip="Mon compte">
       <mat-icon>account_circle</mat-icon>
     </a>
-    <button class="bg-blue-800 text-white" mat-button matTooltip="Se déconnecter" (click)="logout()">
+    <button class="btn btn-primary" matTooltip="Se déconnecter" (click)="logout()">
       <mat-icon>logout</mat-icon>
     </button>
   </div>
   <div class="md:hidden">
-    <button (click)="isSidenavOpen = !isSidenavOpen" class="bg-blue-800 text-white" mat-button>
+    <button (click)="isSidenavOpen = !isSidenavOpen" class="btn btn-primary">
       <mat-icon>{{isSidenavOpen ? 'menu_open' : 'menu'}}</mat-icon>
     </button>
   </div>
@@ -43,18 +43,18 @@
       <mat-icon>home</mat-icon>
       <span>{{appName}}</span>
     </a>
-    <a class="text-blue-800 flex gap-2 items-center"
+    <a class="text-primary flex gap-2 items-center"
        (click)="isSidenavOpen = false"
        [routerLink]="['/dashboard']">
       <mat-icon>dashboard</mat-icon>
       <span>Dashboard</span></a>
-    <a class="text-blue-800 flex gap-2 items-center"
+    <a class="text-primary flex gap-2 items-center"
        (click)="isSidenavOpen = false"
        [routerLink]="['/users']">
       <mat-icon>group</mat-icon>
       Liste des utilisateurs</a>
     <!--    back office-->
-    <a class="text-blue-800 flex gap-2 items-center"
+    <a class="text-primary flex gap-2 items-center"
        (click)="isSidenavOpen = false"
        [routerLink]="['/admin/statistics']">
       <mat-icon>insights</mat-icon>
@@ -65,13 +65,13 @@
     <div class="flex flex-col gap-4">
       <a mat-button matTooltip="Se connecter"
          (click)="isSidenavOpen = false"
-         class="bg-blue-800 text-white"
+         class="bg-primary text-white"
          [routerLink]="['/login']">
         <mat-icon>login</mat-icon>
       </a>
       <a mat-button matTooltip="S'enregistrer"
          (click)="isSidenavOpen = false"
-         class="bg-blue-800 text-white"
+         class="bg-primary text-white"
          [routerLink]="['/register']">
         <mat-icon>badge</mat-icon>
       </a>
@@ -80,12 +80,12 @@
 
   <div *ngIf="isConnected | async; else registerBtnsSm" class="flex flex-col gap-4">
     <a [routerLink]="['/account']"
-       class="bg-blue-800 text-white"
+       class="bg-primary text-white"
        (click)="isSidenavOpen = false"
-       mat-button matTooltip="Mon profil">
+       mat-button matTooltip="Mon compte">
       <mat-icon>account_circle</mat-icon>
     </a>
-    <button class="bg-blue-800 text-white"
+    <button class="bg-primary text-white"
             mat-button (click)="isSidenavOpen = false"
             matTooltip="Se déconnecter" (click)="logout()">
       <mat-icon>logout</mat-icon>
