@@ -5,7 +5,6 @@ import {AuthorizationService} from "../../services/authorization.service";
 import {ResourceService} from "../../services/resource.service";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {SnackbarService} from "../../services/snackbar.service";
-import {map, Subject, switchMap, throwError, timer} from "rxjs";
 import {environment} from "../../../environments/environment";
 import {TypeService} from "../../services/type.service";
 import {CategoryService} from "../../services/category.service";
@@ -55,12 +54,10 @@ export class CreateResourceComponent extends BaseComponent implements OnInit, Af
 
     _typeService.watch((types: Type[]) => {
       this.types = types
-      console.log(this.typeFormControl)
       this.typeFormControl.setValue(this.resource.type)
     })
     _categoryService.watch((categories: Category[]) => {
       this.categories = categories
-      console.log(this.categoryFormControl)
       this.categoryFormControl.setValue(this.resource.category)
     })
   }
@@ -86,6 +83,7 @@ export class CreateResourceComponent extends BaseComponent implements OnInit, Af
   onSubmit() {
     this.resourceFormGroup.disable()
     this.isLoadingPublish = true
+
     this._resourceService.create().subscribe(
       resource => {
         this.isLoadingPublish = false

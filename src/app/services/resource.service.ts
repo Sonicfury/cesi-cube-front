@@ -15,6 +15,7 @@ export class ResourceService extends BaseService<Resource> {
   private readonly CURRENTLY_CREATING = 'current'
   private readonly CURRENTLY_CREATING_MEDIA = 'current-media'
   private _resources: Resource[] = []
+  private _lastPage = 1
   private _currentlyCreating: Resource = new Resource();
   private _currentlyCreatingMedia?: string
 
@@ -33,6 +34,7 @@ export class ResourceService extends BaseService<Resource> {
     const url = page ? `${baseUrl}/?page=${page}` : baseUrl
 
     return this._http.get<LaravelResponse<Paginated<Resource>>>(url).pipe(
+      tap(resp => this._lastPage = resp.data.last_page ?? 1 ),
       map(resp => resp.data.data ?? []),
       tap(resources => resources.map(r => !this._resources.some(res => res.id === r.id) && this._resources.push(r))),
       tap(_ => sort && this._sortResources())
@@ -59,6 +61,10 @@ export class ResourceService extends BaseService<Resource> {
 
   get resources(): Resource[] {
     return this._resources;
+  }
+
+  get lastPage(): number {
+    return this._lastPage;
   }
 
   get currentlyCreating(): Resource {

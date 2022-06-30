@@ -51,7 +51,13 @@ export class HomeComponent extends BaseComponent implements OnInit {
   }
 
   onScroll() {
-    this.page += 1
-    this.loadResources(this.page)
+    if (this.page < this._resourceService.lastPage) {
+      this.page += 1
+      this.loadResources(this.page)
+    }
+  }
+
+  isAuthenticated(): boolean {
+    return this._authenticationService.isAuthenticated()
   }
 }

@@ -1,8 +1,6 @@
 <!--<app-resource></app-resource>-->
 <div id="top" class="flex flex-col gap-4 p-4 w-full min-h-screen lg:w-2/3 xl:w-1/2 lg:mx-auto">
-  <app-create-resource class="mb-2"></app-create-resource>
-<!--  <mat-spinner *ngIf="isLoadingResources" color="primary" diameter="30" class="my-8 mx-auto"-->
-<!--               mode="indeterminate"></mat-spinner>-->
+  <app-create-resource *ngIf="isAuthenticated()" class="mb-2"></app-create-resource>
   <div>
     <progress *ngIf="isLoadingResources" class="progress progress-primary  w-full mb-2"></progress>
     <div class="{{isLoadingResources ? '' : 'mt-5 mb-5'}} flex flex-col gap-4">
