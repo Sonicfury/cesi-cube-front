@@ -75,7 +75,7 @@ export class CreateResourceComponent extends BaseComponent implements OnInit, Af
 
   listenFormChanges() {
     this.resourceFormGroup.valueChanges.subscribe(resource => {
-      this._resourceService.currentlyCreating = resource
+      this._resourceService.currentlyCreating = this.resource.mediaUrl ? {...resource, mediaUrl: this.resource.mediaUrl} : resource
     })
   }
 
