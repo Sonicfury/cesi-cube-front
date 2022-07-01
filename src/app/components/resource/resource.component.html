@@ -4,7 +4,7 @@
       <span class="card-title font-serif text-primary grow ">{{resource.title}}</span>
       <div class="flex justify-end flex-wrap gap-1 md:gap-3 items-center">
         <span *ngIf="resource.scope" class="badge badge-outline">{{scopeLabels.get(resource.scope)}}</span>
-        <span class="badge flex gap-1">{{resource.views}} <span class="hidden md:flex">vues</span></span>
+        <span class="badge flex gap-1">{{resource.views ?? 0}} <span class="hidden md:flex">vues</span></span>
         <button matTooltip="{{resource.readLater.length}}"
                 matTooltipPosition="above"
                 *ngIf="!isBookmarkLoading; else iconSpin"
@@ -49,12 +49,12 @@
     </p>
   </div>
   <figure *ngIf="resource.mediaUrl && !isDeleteLoading">
-    <img src="{{apiUrl}}{{resource.mediaUrl}}" alt="figure">
+    <img src="{{apiUrl.slice(0,-4)}}{{resource.mediaUrl}}" alt="figure">
   </figure>
 </div>
 
 <ng-template #progress>
-  <progress class="progress progress-primary w-full"></progress>
+  <progress class="progress progress-error w-full"></progress>
 </ng-template>
 
 

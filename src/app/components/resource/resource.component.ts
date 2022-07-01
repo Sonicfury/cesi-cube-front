@@ -103,8 +103,6 @@ export class ResourceComponent extends BaseComponent implements OnInit {
     ).subscribe({
       next: _ => {
         this._snackbarService.success('La ressource a été supprimée avec succès.')
-        this._resourceService.onResourceDelete$.next(true)
-        this.isDeleteLoading = false
       },
       error: _ => {
         this._snackbarService.error('Une erreur est survenue pendant la suppression de la ressource.')

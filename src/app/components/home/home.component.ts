@@ -8,7 +8,7 @@ import {ResourceService} from "../../services/resource.service";
 import {Resource} from "../../models/resource";
 import {AuthenticationService} from "../../services/authentication.service";
 import {ViewportScroller} from "@angular/common";
-import {combineLatest, subscribeOn} from "rxjs";
+import {combineLatest, merge, Observable, of} from "rxjs";
 
 @Component({
   selector: 'app-home',
@@ -30,24 +30,23 @@ export class HomeComponent extends BaseComponent implements OnInit {
     super('Accueil', _authorizationService)
 
     this.currentUser = _sessionService.currentUser
+
     _sessionService.watch((state: SessionState) => this.currentUser = _sessionService.currentUser)
 
-    combineLatest([
-      _resourceService.onResourceCreate$,
-      _resourceService.onResourceDelete$
-    ]).subscribe(_ => this.loadResources())
+    _resourceService.onResourceCreate$.subscribe( _ => this.loadResources())
+    _resourceService.onResourceDelete$.subscribe(_ =>  this.loadResources())
   }
 
   ngOnInit(): void {
     this.loadResources()
   }
 
-  loadResources(page?: number) {
+  loadResources() {
     this.isLoadingResources = true
-    this._resourceService.getAll(page)
-      .subscribe(_ => {
-        this.resources = Array.from(this._resourceService.resources);
+    this._resourceService.getAll()
+      .subscribe((resources: Resource[]) => {
         this.isLoadingResources = false
+        this.resources = resources
       })
   }
 
@@ -59,11 +58,18 @@ export class HomeComponent extends BaseComponent implements OnInit {
   onScroll() {
     if (this.page < this._resourceService.lastPage) {
       this.page += 1
-      this.loadResources(this.page)
+      this._resourceService.getAll(this.page)
+        .subscribe(resources => {
+          this.resources = [...new Set([...this.resources, ...resources])]
+        })
     }
   }
 
   isAuthenticated(): boolean {
     return this._authenticationService.isAuthenticated()
+  }
+
+  trackBy(index: number, resource: Resource){
+    return resource.id
   }
 }

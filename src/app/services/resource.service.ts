@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {BaseService} from "./base.service";
 import {Resource} from "../models/resource";
 import {HttpClient} from "@angular/common/http";
-import {map, Observable, pipe, Subject, tap} from "rxjs";
+import {map, Observable, pipe, Subject, switchMap, tap} from "rxjs";
 import {LaravelResponse, Paginated} from "../models/laravel-response";
 import {SessionService} from "./session.service";
 import {AuthenticationService} from "./authentication.service";
@@ -10,7 +10,7 @@ import {AuthenticationService} from "./authentication.service";
 @Injectable({
   providedIn: 'root'
 })
-export class ResourceService extends BaseService<Resource> {
+export class ResourceService extends BaseService<Resource[]> {
   private readonly _url = `${ResourceService.BASE_API_URL}/resources`
   private readonly CURRENTLY_CREATING = 'current'
   private readonly CURRENTLY_CREATING_MEDIA = 'current-media'
@@ -20,7 +20,7 @@ export class ResourceService extends BaseService<Resource> {
   private _currentlyCreatingMedia?: string
 
   public onResourceCreate$: Subject<Resource> = new Subject<Resource>()
-  public onResourceDelete$: Subject<boolean> = new Subject<boolean>()
+  public onResourceDelete$: Subject<number> = new Subject<number>()
 
   constructor(private _http: HttpClient,
               private _authenticationService: AuthenticationService,
@@ -32,15 +32,13 @@ export class ResourceService extends BaseService<Resource> {
     if (localResourceMedia) this._currentlyCreatingMedia = localResourceMedia
   }
 
-  getAll(page?: number, sort = true): Observable<Resource[]> {
+  getAll(page?: number): Observable<Resource[]> {
     const baseUrl = this._authenticationService.isAuthenticated() ? this._url : `${ResourceService.BASE_API_URL}/public/resources`
     const url = page ? `${baseUrl}/?page=${page}` : baseUrl
 
     return this._http.get<LaravelResponse<Paginated<Resource>>>(url).pipe(
       tap(resp => this._lastPage = resp.data.last_page ?? 1),
-      map(resp => resp.data.data ?? []),
-      tap(resources => resources.map(r => !this._resources.some(res => res.id === r.id) && this._resources.push(r))),
-      tap(_ => sort && this._sortResources())
+      map(resp => resp.data.data ?? [] as Resource[]),
     );
   }
 
@@ -61,8 +59,14 @@ export class ResourceService extends BaseService<Resource> {
       observe: 'response',
       headers: this.headers
     }).pipe(
-      tap(resp => resp.status === 200 && (this.currentlyCreating = new Resource()) && this.removeCurrentlyCreatingMedia()),
+      tap(resp => {
+        if (resp.status === 200) {
+          this.currentlyCreating = new Resource()
+          this.removeCurrentlyCreatingMedia()
+        }
+      }),
       map(resp => resp.body?.data as Resource),
+      tap(resource => this.onResourceCreate$.next(resource))
     )
   }
 
@@ -70,15 +74,8 @@ export class ResourceService extends BaseService<Resource> {
 
     return this._http.delete<LaravelResponse<Resource>>(`${this._url}/${id}`)
       .pipe(
-        tap(_ => this.getAll())
+        tap(_ => this.onResourceDelete$.next(id)),
       );
-  }
-
-  private _sortResources() {
-    this._resources.sort((a, b) => {
-      // @ts-ignore
-      return a.createdAt - b.createdAt
-    })
   }
 
   get resources(): Resource[] {
@@ -97,7 +94,6 @@ export class ResourceService extends BaseService<Resource> {
     this._currentlyCreating = value;
     this._sessionService.storeInSessionStorage(this.CURRENTLY_CREATING, this._currentlyCreating)
   }
-
 
   get currentlyCreatingMedia(): string {
     return this._currentlyCreatingMedia ?? '';

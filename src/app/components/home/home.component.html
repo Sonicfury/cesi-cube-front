@@ -4,7 +4,7 @@
   <div>
     <progress *ngIf="isLoadingResources" class="progress progress-primary  w-full mb-2"></progress>
     <div class="{{isLoadingResources ? '' : 'mt-5 mb-5'}} flex flex-col gap-4">
-      <div *ngFor="let resource of resources"
+      <div *ngFor="let resource of resources; trackBy: trackBy"
            infinite-scroll
            [infiniteScrollThrottle]="500"
            [infiniteScrollDistance]="2"
