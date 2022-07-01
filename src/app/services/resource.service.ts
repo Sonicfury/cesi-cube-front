@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {BaseService} from "./base.service";
 import {Resource} from "../models/resource";
 import {HttpClient} from "@angular/common/http";
-import {map, Observable, pipe, tap} from "rxjs";
+import {map, Observable, pipe, Subject, tap} from "rxjs";
 import {LaravelResponse, Paginated} from "../models/laravel-response";
 import {SessionService} from "./session.service";
 import {AuthenticationService} from "./authentication.service";
@@ -18,6 +18,9 @@ export class ResourceService extends BaseService<Resource> {
   private _lastPage = 1
   private _currentlyCreating: Resource = new Resource();
   private _currentlyCreatingMedia?: string
+
+  public onResourceCreate$: Subject<Resource> = new Subject<Resource>()
+  public onResourceDelete$: Subject<boolean> = new Subject<boolean>()
 
   constructor(private _http: HttpClient,
               private _authenticationService: AuthenticationService,
@@ -61,6 +64,14 @@ export class ResourceService extends BaseService<Resource> {
       tap(resp => resp.status === 200 && (this.currentlyCreating = new Resource()) && this.removeCurrentlyCreatingMedia()),
       map(resp => resp.body?.data as Resource),
     )
+  }
+
+  delete(id: number) {
+
+    return this._http.delete<LaravelResponse<Resource>>(`${this._url}/${id}`)
+      .pipe(
+        tap(_ => this.getAll())
+      );
   }
 
   private _sortResources() {

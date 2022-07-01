@@ -8,6 +8,7 @@ import {ResourceService} from "../../services/resource.service";
 import {Resource} from "../../models/resource";
 import {AuthenticationService} from "../../services/authentication.service";
 import {ViewportScroller} from "@angular/common";
+import {combineLatest, subscribeOn} from "rxjs";
 
 @Component({
   selector: 'app-home',
@@ -30,6 +31,11 @@ export class HomeComponent extends BaseComponent implements OnInit {
 
     this.currentUser = _sessionService.currentUser
     _sessionService.watch((state: SessionState) => this.currentUser = _sessionService.currentUser)
+
+    combineLatest([
+      _resourceService.onResourceCreate$,
+      _resourceService.onResourceDelete$
+    ]).subscribe(_ => this.loadResources())
   }
 
   ngOnInit(): void {

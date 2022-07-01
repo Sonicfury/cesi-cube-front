@@ -1,5 +1,6 @@
 <form [formGroup]="resourceFormGroup" class="card shadow-xl">
   <div *ngIf="categories.length && types.length; else spin" class="card-body transition-all duration-200">
+    <h1 class="card-title">Publier une Ressource</h1>
     <div class="flex flex-col-reverse gap-2 md:gap-4 md:flex-row justify-between w-full">
       <mat-form-field class="grow" appearance="fill">
         <mat-label>Titre</mat-label>

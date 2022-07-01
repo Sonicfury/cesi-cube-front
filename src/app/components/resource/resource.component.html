@@ -1,8 +1,8 @@
 <div class="card shadow bg-white">
-  <div class="card-body">
+  <div *ngIf="!isDeleteLoading; else progress" class="card-body">
     <div class="flex flex-col-reverse gap-2 md:gap-4 md:flex-row md:items-center justify-between w-full">
       <span class="card-title font-serif text-primary grow ">{{resource.title}}</span>
-      <div class="flex justify-end gap-1 md:gap-3 items-center">
+      <div class="flex justify-end flex-wrap gap-1 md:gap-3 items-center">
         <span *ngIf="resource.scope" class="badge badge-outline">{{scopeLabels.get(resource.scope)}}</span>
         <span class="badge flex gap-1">{{resource.views}} <span class="hidden md:flex">vues</span></span>
         <button matTooltip="{{resource.readLater.length}}"
@@ -48,10 +48,14 @@
       {{resource.richTextContent}}
     </p>
   </div>
-  <figure *ngIf="resource.mediaUrl">
+  <figure *ngIf="resource.mediaUrl && !isDeleteLoading">
     <img src="{{apiUrl}}{{resource.mediaUrl}}" alt="figure">
   </figure>
 </div>
+
+<ng-template #progress>
+  <progress class="progress progress-primary w-full"></progress>
+</ng-template>
 
 
 <mat-menu #menu="matMenu">
@@ -59,7 +63,7 @@
     <mat-icon>edit</mat-icon>
     <span>Éditer</span>
   </button>
-  <button mat-menu-item>
+  <button (click)="onDelete()" mat-menu-item>
     <mat-icon>delete</mat-icon>
     <span>Supprimer</span>
   </button>

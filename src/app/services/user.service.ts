@@ -66,10 +66,10 @@ export class UserService extends BaseService<User> {
 
     return iif(
       () => create,
-      this._http.post<LaravelResponse<any>>(url, null, {observe: 'response', headers: this.headers}),
-      this._http.delete<LaravelResponse<any>>(url, {observe: 'response', headers: this.headers})
+      this._http.post<LaravelResponse<Resource>>(url, null, {observe: 'response', headers: this.headers}),
+      this._http.delete<LaravelResponse<Resource>>(url, {observe: 'response', headers: this.headers})
     ).pipe(
-      map(resp => resp.body?.data)
+      map(resp => resp.body?.data as Resource)
     )
   }
 }

@@ -10,6 +10,7 @@ import {TypeService} from "../../services/type.service";
 import {CategoryService} from "../../services/category.service";
 import {Type} from "../../models/type";
 import {Category} from "../../models/category";
+import {tap} from "rxjs";
 
 @Component({
   selector: 'app-create-resource',
@@ -88,6 +89,8 @@ export class CreateResourceComponent extends BaseComponent implements OnInit, Af
         this.isLoadingPublish = false
         this.resourceFormGroup.enable()
         this._snackbarService.success(`La ressource ${resource.title} a été créé avec succès !`)
+        this._resourceService.onResourceCreate$.next(resource)
+        this.onReset()
       }
     )
   }

@@ -34,6 +34,7 @@ import {MatSelectModule} from "@angular/material/select";
 import {InfiniteScrollModule} from "ngx-infinite-scroll";
 import {MatProgressBarModule} from "@angular/material/progress-bar";
 import {MatMenuModule} from "@angular/material/menu";
+import { ConfirmationDialogComponent } from './components/confirmation-dialog/confirmation-dialog.component';
 
 
 @NgModule({
@@ -48,7 +49,8 @@ import {MatMenuModule} from "@angular/material/menu";
     RegisterFormComponent,
     PageNotFoundComponent,
     ResourceComponent,
-    CreateResourceComponent
+    CreateResourceComponent,
+    ConfirmationDialogComponent
   ],
     imports: [
         CommonModule,
