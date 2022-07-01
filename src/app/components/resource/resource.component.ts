@@ -70,11 +70,14 @@ export class ResourceComponent extends BaseComponent implements OnInit {
     this._userService.resourceAction(action, this.resource)
       .pipe(
         switchMap(_ => this._resourceService.get(this.resource.id as number))
-      ).subscribe(resource => {
-      this.resource = resource
-      this.isBookmarkLoading = false
-      this.isFavoriteLoading = false
-      this.isThumbUpLoading = false
+      ).subscribe({
+      next: resource => {
+        this.resource = resource
+        this.isBookmarkLoading = false
+        this.isFavoriteLoading = false
+        this.isThumbUpLoading = false
+      },
+      error: _ => this._snackbarService.error('Une erreur est survenue.')
     })
   }
 
