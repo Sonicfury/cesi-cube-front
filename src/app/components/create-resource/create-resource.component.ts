@@ -33,8 +33,8 @@ export class CreateResourceComponent extends BaseComponent implements OnInit, Af
   titleFormControl = new FormControl(this.resource.title, [Validators.required])
   richTextContentFormControl = new FormControl(this.resource.richTextContent, [Validators.required])
   scopeFormControl = new FormControl(this.resource.scope, [Validators.required])
-  typeFormControl = new FormControl(this.resource.type, [Validators.required])
-  categoryFormControl = new FormControl(this.resource.category, [Validators.required])
+  typeFormControl = new FormControl(this.resource.type?.id, [Validators.required])
+  categoryFormControl = new FormControl(this.resource.category?.id, [Validators.required])
 
   @ViewChild("mediaRef", {read: ElementRef}) mediaRef!: ElementRef
 
@@ -55,11 +55,11 @@ export class CreateResourceComponent extends BaseComponent implements OnInit, Af
 
     _typeService.watch((types: Type[]) => {
       this.types = types
-      this.typeFormControl.setValue(this.resource.type)
+      this.typeFormControl.setValue(this.resource.type?.id)
     })
     _categoryService.watch((categories: Category[]) => {
       this.categories = categories
-      this.categoryFormControl.setValue(this.resource.category)
+      this.categoryFormControl.setValue(this.resource.category?.id)
     })
   }
 
@@ -76,7 +76,9 @@ export class CreateResourceComponent extends BaseComponent implements OnInit, Af
 
   listenFormChanges() {
     this.resourceFormGroup.valueChanges.subscribe(resource => {
-        this._resourceService.currentlyCreating = resource
+      resource.category = this.categories.find(c => c.id === resource.category)
+      resource.type = this.types.find(t => t.id === resource.type)
+      this._resourceService.currentlyCreating = resource
     })
   }
 
