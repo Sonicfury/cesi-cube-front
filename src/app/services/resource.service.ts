@@ -41,6 +41,13 @@ export class ResourceService extends BaseService<Resource> {
     );
   }
 
+  get(id: number): Observable<Resource> {
+
+    return this._http.get<LaravelResponse<Resource>>(`${this._url}/${id}`).pipe(
+      map(resp => resp.data as Resource),
+    );
+  }
+
   create(): Observable<Resource> {
 
     if (this.currentlyCreatingMedia) {

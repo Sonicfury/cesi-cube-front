@@ -33,6 +33,7 @@ import { CreateResourceComponent } from './components/create-resource/create-res
 import {MatSelectModule} from "@angular/material/select";
 import {InfiniteScrollModule} from "ngx-infinite-scroll";
 import {MatProgressBarModule} from "@angular/material/progress-bar";
+import {MatMenuModule} from "@angular/material/menu";
 
 
 @NgModule({
@@ -49,28 +50,29 @@ import {MatProgressBarModule} from "@angular/material/progress-bar";
     ResourceComponent,
     CreateResourceComponent
   ],
-  imports: [
-    CommonModule,
-    BrowserModule,
-    BrowserAnimationsModule,
-    AppRoutingModule,
-    HttpClientModule,
-    ReactiveFormsModule,
-    MatSnackBarModule,
-    MatStepperModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatToolbarModule,
-    MatButtonModule,
-    MatIconModule,
-    MatTooltipModule,
-    MatSidenavModule,
-    MatProgressSpinnerModule,
-    MatDialogModule,
-    MatSelectModule,
-    InfiniteScrollModule,
-    MatProgressBarModule
-  ],
+    imports: [
+        CommonModule,
+        BrowserModule,
+        BrowserAnimationsModule,
+        AppRoutingModule,
+        HttpClientModule,
+        ReactiveFormsModule,
+        MatSnackBarModule,
+        MatStepperModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatToolbarModule,
+        MatButtonModule,
+        MatIconModule,
+        MatTooltipModule,
+        MatSidenavModule,
+        MatProgressSpinnerModule,
+        MatDialogModule,
+        MatSelectModule,
+        InfiniteScrollModule,
+        MatProgressBarModule,
+        MatMenuModule
+    ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: TokenizerInterceptor, multi: true },
     { provide: LOCALE_ID, useValue: 'fr-FR'},

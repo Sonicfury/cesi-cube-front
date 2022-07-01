@@ -13,6 +13,9 @@ export class Resource {
   public status?: string
   public scope?: EScope
   public type?: Type
+  public exploited: {id: number}[] = []
+  public favorites: {id: number}[] = []
+  public readLater: {id: number}[] = []
   public category?: Category
   public createdAt?: Date
   public updatedAt?: Date

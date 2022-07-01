@@ -1,5 +1,5 @@
 export class User {
-  public id?: string
+  public id?: number
   public email?: string
   public avatar?: string|File
   public password?: string
