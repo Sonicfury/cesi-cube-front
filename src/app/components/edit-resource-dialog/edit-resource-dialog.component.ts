@@ -31,8 +31,8 @@ export class EditResourceDialogComponent implements OnInit {
   titleFormControl = new FormControl(this.data.title, [Validators.required])
   richTextContentFormControl = new FormControl(this.data.richTextContent, [Validators.required])
   scopeFormControl = new FormControl(this.data.scope, [Validators.required])
-  typeFormControl = new FormControl(this.data.type, [Validators.required])
-  categoryFormControl = new FormControl(this.data.category, [Validators.required])
+  typeFormControl = new FormControl(this.data.type?.id, [Validators.required])
+  categoryFormControl = new FormControl(this.data.type?.id, [Validators.required])
 
   @ViewChild("mediaRef", {read: ElementRef}) mediaRef!: ElementRef
 
@@ -54,6 +54,8 @@ export class EditResourceDialogComponent implements OnInit {
   ngOnInit(): void {
     this.resourceFormGroup.valueChanges
       .subscribe(formGroup => {
+        formGroup.category = this.categories.find(c => c.id === formGroup.category)
+        formGroup.type = this.types.find(t => t.id === formGroup.type)
         this.resource = {...formGroup, mediaUrl: this.resource.mediaUrl}
       })
   }
