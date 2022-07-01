@@ -1,0 +1,81 @@
+<mat-dialog-content>
+  <h1>Éditer une Ressource</h1>
+  <form [formGroup]="resourceFormGroup">
+    <div *ngIf="categories.length && types.length; else spin" class="card-body transition-all duration-200">
+      <div class="flex flex-col-reverse gap-2 md:gap-4 md:flex-row justify-between w-full">
+        <mat-form-field class="grow" appearance="fill">
+          <mat-label>Titre</mat-label>
+          <input type="text" matInput [formControl]="titleFormControl">
+        </mat-form-field>
+        <div class="flex justify-end gap-1 md:gap-3 items-center">
+          <mat-form-field appearance="fill">
+            <mat-label>Visibilité</mat-label>
+            <mat-select [formControl]="scopeFormControl">
+              <mat-option [value]="scope[0]" *ngFor="let scope of scopeLabels">{{scope[1]}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="flex flex-col md:flex-row gap-2 w-full">
+        <mat-form-field class="grow" *ngIf="types.length" appearance="fill">
+          <mat-label>Type</mat-label>
+          <mat-select [formControl]="typeFormControl">
+            <mat-option [value]="type"
+                        *ngFor="let type of types">
+              {{type.name}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field class="grow" *ngIf="categories.length" appearance="fill">
+          <mat-label>Catégorie</mat-label>
+          <mat-select [formControl]="categoryFormControl">
+            <mat-option [value]="category"
+                        *ngFor="let category of categories">
+              {{category.name}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <mat-form-field appearance="fill">
+        <mat-label>Texte</mat-label>
+        <textarea [formControl]="richTextContentFormControl" matInput>
+    </textarea>
+      </mat-form-field>
+      <div class="flex gap-2 justify-between">
+        <div class="flex flex-col md:flex-row gap-2">
+          <button (click)="mediaInput.click()" type="button" class="btn w-fit gap-2">
+            <mat-icon>image</mat-icon>
+            {{(resource.mediaUrl || mediaFile) ? "Modifier l'image" : "Ajouter une image"}}
+          </button>
+          <button (click)="onRemoveMedia()" *ngIf="resourceMedia || mediaFile || resource.mediaUrl" type="button" class="btn w-fit gap-2">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+    <figure class="bg-gray-700">
+      <img #mediaRef *ngIf="resourceMedia || mediaFile; else resourceImage" class="{{isLoadingMedia ? 'invisible' : ''}}" src=""
+           alt="Resource media">
+      <ng-template #resourceImage>
+        <img *ngIf="resource.mediaUrl" src="{{api}}{{resource.mediaUrl}}" alt="resource media">
+      </ng-template>
+    </figure>
+    <input
+      type="file" name="mediaInput" id="mediaInput" #mediaInput
+      accept="image/*"
+      class="hidden" (input)="onMediaInput($event)">
+  </form>
+
+  <ng-template #spin>
+    <mat-spinner color="primary" diameter="50" class="mx-auto my-40" mode="indeterminate"></mat-spinner>
+  </ng-template>
+</mat-dialog-content>
+<mat-dialog-actions class="flex flex-col md:flex-row gap-4 justify-between">
+  <button class="btn" mat-dialog-close>Annuler</button>
+  <button [disabled]="!resourceFormGroup.valid"
+          type="button" [mat-dialog-close]="resource"
+          class="btn w-fit gap-2 btn-primary">
+    <mat-icon>publish</mat-icon>
+    Mettre à jour
+  </button>
+</mat-dialog-actions>

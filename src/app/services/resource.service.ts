@@ -70,6 +70,16 @@ export class ResourceService extends BaseService<Resource[]> {
     )
   }
 
+  update(resource: Resource) {
+
+    return this._http.put<LaravelResponse<Resource>>(`${this._url}/${resource.id}`, JSON.stringify(resource), {
+      observe: 'response',
+      headers: this.headers
+    }).pipe(
+      map(resp => resp.body?.data as Resource),
+    )
+  }
+
   delete(id: number) {
 
     return this._http.delete<LaravelResponse<Resource>>(`${this._url}/${id}`)

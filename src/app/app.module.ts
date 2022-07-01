@@ -35,6 +35,7 @@ import {InfiniteScrollModule} from "ngx-infinite-scroll";
 import {MatProgressBarModule} from "@angular/material/progress-bar";
 import {MatMenuModule} from "@angular/material/menu";
 import { ConfirmationDialogComponent } from './components/confirmation-dialog/confirmation-dialog.component';
+import { EditResourceDialogComponent } from './components/edit-resource-dialog/edit-resource-dialog.component';
 
 
 @NgModule({
@@ -50,7 +51,8 @@ import { ConfirmationDialogComponent } from './components/confirmation-dialog/co
     PageNotFoundComponent,
     ResourceComponent,
     CreateResourceComponent,
-    ConfirmationDialogComponent
+    ConfirmationDialogComponent,
+    EditResourceDialogComponent
   ],
     imports: [
         CommonModule,

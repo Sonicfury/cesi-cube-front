@@ -44,7 +44,7 @@
       <span class="font-semibold {{isCurrentUserAuthor() ? 'badge badge-primary font-medium' : ''}}">{{resource.author?.firstname}} {{resource.author?.lastname}}</span>
       <span class="text-blue-500 text-right">{{resource.createdAt | date: 'medium' : 'CEST' : 'fr-FR'}}</span>
     </div>
-    <p class="prose prose-sm max-w-none">
+    <p class="prose prose-sm max-w-none truncate">
       {{resource.richTextContent}}
     </p>
   </div>
@@ -59,7 +59,7 @@
 
 
 <mat-menu #menu="matMenu">
-  <button mat-menu-item>
+  <button (click)="onEdit()" mat-menu-item>
     <mat-icon>edit</mat-icon>
     <span>Éditer</span>
   </button>

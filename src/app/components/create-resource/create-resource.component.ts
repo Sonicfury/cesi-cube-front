@@ -36,7 +36,7 @@ export class CreateResourceComponent extends BaseComponent implements OnInit, Af
   typeFormControl = new FormControl(this.resource.type, [Validators.required])
   categoryFormControl = new FormControl(this.resource.category, [Validators.required])
 
-  @ViewChild("mediaRef", {read: ElementRef}) mediaRef!: ElementRef;
+  @ViewChild("mediaRef", {read: ElementRef}) mediaRef!: ElementRef
 
   constructor(private _authorizationService: AuthorizationService,
               private _resourceService: ResourceService,

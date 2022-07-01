@@ -11,6 +11,7 @@ import {filter, switchMap, tap} from "rxjs";
 import {ResourceService} from "../../services/resource.service";
 import {MatDialog} from "@angular/material/dialog";
 import {ConfirmationDialogComponent} from "../confirmation-dialog/confirmation-dialog.component";
+import {EditResourceDialogComponent} from "../edit-resource-dialog/edit-resource-dialog.component";
 
 @Component({
   selector: 'app-resource',
@@ -26,6 +27,7 @@ export class ResourceComponent extends BaseComponent implements OnInit {
   isBookmarkLoading = false
   isFavoriteLoading = false
   isThumbUpLoading = false
+  isEditLoading = false
 
   constructor(private _authorizationService: AuthorizationService,
               private _sessionService: SessionService,
@@ -108,6 +110,30 @@ export class ResourceComponent extends BaseComponent implements OnInit {
         this._snackbarService.error('Une erreur est survenue pendant la suppression de la ressource.')
         this.isDeleteLoading = false
       },
+    })
+  }
+
+  onEdit() {
+    const dialogRef = this._dialog.open(EditResourceDialogComponent, {
+      data: this.resource
+    })
+
+    dialogRef.afterOpened().subscribe(_ => this.isEditLoading = true)
+
+    dialogRef.afterClosed().pipe(
+      tap(data => data && (this.isEditLoading = false)),
+      filter((data: Resource) => !!data.id),
+      switchMap((data: Resource) => this._resourceService.update(data))
+    ).subscribe({
+      next: resource => {
+        this.resource = resource
+        this._snackbarService.success('La ressource a été mise à jour avec succès')
+        this.isEditLoading = false
+      },
+      error: _ => {
+        this._snackbarService.error('Une erreur est survenue pendant la mise à jour de la ressource.')
+        this.isEditLoading = false
+      }
     })
   }
 }
