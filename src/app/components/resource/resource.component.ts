@@ -3,6 +3,7 @@ import {Resource, SCOPE_LABELS} from "../../models/resource";
 import {BaseComponent} from "../base-component";
 import {AuthorizationService} from "../../services/authorization.service";
 import {FormControl, Validators} from "@angular/forms";
+import {environment} from "../../../environments/environment";
 
 @Component({
   selector: 'app-resource',
@@ -11,6 +12,7 @@ import {FormControl, Validators} from "@angular/forms";
 })
 export class ResourceComponent extends BaseComponent implements OnInit {
   @Input() resource!: Resource
+  apiUrl = environment.apiUrl
   scopeLabels = SCOPE_LABELS
 
 

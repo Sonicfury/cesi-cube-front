@@ -29,6 +29,6 @@
     </p>
   </div>
   <figure *ngIf="resource.mediaUrl">
-    <img [src]="resource.mediaUrl" alt="figure">
+    <img src="{{apiUrl}}{{resource.mediaUrl}}" alt="figure">
   </figure>
 </div>
