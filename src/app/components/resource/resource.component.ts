@@ -20,6 +20,8 @@ import {EditResourceDialogComponent} from "../edit-resource-dialog/edit-resource
 })
 export class ResourceComponent extends BaseComponent implements OnInit {
   @Input() resource!: Resource
+  @Input() mode!: 'simple'|'extended'
+
   apiUrl = environment.apiUrl
   scopeLabels = SCOPE_LABELS
 
@@ -135,5 +137,9 @@ export class ResourceComponent extends BaseComponent implements OnInit {
         this.isEditLoading = false
       }
     })
+  }
+
+  getMediaUrl(url?: any): string {
+    return `${this.apiUrl.slice(0,-4)}${url}`
   }
 }

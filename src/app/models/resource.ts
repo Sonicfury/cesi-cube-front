@@ -1,6 +1,7 @@
 import {User} from "./user";
 import {Type} from "./type";
 import {Category} from "./category";
+import {Comment} from "./comment";
 
 export class Resource {
   public id?: number
@@ -13,6 +14,7 @@ export class Resource {
   public status?: string
   public scope?: EScope
   public type?: Type
+  public comments: Comment[] = []
   public exploited: {id: number}[] = []
   public favorites: {id: number}[] = []
   public readLater: {id: number}[] = []

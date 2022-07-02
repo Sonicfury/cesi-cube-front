@@ -1,7 +1,11 @@
 <div class="card shadow bg-white">
   <div *ngIf="!isDeleteLoading; else progress" class="card-body">
     <div class="flex flex-col-reverse gap-2 md:gap-4 md:flex-row md:items-center justify-between w-full">
-      <span class="card-title font-serif text-primary grow ">{{resource.title}}</span>
+      <a *ngIf="mode === 'simple'; else title" class="card-title font-serif text-primary grow hover:underline"
+         [routerLink]="['/resources', resource.id]">{{resource.title}}</a>
+      <ng-template #title>
+        <span class="card-title font-serif text-primary grow">{{resource.title}}</span>
+      </ng-template>
       <div class="flex justify-end flex-wrap gap-1 md:gap-3 items-center">
         <span *ngIf="resource.scope" class="badge badge-outline">{{scopeLabels.get(resource.scope)}}</span>
         <span class="badge flex gap-1">{{resource.views ?? 0}} <span class="hidden md:flex">vues</span></span>
@@ -41,22 +45,56 @@
       <span class="badge badge-secondary truncate overflow-hidden max-w-1/4">{{resource.category?.name}}</span>
     </div>
     <div class="flex gap-4 justify-between w-full">
-      <span class="font-semibold {{isCurrentUserAuthor() ? 'badge badge-primary font-medium' : ''}}">{{resource.author?.firstname}} {{resource.author?.lastname}}</span>
+      <span
+        class="font-semibold {{isCurrentUserAuthor() ? 'badge badge-primary font-medium' : ''}}">{{resource.author?.firstname}} {{resource.author?.lastname}}</span>
       <span class="text-blue-500 text-right">{{resource.createdAt | date: 'medium' : 'CEST' : 'fr-FR'}}</span>
     </div>
-    <p class="prose prose-sm max-w-none truncate">
+    <p class="prose prose-sm max-w-none {{mode === 'simple' ? 'truncate' : ''}}">
       {{resource.richTextContent}}
     </p>
   </div>
   <figure *ngIf="resource.mediaUrl && !isDeleteLoading">
-    <img src="{{apiUrl.slice(0,-4)}}{{resource.mediaUrl}}" alt="figure">
+    <img [src]="getMediaUrl(resource.mediaUrl)" alt="figure">
   </figure>
+
+  <details *ngIf="mode === 'extended'" class="flex flex-col gap-2 mt-4 p-2 md:p-4">
+    <summary><h3>Commentaires</h3></summary>
+    <ng-container *ngFor="let comment of resource.comments">
+      <div class="card card-side bg-white rounded-none">
+        <div class="flex items-center">
+          <ng-container
+            [ngTemplateOutlet]="comment.author?.avatar ? authorAvatar : authorAvatarPlaceholder"
+            [ngTemplateOutletContext]="{author: comment.author}">
+          </ng-container>
+        </div>
+        <div class="card-body">
+          <div class="flex gap-2 justify-content">
+            <span>{{comment.author?.firstname}} {{comment.author?.lastname}}</span>
+            <span>{{comment.createdAt | date: 'short' : 'CEST' : 'fr-FR' }}</span>
+          </div>
+          <p class="prose prose-sm max-w-none">Click the button to watch on Jetflix app.</p>
+        </div>
+      </div>
+    </ng-container>
+  </details>
 </div>
+
+
+<ng-template #authorAvatar let-author='author'>
+  <img [src]="getMediaUrl(author?.avatar)"
+       class="w-10 h-10 rounded-full"
+       alt="comment author avatar">
+</ng-template>
+<ng-template #authorAvatarPlaceholder let-author='author'>
+  <div
+    class="flex cursor-pointer justify-center items-center w-10 h-10 bg-blue-300 rounded-full text-white font-medium text-xl">
+    {{author.firstname?.slice(0, 1) | uppercase}}{{author.lastname?.slice(0, 1) | uppercase}}
+  </div>
+</ng-template>
 
 <ng-template #progress>
   <progress class="progress progress-error w-full"></progress>
 </ng-template>
-
 
 <mat-menu #menu="matMenu">
   <button (click)="onEdit()" mat-menu-item>

@@ -10,7 +10,7 @@
            [infiniteScrollDistance]="2"
            (scrolled)="onScroll()"
            class="flex flex-col gap-4 w-full mx-auto">
-        <app-resource [resource]="resource"></app-resource>
+        <app-resource [resource]="resource" mode="simple"></app-resource>
       </div>
     </div>
     <progress *ngIf="isLoadingResources && page > 1" class="progress progress-primary w-full mt-2"></progress>

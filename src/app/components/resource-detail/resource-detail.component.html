@@ -1,0 +1,8 @@
+<div class="flex gap-4 md:w-3/4 mx-auto">
+  <app-resource *ngIf="resource; else progress" [resource]="resource" mode="extended">
+  </app-resource>
+</div>
+
+<ng-template #progress>
+  <progress class="progress progress-primary w-full"></progress>
+</ng-template>

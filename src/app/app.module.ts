@@ -36,6 +36,7 @@ import {MatProgressBarModule} from "@angular/material/progress-bar";
 import {MatMenuModule} from "@angular/material/menu";
 import { ConfirmationDialogComponent } from './components/confirmation-dialog/confirmation-dialog.component';
 import { EditResourceDialogComponent } from './components/edit-resource-dialog/edit-resource-dialog.component';
+import { ResourceDetailComponent } from './components/resource-detail/resource-detail.component';
 
 
 @NgModule({
@@ -52,7 +53,8 @@ import { EditResourceDialogComponent } from './components/edit-resource-dialog/e
     ResourceComponent,
     CreateResourceComponent,
     ConfirmationDialogComponent,
-    EditResourceDialogComponent
+    EditResourceDialogComponent,
+    ResourceDetailComponent
   ],
     imports: [
         CommonModule,

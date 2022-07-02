@@ -7,11 +7,16 @@ import {RegisterFormComponent} from "./components/register-form/register-form.co
 import {CanActivateApp} from "./services/can-activate-app.guard";
 import {CanActivateLogin} from "./services/can-activate-login.guard";
 import {PageNotFoundComponent} from "./components/page-not-found/page-not-found.component";
+import {ResourceDetailComponent} from "./components/resource-detail/resource-detail.component";
 
 const routes: Routes = [
   {
     path: 'home',
     component: HomeComponent,
+  },
+  {
+    path: 'resources/:id',
+    component: ResourceDetailComponent,
   },
   {
     path: 'account',
