@@ -41,7 +41,13 @@ import { EditCommentDialogComponent } from './components/edit-comment-dialog/edi
 import {ProfileCardComponent} from "./components/profile-card/profile-card.component";
 import { ProfileComponent } from './components/profile/profile.component';
 import {ClipboardModule} from "@angular/cdk/clipboard";
-import {NgAisHitsModule, NgAisIndexModule, NgAisInstantSearchModule, NgAisSearchBoxModule} from "angular-instantsearch";
+import {
+  NgAisConfigureModule,
+  NgAisHitsModule,
+  NgAisIndexModule,
+  NgAisInstantSearchModule,
+  NgAisSearchBoxModule
+} from "angular-instantsearch";
 import { SearchDialogComponent } from './components/search-dialog/search-dialog.component';
 
 
@@ -92,7 +98,8 @@ import { SearchDialogComponent } from './components/search-dialog/search-dialog.
     NgAisInstantSearchModule,
     NgAisSearchBoxModule,
     NgAisHitsModule,
-    NgAisIndexModule
+    NgAisIndexModule,
+    NgAisConfigureModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: TokenizerInterceptor, multi: true },

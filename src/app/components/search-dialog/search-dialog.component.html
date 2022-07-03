@@ -1,7 +1,7 @@
 <mat-dialog-content>
   <ais-instantsearch [config]="config">
     <ais-search-box></ais-search-box>
-
+    <ais-configure [searchParameters]="{ hitsPerPage: 3 }"></ais-configure>
     <div class="flex flex-col md:flex-row gap-4">
       <ais-index indexName="users_index">
         <h2>Citoyens</h2>
