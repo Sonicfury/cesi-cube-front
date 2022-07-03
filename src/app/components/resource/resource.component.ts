@@ -12,6 +12,7 @@ import {ResourceService} from "../../services/resource.service";
 import {MatDialog} from "@angular/material/dialog";
 import {ConfirmationDialogComponent} from "../confirmation-dialog/confirmation-dialog.component";
 import {EditResourceDialogComponent} from "../edit-resource-dialog/edit-resource-dialog.component";
+import {FormControl, Validators} from "@angular/forms";
 
 @Component({
   selector: 'app-resource',
@@ -20,7 +21,7 @@ import {EditResourceDialogComponent} from "../edit-resource-dialog/edit-resource
 })
 export class ResourceComponent extends BaseComponent implements OnInit {
   @Input() resource!: Resource
-  @Input() mode!: 'simple'|'extended'
+  @Input() mode!: 'simple' | 'extended'
 
   apiUrl = environment.apiUrl
   scopeLabels = SCOPE_LABELS
@@ -30,6 +31,10 @@ export class ResourceComponent extends BaseComponent implements OnInit {
   isFavoriteLoading = false
   isThumbUpLoading = false
   isEditLoading = false
+  isCommentLoading = false
+
+  showComments = false
+  commentFormControl = new FormControl('')
 
   constructor(private _authorizationService: AuthorizationService,
               private _sessionService: SessionService,
@@ -37,7 +42,7 @@ export class ResourceComponent extends BaseComponent implements OnInit {
               private _resourceService: ResourceService,
               private _userService: UserService,
               private _dialog: MatDialog) {
-    super('resource', _authorizationService);
+    super('resource', _authorizationService)
   }
 
   ngOnInit(): void {
@@ -87,8 +92,8 @@ export class ResourceComponent extends BaseComponent implements OnInit {
       })
   }
 
-  isCurrentUserAuthor() {
-    return this.resource.author?.id === this._sessionService.currentUser.id
+  isIdAuthor(id?: number) {
+    return id === this._sessionService.currentUser.id
   }
 
   onDelete() {
@@ -129,7 +134,7 @@ export class ResourceComponent extends BaseComponent implements OnInit {
     ).subscribe({
       next: resource => {
         this.resource = resource
-        this._snackbarService.success('La ressource a été mise à jour avec succès')
+        this._snackbarService.success('La ressource a été mise à jour avec succès.')
         this.isEditLoading = false
       },
       error: _ => {
@@ -139,7 +144,73 @@ export class ResourceComponent extends BaseComponent implements OnInit {
     })
   }
 
+  onComment() {
+    console.log(this.commentFormControl.value.length)
+    if (this.commentFormControl.value.length < 3) {
+      this._snackbarService.info('Votre commentaire doit compter au moins 3 caractères')
+      return
+    }
+
+    if (this._sessionService.state !== SessionState.CONNECTED) {
+      this._snackbarService.error('Vous devez être connecté pour publier un commentaire.')
+    }
+
+    this.isCommentLoading = true
+    this._resourceService.comment(this.resource.id as number, this.commentFormControl.value)
+      .subscribe({
+        next: resource => {
+          this.resource = resource
+          this._snackbarService.success('Votre commentaire a été envoyé avec succès.')
+          this.isCommentLoading = false
+        },
+        error: _ => {
+          this._snackbarService.error('')
+          this.isCommentLoading = false
+        }
+      })
+  }
+
+  onCommentEdit(id?: number) {
+    console.log('edit comment')
+  }
+
+  onCommentDelete(id?: number) {
+    const dialogRef = this._dialog.open(ConfirmationDialogComponent, {
+      data: {
+        title: 'Êtes-vous sûr ?',
+        body: `Cette action va supprimer le commentaire sélectionné et est irréversible.`
+      }
+    })
+
+    dialogRef.afterClosed().pipe(
+      filter(confirm => confirm === true),
+      tap(_ => this.isCommentLoading = true),
+      switchMap(_ => this._resourceService.deleteComment(this.resource.id as number, id as number))
+    ).subscribe({
+      next: resource => {
+        this.resource = resource
+        this.isCommentLoading = false
+        this._snackbarService.success('Le commentaire a été supprimée avec succès.')
+      },
+      error: _ => {
+        this._snackbarService.error('Une erreur est survenue pendant la suppression du commentaire.')
+        this.isCommentLoading = false
+      },
+    })
+  }
+
   getMediaUrl(url?: any): string {
-    return `${this.apiUrl.slice(0,-4)}${url}`
+    return `${this.apiUrl.slice(0, -4)}${url}`
+  }
+
+  getCommentAuthorBadge(id?: number): string {
+    switch (id) {
+      case this.resource.author?.id:
+        return 'badge badge-secondary font-semibold'
+      case this._sessionService.currentUser.id:
+        return 'badge badge-primary font-semibold'
+      default:
+        return 'font-medium'
+    }
   }
 }

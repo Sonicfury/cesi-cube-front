@@ -1,4 +1,30 @@
-<div class="card shadow bg-white">
+<div *ngIf="mode === 'extended'" class="stats stats-vertical md:stats-horizontal shadow mb-2 md:mb-4 w-full">
+  <div class="stat">
+    <div class="stat-value">{{resource.readLater.length}}</div>
+    <div class="hidden md:flex stat-desc">Utilisateur(s) ont marqué cette ressource</div>
+    <div class="stat-title">À lire plus tard</div>
+  </div>
+
+  <div class="stat">
+    <div class="stat-value">{{resource.favorites.length}}</div>
+    <div class="hidden md:flex stat-desc">Utilisateur(s) ont marqué cette ressource en</div>
+    <div class="stat-title">Favoris</div>
+  </div>
+
+  <div class="stat">
+    <div class="stat-value">{{resource.exploited.length}}</div>
+    <div class="hidden md:flex stat-desc">Utilisateur(s) ont marqué cette ressource comme</div>
+    <div class="stat-title">Exploitée</div>
+  </div>
+
+  <div class="stat">
+    <div class="stat-title">Vues</div>
+    <div class="stat-value">{{resource.views ?? 0}}</div>
+    <div class="hidden md:flex stat-desc">Depuis la création</div>
+  </div>
+</div>
+
+<div class="card shadow bg-white max-w-full">
   <div *ngIf="!isDeleteLoading; else progress" class="card-body">
     <div class="flex flex-col-reverse gap-2 md:gap-4 md:flex-row md:items-center justify-between w-full">
       <a *ngIf="mode === 'simple'; else title" class="card-title font-serif text-primary grow hover:underline"
@@ -30,7 +56,7 @@
                 class="btn btn-ghost btn-circle btn-sm">
           <mat-icon class="text-md {{isAction('thumbUp') ? 'text-info' : ''}}">thumb_up</mat-icon>
         </button>
-        <button *ngIf="isCurrentUserAuthor()"
+        <button *ngIf="isIdAuthor(resource.author?.id)"
                 class="btn btn-ghost btn-circle btn-sm"
                 [matMenuTriggerFor]="menu" aria-label="Author actions">
           <mat-icon>more_vert</mat-icon>
@@ -45,21 +71,33 @@
       <span class="badge badge-secondary truncate overflow-hidden max-w-1/4">{{resource.category?.name}}</span>
     </div>
     <div class="flex gap-4 justify-between w-full">
-      <span
-        class="font-semibold {{isCurrentUserAuthor() ? 'badge badge-primary font-medium' : ''}}">{{resource.author?.firstname}} {{resource.author?.lastname}}</span>
-      <span class="text-blue-500 text-right">{{resource.createdAt | date: 'medium' : 'CEST' : 'fr-FR'}}</span>
+      <span class="font-semibold {{isIdAuthor(resource.author?.id) ? 'badge badge-primary font-medium' : ''}}">
+        {{resource.author?.firstname}} {{resource.author?.lastname}}
+      </span>
+      <span class="text-primary text-right">{{resource.createdAt | date: 'medium' : 'CEST' : 'fr-FR'}}</span>
     </div>
     <p class="prose prose-sm max-w-none {{mode === 'simple' ? 'truncate' : ''}}">
       {{resource.richTextContent}}
     </p>
+    <button *ngIf="mode === 'extended'" class="btn btn-accent w-fit" (click)="showComments = !showComments">
+      Commentaires
+    </button>
   </div>
   <figure *ngIf="resource.mediaUrl && !isDeleteLoading">
     <img [src]="getMediaUrl(resource.mediaUrl)" alt="figure">
   </figure>
 
-  <details *ngIf="mode === 'extended'" class="flex flex-col gap-2 mt-4 p-2 md:p-4">
-    <summary><h3>Commentaires</h3></summary>
-    <ng-container *ngFor="let comment of resource.comments">
+  <div *ngIf="mode === 'extended' && showComments" class="flex flex-col gap-2 mt-4 p-2 md:p-4">
+    <div class="flex flex-col md:flex-row w-full gap-2 md:gap-4 justify-between md:items-center">
+      <mat-form-field class="grow" appearance="fill">
+        <mat-label>Commentaire</mat-label>
+        <textarea [disabled]="isCommentLoading" matInput [formControl]="commentFormControl"></textarea>
+      </mat-form-field>
+      <button [disabled]="isCommentLoading" (click)="onComment()"
+              class="btn btn-primary {{isCommentLoading ? 'loading' : ''}}">Commenter
+      </button>
+    </div>
+    <ng-container *ngFor="let comment of resource.comments; index as i">
       <div class="card card-side bg-white rounded-none">
         <div class="flex items-center">
           <ng-container
@@ -68,15 +106,25 @@
           </ng-container>
         </div>
         <div class="card-body">
-          <div class="flex gap-2 justify-content">
-            <span>{{comment.author?.firstname}} {{comment.author?.lastname}}</span>
-            <span>{{comment.createdAt | date: 'short' : 'CEST' : 'fr-FR' }}</span>
+          <div class="flex gap-2 justify-between">
+            <span
+              [class]="getCommentAuthorBadge(comment.author?.id)">{{comment.author?.firstname}} {{comment.author?.lastname}}</span>
+            <span class="text-primary text-right">{{comment.createdAt | date: 'short' : 'CEST' : 'fr-FR' }}</span>
           </div>
-          <p class="prose prose-sm max-w-none">Click the button to watch on Jetflix app.</p>
+          <p class="prose prose-sm max-w-none">{{comment.content}}</p>
+        </div>
+        <div class="flex items-center">
+          <button *ngIf="isIdAuthor(comment.author?.id)"
+                  class="btn btn-ghost btn-circle btn-sm"
+                  [matMenuTriggerFor]="commentMenu" [matMenuTriggerData]="{id: comment.id}"
+                  aria-label="Comment author actions">
+            <mat-icon>more_vert</mat-icon>
+          </button>
         </div>
       </div>
+      <div *ngIf="i < (resource.comments.length - 1)" class="divider"></div>
     </ng-container>
-  </details>
+  </div>
 </div>
 
 
@@ -105,4 +153,17 @@
     <mat-icon>delete</mat-icon>
     <span>Supprimer</span>
   </button>
+</mat-menu>
+
+<mat-menu #commentMenu="matMenu">
+  <ng-template matMenuContent let-id="id">
+    <button (click)="onCommentEdit(id)" mat-menu-item>
+      <mat-icon>edit</mat-icon>
+      <span>Éditer</span>
+    </button>
+    <button (click)="onCommentDelete(id)" mat-menu-item>
+      <mat-icon>delete</mat-icon>
+      <span>Supprimer</span>
+    </button>
+  </ng-template>
 </mat-menu>

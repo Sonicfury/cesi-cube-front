@@ -39,6 +39,7 @@
            class="w-10 h-10 rounded-full"
            src="{{apiUrl.slice(0, -4)}}{{currentUser.avatar}}" alt="avatar-thumbnail">
     </div>
+
     <a [routerLink]="['/account']" class="btn btn-primary" matTooltip="Mon compte">
       <mat-icon>manage_accounts</mat-icon>
     </a>
@@ -46,10 +47,20 @@
       <mat-icon>logout</mat-icon>
     </button>
   </div>
-  <div class="md:hidden">
+  <div class="md:hidden flex gap-2 justify-between w-full">
     <button (click)="isSidenavOpen = !isSidenavOpen" class="btn btn-primary">
       <mat-icon>{{isSidenavOpen ? 'menu_open' : 'menu'}}</mat-icon>
     </button>
+
+    <div class="flex gap-2 items-center rounded hover:bg-accent hover:text-white py-1 px-2 cursor-pointer">
+      <div class="flex gap-2 text-sm">
+        <span>{{currentUser.firstname}}</span>
+        <span>{{currentUser.lastname}}</span>
+      </div>
+      <img *ngIf="currentUser.avatar; else placeholderThumbnail"
+           class="w-10 h-10 rounded-full"
+           src="{{apiUrl.slice(0, -4)}}{{currentUser.avatar}}" alt="avatar-thumbnail">
+    </div>
   </div>
 </mat-toolbar>
 

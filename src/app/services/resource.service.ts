@@ -6,6 +6,7 @@ import {map, Observable, pipe, Subject, switchMap, tap} from "rxjs";
 import {LaravelResponse, Paginated} from "../models/laravel-response";
 import {SessionService} from "./session.service";
 import {AuthenticationService} from "./authentication.service";
+import {Comment} from "../models/comment";
 
 @Injectable({
   providedIn: 'root'
@@ -86,6 +87,29 @@ export class ResourceService extends BaseService<Resource[]> {
       .pipe(
         tap(_ => this.onResourceDelete$.next(id)),
       );
+  }
+
+  comment(id: number, comment: string): Observable<Resource> {
+    const body = {content: comment, "user_id": this._sessionService.currentUser.id, "resource_id": id}
+    const url = `${this._url}/${id}/comments`
+
+    return this._http.post<LaravelResponse<Comment>>(url, JSON.stringify(body), {
+      observe: 'response',
+      headers: this.headers
+    }).pipe(
+      switchMap(_ => this.get(id))
+    )
+  }
+
+  deleteComment(resourceId: number, commentId: number): Observable<Resource> {
+    const url = `${this._url}/${resourceId}/comments/${commentId}`
+
+    return this._http.delete<LaravelResponse<Comment>>(url, {
+      observe: 'response',
+      headers: this.headers
+    }).pipe(
+      switchMap(_ => this.get(resourceId))
+    )
   }
 
   get resources(): Resource[] {
