@@ -79,7 +79,7 @@
     <p class="prose prose-sm max-w-none {{mode === 'simple' ? 'truncate' : ''}}">
       {{resource.richTextContent}}
     </p>
-    <button *ngIf="mode === 'extended'" class="btn btn-accent w-fit" (click)="showComments = !showComments">
+    <button *ngIf="mode === 'extended'" class="btn {{showComments? 'btn-accent-focus' : 'btn-accent'}} w-fit" (click)="showComments = !showComments">
       Commentaires
     </button>
   </div>
