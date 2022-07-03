@@ -37,6 +37,7 @@ import {MatMenuModule} from "@angular/material/menu";
 import { ConfirmationDialogComponent } from './components/confirmation-dialog/confirmation-dialog.component';
 import { EditResourceDialogComponent } from './components/edit-resource-dialog/edit-resource-dialog.component';
 import { ResourceDetailComponent } from './components/resource-detail/resource-detail.component';
+import { EditCommentDialogComponent } from './components/edit-comment-dialog/edit-comment-dialog.component';
 
 
 @NgModule({
@@ -54,7 +55,8 @@ import { ResourceDetailComponent } from './components/resource-detail/resource-d
     CreateResourceComponent,
     ConfirmationDialogComponent,
     EditResourceDialogComponent,
-    ResourceDetailComponent
+    ResourceDetailComponent,
+    EditCommentDialogComponent
   ],
     imports: [
         CommonModule,

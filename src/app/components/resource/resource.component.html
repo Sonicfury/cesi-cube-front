@@ -25,7 +25,7 @@
 </div>
 
 <div class="card shadow bg-white max-w-full">
-  <div *ngIf="!isDeleteLoading; else progress" class="card-body">
+  <div *ngIf="!isDeleteLoading; else progressError" class="card-body">
     <div class="flex flex-col-reverse gap-2 md:gap-4 md:flex-row md:items-center justify-between w-full">
       <a *ngIf="mode === 'simple'; else title" class="card-title font-serif text-primary grow hover:underline"
          [routerLink]="['/resources', resource.id]">{{resource.title}}</a>
@@ -116,7 +116,7 @@
         <div class="flex items-center">
           <button *ngIf="isIdAuthor(comment.author?.id)"
                   class="btn btn-ghost btn-circle btn-sm"
-                  [matMenuTriggerFor]="commentMenu" [matMenuTriggerData]="{id: comment.id}"
+                  [matMenuTriggerFor]="commentMenu" [matMenuTriggerData]="{comment: comment}"
                   aria-label="Comment author actions">
             <mat-icon>more_vert</mat-icon>
           </button>
@@ -140,8 +140,11 @@
   </div>
 </ng-template>
 
-<ng-template #progress>
+<ng-template #progressError>
   <progress class="progress progress-error w-full"></progress>
+</ng-template>
+<ng-template #progress>
+  <progress class="progress progress-primary w-full"></progress>
 </ng-template>
 
 <mat-menu #menu="matMenu">
@@ -156,12 +159,12 @@
 </mat-menu>
 
 <mat-menu #commentMenu="matMenu">
-  <ng-template matMenuContent let-id="id">
-    <button (click)="onCommentEdit(id)" mat-menu-item>
+  <ng-template matMenuContent let-comment="comment">
+    <button (click)="onCommentEdit(comment)" mat-menu-item>
       <mat-icon>edit</mat-icon>
       <span>Éditer</span>
     </button>
-    <button (click)="onCommentDelete(id)" mat-menu-item>
+    <button (click)="onCommentDelete(comment.id)" mat-menu-item>
       <mat-icon>delete</mat-icon>
       <span>Supprimer</span>
     </button>

@@ -13,6 +13,8 @@ import {MatDialog} from "@angular/material/dialog";
 import {ConfirmationDialogComponent} from "../confirmation-dialog/confirmation-dialog.component";
 import {EditResourceDialogComponent} from "../edit-resource-dialog/edit-resource-dialog.component";
 import {FormControl, Validators} from "@angular/forms";
+import {EditCommentDialogComponent} from "../edit-comment-dialog/edit-comment-dialog.component";
+import {Comment} from "../../models/comment";
 
 @Component({
   selector: 'app-resource',
@@ -32,6 +34,7 @@ export class ResourceComponent extends BaseComponent implements OnInit {
   isThumbUpLoading = false
   isEditLoading = false
   isCommentLoading = false
+  isCommentEditLoading = false
 
   showComments = false
   commentFormControl = new FormControl('')
@@ -170,8 +173,28 @@ export class ResourceComponent extends BaseComponent implements OnInit {
       })
   }
 
-  onCommentEdit(id?: number) {
-    console.log('edit comment')
+  onCommentEdit(comment: Comment) {
+    const dialogRef = this._dialog.open(EditCommentDialogComponent, {
+      data: comment
+    })
+
+    dialogRef.afterOpened().subscribe(_ => this.isCommentEditLoading = true)
+
+    dialogRef.afterClosed().pipe(
+      filter((data: Comment) => !!data.id),
+      switchMap((comment: Comment) => this._resourceService.updateComment(this.resource.id as number, comment))
+    ).subscribe({
+      next: resource => {
+        this.resource = resource
+        this.isCommentEditLoading = false
+        this._snackbarService.success('Le commentaire a été mis à jour avec succès.')
+      },
+      error: _ => {
+        this._snackbarService.error('Une erreur est survenue pendant la suppression du commentaire.')
+        this.isCommentEditLoading = false
+      },
+    })
+
   }
 
   onCommentDelete(id?: number) {

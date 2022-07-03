@@ -104,11 +104,23 @@ export class ResourceService extends BaseService<Resource[]> {
   deleteComment(resourceId: number, commentId: number): Observable<Resource> {
     const url = `${this._url}/${resourceId}/comments/${commentId}`
 
-    return this._http.delete<LaravelResponse<Comment>>(url, {
+    return this._http.delete<LaravelResponse<Resource>>(url, {
       observe: 'response',
       headers: this.headers
     }).pipe(
-      switchMap(_ => this.get(resourceId))
+      map(resp => resp.body?.data as Resource)
+    )
+  }
+
+  updateComment(resourceId: number, comment: Comment): Observable<Resource> {
+    const url = `${this._url}/${resourceId}/comments/${comment.id}`
+    const body = {content: comment.content, "user_id": comment.author?.id, "resource_id": resourceId}
+
+    return this._http.put<LaravelResponse<Resource>>(url, JSON.stringify(comment), {
+      observe: 'response',
+      headers: this.headers
+    }).pipe(
+      map(resp => resp.body?.data as Resource)
     )
   }
 

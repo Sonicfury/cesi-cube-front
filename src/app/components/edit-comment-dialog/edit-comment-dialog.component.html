@@ -1,0 +1,16 @@
+<mat-dialog-content>
+  <h1>Éditer un commentaire</h1>
+  <mat-form-field class="grow" appearance="fill">
+    <mat-label>Commentaire</mat-label>
+    <textarea matInput [formControl]="commentFormControl"></textarea>
+  </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions class="flex flex-col md:flex-row gap-4 justify-between">
+  <button class="btn" mat-dialog-close>Annuler</button>
+  <button [disabled]="!commentFormControl.valid && data.content !== comment.content"
+          type="button" [mat-dialog-close]="comment"
+          class="btn w-fit gap-2 btn-primary">
+    <mat-icon>publish</mat-icon>
+    Mettre à jour
+  </button>
+</mat-dialog-actions>
