@@ -52,7 +52,7 @@
       <mat-icon>{{isSidenavOpen ? 'menu_open' : 'menu'}}</mat-icon>
     </button>
 
-    <div class="flex gap-2 items-center rounded hover:bg-accent hover:text-white py-1 px-2 cursor-pointer">
+    <div *ngIf="isConnected | async" class="flex gap-2 items-center rounded hover:bg-accent hover:text-white py-1 px-2 cursor-pointer">
       <div class="flex gap-2 text-sm">
         <span>{{currentUser.firstname}}</span>
         <span>{{currentUser.lastname}}</span>

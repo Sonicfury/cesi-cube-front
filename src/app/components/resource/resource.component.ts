@@ -52,6 +52,10 @@ export class ResourceComponent extends BaseComponent implements OnInit {
   }
 
   isAction(action: string) {
+    if (this._sessionService.state !== SessionState.CONNECTED) {
+      return false
+    }
+
     switch (action) {
       case 'bookmark':
         return this.resource.readLater.some((item: { id: number }) => item.id === this._sessionService.currentUser.id)
@@ -96,6 +100,10 @@ export class ResourceComponent extends BaseComponent implements OnInit {
   }
 
   isIdAuthor(id?: number) {
+    if (this._sessionService.state !== SessionState.CONNECTED) {
+      return false
+    }
+
     return id === this._sessionService.currentUser.id
   }
 
