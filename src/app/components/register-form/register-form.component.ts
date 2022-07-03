@@ -89,7 +89,7 @@ export class RegisterFormComponent extends BaseComponent implements OnInit {
         .subscribe({
             next: user => {
               this._snackbarService.success(`Bienvenue, ${user.firstname} !`)
-              this._router.navigate(["/profile"])
+              this._router.navigate(["/home"])
               this.isLoading = false
             },
             error: _ => {

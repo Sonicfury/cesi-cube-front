@@ -11,6 +11,11 @@ export const environment = {
 
   // apiUrl: 'http://217.160.246.113:8000/api',
   apiUrl: 'http://localhost:8000/api',
+
+  algolia: {
+    appId: 'QJ2R3NDPI9',
+    publicKey: 'ca8b11f89a1f2163648ad58ec3cbc3ab'
+  }
 };
 
 /*

@@ -28,10 +28,15 @@
     </div>
   </ng-template>
 
-  <div *ngIf="isConnected | async; else registerBtns" class="md:flex gap-4 hidden ">
+  <mat-form-field class="hidden md:flex text-xs my-auto" appearance="fill">
+    <mat-label>Rechercher</mat-label>
+    <mat-hint *ngIf="enableShortcut">{{shortcutName}}</mat-hint>
+    <input type="text" matInput>
+  </mat-form-field>
 
-    <a [routerLink]="['/profile', currentUser.id]" [routerLinkActive]="['bg-accent-focus', 'text-white']"
-      class="flex gap-2 items-center rounded hover:bg-accent hover:text-white py-1 px-2 cursor-pointer">
+  <div *ngIf="isConnected | async; else registerBtns" class="md:flex gap-4 hidden ">
+    <a [routerLink]="['/profiles', currentUser.id]" [routerLinkActive]="['bg-accent-focus', 'text-white']"
+       class="flex gap-2 items-center rounded hover:bg-accent hover:text-white py-1 px-2 cursor-pointer">
       <div class="flex gap-2 text-sm">
         <span>{{currentUser.firstname}}</span>
         <span>{{currentUser.lastname}}</span>
@@ -54,7 +59,7 @@
     </button>
 
     <a *ngIf="isConnected | async"
-       [routerLink]="['/profile', currentUser.id]" [routerLinkActive]="['bg-accent-focus', 'text-white']"
+       [routerLink]="['/profiles', currentUser.id]" [routerLinkActive]="['bg-accent-focus', 'text-white']"
        class="flex gap-2 items-center rounded hover:bg-accent hover:text-white py-1 px-2 cursor-pointer">
       <div class="flex gap-2 text-sm">
         <span>{{currentUser.firstname}}</span>

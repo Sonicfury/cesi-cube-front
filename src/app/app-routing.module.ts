@@ -20,7 +20,7 @@ const routes: Routes = [
     component: ResourceDetailComponent,
   },
   {
-    path: 'profile/:id',
+    path: 'profiles/:id',
     component: ProfileComponent,
     canActivate: [CanActivateApp]
   },

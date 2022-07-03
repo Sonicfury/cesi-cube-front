@@ -41,6 +41,8 @@ import { EditCommentDialogComponent } from './components/edit-comment-dialog/edi
 import {ProfileCardComponent} from "./components/profile-card/profile-card.component";
 import { ProfileComponent } from './components/profile/profile.component';
 import {ClipboardModule} from "@angular/cdk/clipboard";
+import {NgAisHitsModule, NgAisIndexModule, NgAisInstantSearchModule, NgAisSearchBoxModule} from "angular-instantsearch";
+import { SearchDialogComponent } from './components/search-dialog/search-dialog.component';
 
 
 @NgModule({
@@ -61,7 +63,8 @@ import {ClipboardModule} from "@angular/cdk/clipboard";
     ResourceDetailComponent,
     EditCommentDialogComponent,
     ProfileCardComponent,
-    ProfileComponent
+    ProfileComponent,
+    SearchDialogComponent
   ],
   imports: [
     CommonModule,
@@ -85,7 +88,11 @@ import {ClipboardModule} from "@angular/cdk/clipboard";
     InfiniteScrollModule,
     MatProgressBarModule,
     MatMenuModule,
-    ClipboardModule
+    ClipboardModule,
+    NgAisInstantSearchModule,
+    NgAisSearchBoxModule,
+    NgAisHitsModule,
+    NgAisIndexModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: TokenizerInterceptor, multi: true },
