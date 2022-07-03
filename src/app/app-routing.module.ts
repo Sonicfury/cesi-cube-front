@@ -8,6 +8,7 @@ import {CanActivateApp} from "./services/can-activate-app.guard";
 import {CanActivateLogin} from "./services/can-activate-login.guard";
 import {PageNotFoundComponent} from "./components/page-not-found/page-not-found.component";
 import {ResourceDetailComponent} from "./components/resource-detail/resource-detail.component";
+import {ProfileComponent} from "./components/profile/profile.component";
 
 const routes: Routes = [
   {
@@ -17,6 +18,11 @@ const routes: Routes = [
   {
     path: 'resources/:id',
     component: ResourceDetailComponent,
+  },
+  {
+    path: 'profile/:id',
+    component: ProfileComponent,
+    canActivate: [CanActivateApp]
   },
   {
     path: 'account',

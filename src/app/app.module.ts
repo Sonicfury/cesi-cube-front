@@ -38,6 +38,9 @@ import { ConfirmationDialogComponent } from './components/confirmation-dialog/co
 import { EditResourceDialogComponent } from './components/edit-resource-dialog/edit-resource-dialog.component';
 import { ResourceDetailComponent } from './components/resource-detail/resource-detail.component';
 import { EditCommentDialogComponent } from './components/edit-comment-dialog/edit-comment-dialog.component';
+import {ProfileCardComponent} from "./components/profile-card/profile-card.component";
+import { ProfileComponent } from './components/profile/profile.component';
+import {ClipboardModule} from "@angular/cdk/clipboard";
 
 
 @NgModule({
@@ -56,31 +59,34 @@ import { EditCommentDialogComponent } from './components/edit-comment-dialog/edi
     ConfirmationDialogComponent,
     EditResourceDialogComponent,
     ResourceDetailComponent,
-    EditCommentDialogComponent
+    EditCommentDialogComponent,
+    ProfileCardComponent,
+    ProfileComponent
   ],
-    imports: [
-        CommonModule,
-        BrowserModule,
-        BrowserAnimationsModule,
-        AppRoutingModule,
-        HttpClientModule,
-        ReactiveFormsModule,
-        MatSnackBarModule,
-        MatStepperModule,
-        MatFormFieldModule,
-        MatInputModule,
-        MatToolbarModule,
-        MatButtonModule,
-        MatIconModule,
-        MatTooltipModule,
-        MatSidenavModule,
-        MatProgressSpinnerModule,
-        MatDialogModule,
-        MatSelectModule,
-        InfiniteScrollModule,
-        MatProgressBarModule,
-        MatMenuModule
-    ],
+  imports: [
+    CommonModule,
+    BrowserModule,
+    BrowserAnimationsModule,
+    AppRoutingModule,
+    HttpClientModule,
+    ReactiveFormsModule,
+    MatSnackBarModule,
+    MatStepperModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatToolbarModule,
+    MatButtonModule,
+    MatIconModule,
+    MatTooltipModule,
+    MatSidenavModule,
+    MatProgressSpinnerModule,
+    MatDialogModule,
+    MatSelectModule,
+    InfiniteScrollModule,
+    MatProgressBarModule,
+    MatMenuModule,
+    ClipboardModule
+  ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: TokenizerInterceptor, multi: true },
     { provide: LOCALE_ID, useValue: 'fr-FR'},

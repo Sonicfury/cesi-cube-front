@@ -1,0 +1,38 @@
+<div *ngIf="user; else progress" class="card w-full bg-white shadow">
+  <figure><img *ngIf="user.avatar; else placeholderAvatar" class="w-40 h-40 rounded-full"
+               [src]="getMediaUrl(user.avatar)" alt="avatar"/></figure>
+  <div class="card-body">
+    <h1 class="card-title">{{user.firstname}} {{user.lastname}}</h1>
+    <div class="flex gap-2"><span class="font-medium text-accent">Né le</span> {{user.birthDate | date: 'dd MMMM YYYY': 'CEST' : 'fr-FR'}}</div>
+    <div class="flex gap-2"><span class="font-medium text-accent">Connecté depuis le</span> {{user.createdAt | date: 'dd MMMM YYYY': 'CEST' : 'fr-FR'}}</div>
+
+
+    <div class="flex flex-col gap-2">
+      <h3 class="text-neutral">Contact</h3>
+      <div class="flex gap-2"><span class="font-medium text-accent">Courriel</span>{{user.email}}</div>
+      <div class="flex flex-col md:flex-row gap-2">
+        <div class="flex gap-2"><span class="font-medium text-accent">Tél. principal</span> {{user.primaryPhone}}</div>
+        <div class="flex gap-2"><span class="font-medium text-accent">Tél. secondaire</span> {{user.secondaryPhone}}</div>
+      </div>
+    </div>
+
+    <div class="flex flex-col gap-2">
+      <h3 class="text-neutral">Adresse</h3>
+      <span>{{user.address1}}</span>
+      <span>{{user.address2}}</span>
+      <span>{{user.zipCode}}</span>
+      <span>{{user.city}}</span>
+    </div>
+  </div>
+</div>
+
+<ng-template #progress>
+  <progress class="progress progress-primary w-full"></progress>
+</ng-template>
+
+<ng-template #placeholderAvatar>
+  <div
+    class="flex cursor-pointer justify-center items-center w-40 h-40 bg-blue-300 rounded-full text-white font-medium text-accent text-7xl shadow">
+    {{user.firstname?.slice(0, 1) | uppercase}}{{user.lastname?.slice(0, 1) | uppercase}}
+  </div>
+</ng-template>

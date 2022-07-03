@@ -30,7 +30,8 @@
 
   <div *ngIf="isConnected | async; else registerBtns" class="md:flex gap-4 hidden ">
 
-    <div class="flex gap-2 items-center rounded hover:bg-accent hover:text-white py-1 px-2 cursor-pointer">
+    <a [routerLink]="['/profile', currentUser.id]" [routerLinkActive]="['bg-accent-focus', 'text-white']"
+      class="flex gap-2 items-center rounded hover:bg-accent hover:text-white py-1 px-2 cursor-pointer">
       <div class="flex gap-2 text-sm">
         <span>{{currentUser.firstname}}</span>
         <span>{{currentUser.lastname}}</span>
@@ -38,7 +39,7 @@
       <img *ngIf="currentUser.avatar; else placeholderThumbnail"
            class="w-10 h-10 rounded-full"
            src="{{apiUrl.slice(0, -4)}}{{currentUser.avatar}}" alt="avatar-thumbnail">
-    </div>
+    </a>
 
     <a [routerLink]="['/account']" class="btn btn-primary" matTooltip="Mon compte">
       <mat-icon>manage_accounts</mat-icon>
@@ -52,7 +53,9 @@
       <mat-icon>{{isSidenavOpen ? 'menu_open' : 'menu'}}</mat-icon>
     </button>
 
-    <div *ngIf="isConnected | async" class="flex gap-2 items-center rounded hover:bg-accent hover:text-white py-1 px-2 cursor-pointer">
+    <a *ngIf="isConnected | async"
+       [routerLink]="['/profile', currentUser.id]" [routerLinkActive]="['bg-accent-focus', 'text-white']"
+       class="flex gap-2 items-center rounded hover:bg-accent hover:text-white py-1 px-2 cursor-pointer">
       <div class="flex gap-2 text-sm">
         <span>{{currentUser.firstname}}</span>
         <span>{{currentUser.lastname}}</span>
@@ -60,7 +63,7 @@
       <img *ngIf="currentUser.avatar; else placeholderThumbnail"
            class="w-10 h-10 rounded-full"
            src="{{apiUrl.slice(0, -4)}}{{currentUser.avatar}}" alt="avatar-thumbnail">
-    </div>
+    </a>
   </div>
 </mat-toolbar>
 
