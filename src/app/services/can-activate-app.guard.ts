@@ -17,9 +17,8 @@ export class CanActivateApp implements CanActivate {
 
         return this._router.parseUrl('/login')
       }
-      const path = state.url.slice(1)
 
-      return this._authorizationService.isRouteGranted(path)
+      return this._authorizationService.isRouteGranted(route.routeConfig?.path as string)
     } catch (e) {
 
       return false

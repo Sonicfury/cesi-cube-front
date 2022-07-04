@@ -6,11 +6,11 @@
     <a class="text-primary text-sm"
        *ngIf="isConnected | async"
        [routerLinkActive]="['font-bold', 'underline']"
-       [routerLink]="['/dashboard']">Dashboard</a>
+       [routerLink]="['/admin/resources']">Resources</a>
     <a class="text-primary text-sm"
        *ngIf="isConnected | async"
        [routerLinkActive]="['font-bold', 'underline']"
-       [routerLink]="['/users']">Liste des utilisateurs</a>
+       [routerLink]="['/admin/profiles']">Utilisateurs</a>
     <a class="text-primary text-sm"
        *ngIf="isConnected | async"
        [routerLinkActive]="['font-bold', 'underline']"
@@ -68,19 +68,19 @@
       <mat-icon>home</mat-icon>
       <span>{{appName}}</span>
     </a>
-    <a class="text-primary flex gap-2 items-center"
-       *ngIf="isConnected | async"
-       (click)="isSidenavOpen = false"
-       [routerLink]="['/dashboard']">
-      <mat-icon>dashboard</mat-icon>
-      <span>Dashboard</span></a>
-    <a class="text-primary flex gap-2 items-center"
-       *ngIf="isConnected | async"
-       (click)="isSidenavOpen = false"
-       [routerLink]="['/users']">
-      <mat-icon>group</mat-icon>
-      Liste des utilisateurs</a>
     <!--    back office-->
+    <a class="text-primary flex gap-2 items-center"
+       *ngIf="isConnected | async"
+       (click)="isSidenavOpen = false"
+       [routerLink]="['/admin/profiles']">
+      <mat-icon>group</mat-icon>
+      Utilisateurs</a>
+    <a class="text-primary flex gap-2 items-center"
+       *ngIf="isConnected | async"
+       (click)="isSidenavOpen = false"
+       [routerLink]="['/admin/resources']">
+      <mat-icon>auto-stories</mat-icon>
+      <span>Ressources</span></a>
     <a class="text-primary flex gap-2 items-center"
        *ngIf="isConnected | async"
        (click)="isSidenavOpen = false"

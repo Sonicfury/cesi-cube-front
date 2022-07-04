@@ -1,10 +1,41 @@
-import {Role} from "./role";
+import {ERole} from "../models/role";
 
-export const ACCESS_RIGHTS = [
-  {path: '/', roles: [Role.GUEST, Role.USER, Role.MODERATOR, Role.ADMIN, Role.SUPER_ADMIN]},
-  {path: '/login', roles: [Role.GUEST]},
-  {path: '/ressource', roles: [Role.USER, Role.MODERATOR, Role.ADMIN, Role.SUPER_ADMIN]},
-  {path: '/users', roles: [Role.USER, Role.MODERATOR, Role.ADMIN, Role.SUPER_ADMIN]},
-  {path: '/dashboard', roles: [Role.USER, Role.MODERATOR, Role.ADMIN, Role.SUPER_ADMIN]},
-]
-
+export const ACCESS_RIGHTS: Map<ERole, string[]> = new Map<ERole, string[]>([
+  [ERole.GUEST, [
+    'login',
+    'register',
+    'home',
+    'resources/:id',
+    'profiles/:id'
+  ]],
+  [ERole.USER, [
+    'home',
+    'resources/:id',
+    'profiles/:id'
+  ]],
+  [ERole.MODERATOR, [
+    'home',
+    'resources/:id',
+    'profiles/:id',
+    'admin',
+    'admin/resources/:id'
+  ]],
+  [ERole.ADMIN, [
+    'home',
+    'resources/:id',
+    'profiles/:id',
+    'admin',
+    'admin/resources',
+    'admin/profiles',
+    'admin/statistics'
+  ]],
+  [ERole.SUPER_ADMIN, [
+    'home',
+    'resources/:id',
+    'profiles/:id',
+    'admin',
+    'admin/resources',
+    'admin/profiles',
+    'admin/statistics'
+  ]],
+])

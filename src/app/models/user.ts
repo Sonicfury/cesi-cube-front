@@ -1,3 +1,5 @@
+import {Role} from "./role";
+
 export class User {
   public id?: number
   public email?: string
@@ -11,6 +13,7 @@ export class User {
   public primaryPhone?: string
   public secondaryPhone?: string
   public address2?: string
+  public roles: Role[] = []
   public birthDate?: Date
   public createdAt?: Date
   public updatedAt?: Date
