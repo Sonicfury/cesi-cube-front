@@ -18,7 +18,7 @@ export const ACCESS_RIGHTS: Map<ERole, string[]> = new Map<ERole, string[]>([
     'resources/:id',
     'profiles/:id',
     'admin',
-    'admin/resources/:id'
+    'admin/resources',
   ]],
   [ERole.ADMIN, [
     'home',
