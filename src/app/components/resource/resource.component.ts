@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {EStatus, Resource, SCOPE_LABELS, STATUS_LABELS} from "../../models/resource";
+import {Resource, SCOPE_LABELS} from "../../models/resource";
 import {BaseComponent} from "../base-component";
 import {AuthorizationService} from "../../services/authorization.service";
 import {environment} from "../../../environments/environment";
@@ -12,9 +12,10 @@ import {ResourceService} from "../../services/resource.service";
 import {MatDialog} from "@angular/material/dialog";
 import {ConfirmationDialogComponent} from "../confirmation-dialog/confirmation-dialog.component";
 import {EditResourceDialogComponent} from "../edit-resource-dialog/edit-resource-dialog.component";
-import {FormControl, Validators} from "@angular/forms";
+import {FormControl} from "@angular/forms";
 import {EditCommentDialogComponent} from "../edit-comment-dialog/edit-comment-dialog.component";
 import {Comment} from "../../models/comment";
+import {EStatus} from "../../models/status";
 
 @Component({
   selector: 'app-resource',

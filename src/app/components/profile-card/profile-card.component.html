@@ -1,27 +1,56 @@
 <div *ngIf="user; else progress" class="card w-full bg-white shadow">
   <figure><img *ngIf="user.avatar; else placeholderAvatar" class="w-40 h-40 rounded-full"
                [src]="getMediaUrl(user.avatar)" alt="avatar"/></figure>
-  <div class="card-body">
-    <h1 class="card-title">{{user.firstname}} {{user.lastname}}</h1>
-    <div class="flex gap-2"><span class="font-medium text-accent">Né le</span> {{user.birthDate | date: 'dd MMMM YYYY': 'CEST' : 'fr-FR'}}</div>
-    <div class="flex gap-2"><span class="font-medium text-accent">Connecté depuis le</span> {{user.createdAt | date: 'dd MMMM YYYY': 'CEST' : 'fr-FR'}}</div>
-
-
-    <div class="flex flex-col gap-2">
-      <h3 class="text-neutral">Contact</h3>
-      <div class="flex gap-2"><span class="font-medium text-accent">Courriel</span>{{user.email}}</div>
-      <div class="flex flex-col md:flex-row gap-2">
-        <div class="flex gap-2"><span class="font-medium text-accent">Tél. principal</span> {{user.primaryPhone}}</div>
-        <div class="flex gap-2"><span class="font-medium text-accent">Tél. secondaire</span> {{user.secondaryPhone}}</div>
+  <div class="card-body relative">
+    <div class="flex w-full flex-wrap md:justify-end gap-2 md:gap-4">
+      <div matTooltip="Conjoint.e" class="flex rounded-xl p-1 md:p-2 outline outline-1 form-control flex-row gap-2">
+        <mat-icon>favorite</mat-icon>
+        <input type="checkbox" class="toggle"/>
+      </div>
+      <div matTooltip="Ami.e" class="flex rounded-xl p-1 md:p-2 outline outline-1 form-control flex-row gap-2">
+        <mat-icon>diversity_2</mat-icon>
+        <input type="checkbox" class="toggle"/>
+      </div>
+      <div matTooltip="Famille" class="flex rounded-xl p-1 md:p-2 outline outline-1 form-control flex-row gap-2">
+        <mat-icon>family_restroom</mat-icon>
+        <input type="checkbox" class="toggle"/>
+      </div>
+      <div matTooltip="Professionnel" class="flex rounded-xl p-1 md:p-2 outline outline-1 form-control flex-row gap-2">
+        <mat-icon>business_center</mat-icon>
+        <input type="checkbox" class="toggle"/>
+      </div>
+      <div matTooltip="Autres" class="flex rounded-xl p-1 md:p-2 outline outline-1 form-control flex-row gap-2">
+        <mat-icon>public</mat-icon>
+        <input type="checkbox" class="toggle"/>
       </div>
     </div>
+    <div class="flex flex-col md:flex-row gap-4">
+      <div class="flex flex-col gap-2">
+        <h1 class="card-title">{{user.firstname}} {{user.lastname}}</h1>
+        <div class="flex gap-2"><span
+          class="font-medium text-accent">Né le</span> {{user.birthDate | date: 'dd MMMM YYYY': 'CEST' : 'fr-FR'}}</div>
+        <div class="flex gap-2"><span
+          class="font-medium text-accent">Connecté depuis le</span> {{user.createdAt | date: 'dd MMMM YYYY': 'CEST' : 'fr-FR'}}
+        </div>
+      </div>
 
-    <div class="flex flex-col gap-2">
-      <h3 class="text-neutral">Adresse</h3>
-      <span>{{user.address1}}</span>
-      <span>{{user.address2}}</span>
-      <span>{{user.zipCode}}</span>
-      <span>{{user.city}}</span>
+      <div class="flex flex-col gap-2">
+        <h3 class="text-neutral">Contact</h3>
+        <div class="flex gap-2"><span class="font-medium text-accent">Courriel</span>{{user.email}}</div>
+        <div class="flex flex-col md:flex-row gap-2">
+          <div class="flex gap-2"><span class="font-medium text-accent">Tél. principal</span> {{user.primaryPhone}}
+          </div>
+          <div class="flex gap-2"><span class="font-medium text-accent">Tél. secondaire</span> {{user.secondaryPhone}}
+          </div>
+        </div>
+      </div>
+
+      <div class="flex flex-col gap-2">
+        <h3 class="text-neutral">Adresse</h3>
+        <span>{{user.address1}}</span>
+        <span>{{user.address2}}</span>
+        <span>{{user.zipCode}} {{user.city}}</span>
+      </div>
     </div>
   </div>
 </div>

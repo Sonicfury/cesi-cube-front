@@ -26,8 +26,7 @@ export class ProfileCardComponent extends BaseComponent implements OnInit {
     return `${this.apiUrl.slice(0, -4)}${url}`
   }
 
-  clipboard(item: any, name: string) {
-    this._snackbarService.success(`${name} copié(e) !`)
-    return item as string
+  onAdd(type: string) {
+
   }
 }

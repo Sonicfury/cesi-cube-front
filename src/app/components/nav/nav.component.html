@@ -17,10 +17,13 @@
        [routerLink]="['/admin/statistics']">Statistiques</a>
   </div>
 
-  <div *ngIf="isConnected | async; else registerBtns" class="md:flex gap-4 hidden ">
+  <div *ngIf="isConnected | async; else registerBtns" class="md:flex gap-4 hidden">
     <a [routerLink]="['/profiles', currentUser.id]" [routerLinkActive]="['bg-accent-focus', 'text-white']"
        matTooltip="Mon profil"
-       class="flex gap-2 items-center rounded hover:bg-accent hover:text-white py-1 px-2 cursor-pointer">
+       class="flex gap-2 items-center rounded hover:bg-accent hover:text-white ring-inset ring-accent ring-1 py-1 px-2 cursor-pointer indicator">
+
+      <span
+        class="indicator-item indicator-bottom indicator-start badge badge-secondary">{{pendingRequestsAmount}}</span>
       <div class="gap-2 text-sm hidden lg:flex">
         <span>{{currentUser.firstname}}</span>
         <span>{{currentUser.lastname}}</span>
@@ -48,7 +51,9 @@
     <a *ngIf="isConnected | async"
        [routerLink]="['/profiles', currentUser.id]" [routerLinkActive]="['bg-accent-focus', 'text-white']"
        matTooltip="Mon profil"
-       class="flex gap-2 items-center rounded hover:bg-accent hover:text-white py-1 px-2 cursor-pointer">
+       class="flex gap-2 items-center rounded hover:bg-accent hover:text-white py-1 px-2 cursor-pointer ring-inset ring-accent ring-1 indicator">
+      <span
+        class="indicator-item indicator-bottom indicator-start badge badge-secondary">{{pendingRequestsAmount}}</span>
       <div class="flex gap-2 text-sm">
         <span>{{currentUser.firstname}}</span>
         <span>{{currentUser.lastname}}</span>
@@ -102,7 +107,6 @@
       <mat-icon>manage_accounts</mat-icon>
     </a>
     <button class="btn btn-error"
-            (click)="isSidenavOpen = false"
             matTooltip="Se déconnecter" (click)="logout()">
       <mat-icon>logout</mat-icon>
     </button>
