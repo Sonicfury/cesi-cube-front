@@ -71,7 +71,8 @@ export class NavComponent extends BaseComponent implements OnInit {
       this.dialogRef.close()
       return
     }
-    this.dialogRef = this._dialog.open(SearchDialogComponent)
+    this.dialogRef = this._dialog.open(SearchDialogComponent, {
+    })
     this.dialogRef.afterOpened().subscribe(_ => this.isSearchBoxOpen = true)
     this.dialogRef.afterClosed().subscribe(_ => this.isSearchBoxOpen = false)
   }

@@ -41,3 +41,20 @@ h4 {
 
 input, textarea {
 }
+
+
+.ais-SearchBox-form {
+  @apply form-control flex flex-row gap-2 items-center flex-wrap md:w-[50vw];
+}
+
+.ais-SearchBox-form button {
+  @apply btn btn-primary btn-circle btn-sm;
+}
+
+.ais-SearchBox-form button svg {
+  @apply fill-white h-3 w-3;
+}
+
+.ais-SearchBox-input {
+  @apply input text-sm my-4 input-bordered w-full grow md:w-auto;
+}

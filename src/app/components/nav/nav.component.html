@@ -17,27 +17,10 @@
        [routerLink]="['/admin/statistics']">Statistiques</a>
   </div>
 
-  <ng-template #registerBtns>
-    <div class="md:flex gap-4 hidden ">
-      <a [routerLink]="['/login']" class="btn btn-primary" matTooltip="Se connecter">
-        <mat-icon>login</mat-icon>
-      </a>
-      <a [routerLink]="['/register']" class="btn btn-primary" matTooltip="S'enregistrer">
-        <mat-icon>badge</mat-icon>
-      </a>
-    </div>
-  </ng-template>
-
-  <mat-form-field class="hidden md:flex text-xs my-auto" appearance="fill">
-    <mat-label>Rechercher</mat-label>
-    <mat-hint *ngIf="enableShortcut">{{shortcutName}}</mat-hint>
-    <input type="text" matInput>
-  </mat-form-field>
-
   <div *ngIf="isConnected | async; else registerBtns" class="md:flex gap-4 hidden ">
     <a [routerLink]="['/profiles', currentUser.id]" [routerLinkActive]="['bg-accent-focus', 'text-white']"
        class="flex gap-2 items-center rounded hover:bg-accent hover:text-white py-1 px-2 cursor-pointer">
-      <div class="flex gap-2 text-sm">
+      <div class="gap-2 text-sm hidden lg:flex">
         <span>{{currentUser.firstname}}</span>
         <span>{{currentUser.lastname}}</span>
       </div>
@@ -45,7 +28,9 @@
            class="w-10 h-10 rounded-full"
            src="{{apiUrl.slice(0, -4)}}{{currentUser.avatar}}" alt="avatar-thumbnail">
     </a>
-
+    <button [matTooltip]="shortcutName" (click)="openSearchBox()" class="btn btn-primary">
+      <mat-icon>search</mat-icon>
+    </button>
     <a [routerLink]="['/account']" class="btn btn-primary" matTooltip="Mon compte">
       <mat-icon>manage_accounts</mat-icon>
     </a>
@@ -53,6 +38,7 @@
       <mat-icon>logout</mat-icon>
     </button>
   </div>
+
   <div class="md:hidden flex gap-2 justify-between w-full">
     <button (click)="isSidenavOpen = !isSidenavOpen" class="btn btn-primary">
       <mat-icon>{{isSidenavOpen ? 'menu_open' : 'menu'}}</mat-icon>
@@ -72,8 +58,9 @@
   </div>
 </mat-toolbar>
 
-<div
-  class="absolute {{isSidenavOpen ? 'left-0' :'-left-[100%]'}} flex flex-col justify-between z-40 transition-all duration-300 h-[calc(100vh-56px)] w-3/4 p-4 bg-gray-100 shadow">
+<div class="flex flex-col justify-between h-[calc(100vh-56px)] w-3/4 p-4
+            absolute z-40 {{isSidenavOpen ? 'left-0' :'-left-[100%]'}}
+            transition-all duration-300 bg-gray-100 shadow">
   <div class="flex flex-col gap-4">
     <a class="bg-teal-400 p-2 rounded text-white flex gap-2 items-center"
        (click)="isSidenavOpen = false"
@@ -102,32 +89,18 @@
       <span>Statistiques</span></a>
   </div>
 
-  <ng-template #registerBtnsSm>
-    <div class="flex flex-col gap-4">
-      <a mat-button matTooltip="Se connecter"
-         (click)="isSidenavOpen = false"
-         class="bg-primary text-white"
-         [routerLink]="['/login']">
-        <mat-icon>login</mat-icon>
-      </a>
-      <a mat-button matTooltip="S'enregistrer"
-         (click)="isSidenavOpen = false"
-         class="bg-primary text-white"
-         [routerLink]="['/register']">
-        <mat-icon>badge</mat-icon>
-      </a>
-    </div>
-  </ng-template>
-
   <div *ngIf="isConnected | async; else registerBtnsSm" class="flex flex-col gap-4">
+    <button [matTooltip]="shortcutName" (click)="openSearchBox()" class="btn btn-primary">
+      <mat-icon>search</mat-icon>
+    </button>
     <a [routerLink]="['/account']"
-       class="bg-primary text-white"
+       class="btn btn-primary"
        (click)="isSidenavOpen = false"
-       mat-button matTooltip="Mon compte">
+       matTooltip="Mon compte">
       <mat-icon>manage_accounts</mat-icon>
     </a>
-    <button class="bg-primary text-white"
-            mat-button (click)="isSidenavOpen = false"
+    <button class="btn btn-primary"
+            (click)="isSidenavOpen = false"
             matTooltip="Se déconnecter" (click)="logout()">
       <mat-icon>logout</mat-icon>
     </button>
@@ -138,5 +111,37 @@
   <div
     class="flex cursor-pointer justify-center items-center w-10 h-10 bg-blue-300 rounded-full text-white font-medium text-xl">
     {{currentUser.firstname?.slice(0, 1) | uppercase}}{{currentUser.lastname?.slice(0, 1) | uppercase}}
+  </div>
+</ng-template>
+<ng-template #registerBtns>
+  <div class="md:flex gap-4 hidden ">
+    <button [matTooltip]="shortcutName" (click)="openSearchBox()" class="btn btn-primary">
+      <mat-icon>search</mat-icon>
+    </button>
+    <a [routerLink]="['/login']" class="btn btn-primary" matTooltip="Se connecter">
+      <mat-icon>login</mat-icon>
+    </a>
+    <a [routerLink]="['/register']" class="btn btn-primary" matTooltip="S'enregistrer">
+      <mat-icon>badge</mat-icon>
+    </a>
+  </div>
+</ng-template>
+<ng-template #registerBtnsSm>
+  <div class="flex flex-col gap-4">
+    <button [matTooltip]="shortcutName" (click)="openSearchBox()" class="btn btn-primary">
+      <mat-icon>search</mat-icon>
+    </button>
+    <a matTooltip="Se connecter"
+       (click)="isSidenavOpen = false"
+       class="btn btn-primary"
+       [routerLink]="['/login']">
+      <mat-icon>login</mat-icon>
+    </a>
+    <a matTooltip="S'enregistrer"
+       (click)="isSidenavOpen = false"
+       class="btn btn-primary"
+       [routerLink]="['/register']">
+      <mat-icon>badge</mat-icon>
+    </a>
   </div>
 </ng-template>

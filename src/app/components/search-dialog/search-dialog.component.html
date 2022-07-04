@@ -3,26 +3,26 @@
     <ais-search-box></ais-search-box>
     <ais-configure [searchParameters]="{ hitsPerPage: 3 }"></ais-configure>
     <div class="flex flex-col md:flex-row gap-4">
-      <ais-index indexName="users_index">
+      <ais-index class="grow" indexName="users_index">
         <h2>Citoyens</h2>
         <ais-hits>
           <ng-template let-hits="hits">
             <ol class="ais-Hits-list">
               <li *ngFor="let hit of hits" class="ais-Hits-item">
-                <a mat-dialog-close="" [routerLink]="['profiles', hit.id]">{{hit.firstname}} {{hit.lastname}}</a>
+                <a class="link text-lg p-2" mat-dialog-close="" [routerLink]="['profiles', hit.id]">{{hit.firstname}} {{hit.lastname}}</a>
               </li>
             </ol>
           </ng-template>
         </ais-hits>
       </ais-index>
 
-      <ais-index indexName="resources_index">
+      <ais-index class="grow" indexName="resources_index">
         <h2>Ressources</h2>
         <ais-hits>
           <ng-template let-hits="hits">
             <ol class="ais-Hits-list">
               <li *ngFor="let hit of hits" class="ais-Hits-item">
-                <a mat-dialog-close="" [routerLink]="['resources', hit.id]">{{hit.title}}</a>
+                <a class="link text-lg p-2" mat-dialog-close="" [routerLink]="['resources', hit.id]">{{hit.title}}</a>
               </li>
             </ol>
           </ng-template>

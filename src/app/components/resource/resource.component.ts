@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {Resource, SCOPE_LABELS} from "../../models/resource";
+import {EStatus, Resource, SCOPE_LABELS, STATUS_LABELS} from "../../models/resource";
 import {BaseComponent} from "../base-component";
 import {AuthorizationService} from "../../services/authorization.service";
 import {environment} from "../../../environments/environment";
@@ -105,6 +105,10 @@ export class ResourceComponent extends BaseComponent implements OnInit {
     }
 
     return id === this._sessionService.currentUser.id
+  }
+
+  isResourcePending(resource: Resource): boolean {
+    return resource.status === EStatus.PENDING
   }
 
   onDelete() {
