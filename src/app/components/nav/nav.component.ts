@@ -4,13 +4,12 @@ import {environment} from "../../../environments/environment";
 import {BaseComponent} from "../base-component";
 import {AuthorizationService} from "../../services/authorization.service";
 import {SessionState} from "../../services/session-state";
-import {Observable, of, switchMap, timer} from "rxjs";
+import {Observable, of} from "rxjs";
 import {SnackbarService} from "../../services/snackbar.service";
 import {Router} from "@angular/router";
 import {MatDialog, MatDialogRef} from "@angular/material/dialog";
 import {SearchDialogComponent} from "../search-dialog/search-dialog.component";
-import {RelationRequestService} from "../../services/relation-request.service";
-import {EStatus} from "../../models/status";
+import {RelationService, RelationInterface} from "../../services/relation.service";
 
 @Component({
   selector: 'app-nav',
@@ -44,7 +43,7 @@ export class NavComponent extends BaseComponent implements OnInit {
   constructor(private _authorizationService: AuthorizationService,
               private _sessionService: SessionService,
               private _snackbarService: SnackbarService,
-              private _relationRequestService: RelationRequestService,
+              private relationService: RelationService,
               private _dialog: MatDialog,
               private _router: Router) {
     super('Navigation', _authorizationService);
@@ -58,11 +57,7 @@ export class NavComponent extends BaseComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    timer(500, 10000).pipe(
-      switchMap(_ => this._relationRequestService.get(this.currentUser.id))
-    ).subscribe(requests => {
-      this.pendingRequestsAmount = requests.filter(r => r.secondUser?.id === this.currentUser.id && r.status === EStatus.PENDING).length
-    })
+    this.relationService.watch((requests: RelationInterface) => this.pendingRequestsAmount = requests.pending.length)
   }
 
   logout() {

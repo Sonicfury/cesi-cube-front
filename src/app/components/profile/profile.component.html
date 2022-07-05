@@ -1,1 +1,103 @@
-<app-profile-card [user]="user"></app-profile-card>
+<div class="flex flex-col gap-2 md:gap-4">
+  <app-profile-card [user]="user"></app-profile-card>
+  <div class="flex flex-col">
+    <h1>Mes demandes en attente</h1>
+    <div class="overflow-x-auto w-full max-h-[33vh] overflow-y-scroll shadow">
+      <table class="table w-full relative">
+        <thead class="sticky top-0 z-30">
+        <tr>
+          <th>Nom</th>
+          <th class="hidden md:table-cell">Ville</th>
+          <th class="hidden md:table-cell">Courriel</th>
+          <th>Type</th>
+          <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <ng-container *ngFor="let relation of pendingRelations">
+          <tr>
+            <td>
+              <div class="flex items-center space-x-3">
+                <div class="avatar hidden md:flex">
+                  <div class="mask mask-squircle z-0 w-10 h-10">
+                    <img *ngIf="relation.firstUser?.avatar ; else placeholderThumbnail"
+                         [src]="getMediaUrl(relation.firstUser?.avatar)" alt="Avatar"/>
+                  </div>
+                </div>
+                <div>
+                  <div class="font-bold">{{relation.firstUser?.firstname}} {{relation.firstUser?.lastname}}</div>
+                </div>
+              </div>
+            </td>
+            <td class="hidden md:table-cell">{{relation.firstUser?.city}}</td>
+            <td class="hidden md:table-cell">{{relation.firstUser?.email}}</td>
+            <td>
+              <div class="flex gap-2">
+                <mat-icon>{{getIcon(relation.relationType)}}</mat-icon>
+                <span class="hidden md:flex">
+                              {{getTypeLabel(relation.relationType)}}
+                            </span></div>
+            </td>
+            <th>
+              <button class="btn btn-primary btn-xs md:btn-sm">Accepter</button>
+            </th>
+          </tr>
+        </ng-container>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="flex flex-col">
+    <h1>Mes relations</h1>
+    <div class="overflow-x-auto w-full max-h-[33vh] overflow-y-scroll shadow">
+      <table class="table w-full relative">
+        <thead class="sticky top-0 z-30">
+        <tr>
+          <th>Nom</th>
+          <th class="hidden md:table-cell">Ville</th>
+          <th class="hidden md:table-cell">Courriel</th>
+          <th>Type</th>
+          <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <ng-container *ngFor="let relation of acceptedRelations">
+          <tr>
+            <td>
+              <div class="flex items-center space-x-3">
+                <div class="avatar hidden md:flex">
+                  <div class="mask mask-squircle z-0 w-10 h-10">
+                    <img *ngIf="relation.firstUser?.avatar ; else placeholderThumbnail"
+                         [src]="getMediaUrl(relation.firstUser?.avatar)" alt="Avatar"/>
+                  </div>
+                </div>
+                <div>
+                  <div class="font-bold">{{relation.firstUser?.firstname}} {{relation.firstUser?.lastname}}</div>
+                </div>
+              </div>
+            </td>
+            <td class="hidden md:table-cell">{{relation.firstUser?.city}}</td>
+            <td class="hidden md:table-cell">{{relation.firstUser?.email}}</td>
+            <td>
+              <div class="flex gap-2">
+                <mat-icon>{{getIcon(relation.relationType)}}</mat-icon>
+                <span class="hidden md:flex">
+                             {{getTypeLabel(relation.relationType)}}
+                           </span></div>
+            </td>
+            <th>
+              <button class="btn btn-error btn-xs md:btn-sm">Supprimer</button>
+            </th>
+          </tr>
+        </ng-container>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+<ng-template #placeholderThumbnail>
+  <div
+    class="flex cursor-pointer justify-center items-center w-10 h-10 bg-blue-300 rounded-full text-white font-medium text-xl">
+    {{currentUser.firstname?.slice(0, 1) | uppercase}}{{currentUser.lastname?.slice(0, 1) | uppercase}}
+  </div>
+</ng-template>
