@@ -1,8 +1,8 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {BaseComponent} from "../base-component";
 import {AuthorizationService} from "../../services/authorization.service";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {catchError, map, Observable, switchMap, throwError} from "rxjs";
+import {catchError, filter, map, Observable, switchMap, tap, throwError} from "rxjs";
 import {User} from "../../models/user";
 import {Router} from "@angular/router";
 import {AuthenticationService} from "../../services/authentication.service";
@@ -11,6 +11,10 @@ import {UserService} from "../../services/user.service";
 import {SnackbarService} from "../../services/snackbar.service";
 import {HttpResponse} from "@angular/common/http";
 import {AuthData, LaravelResponse} from "../../models/laravel-response";
+import {EditResourceDialogComponent} from "../edit-resource-dialog/edit-resource-dialog.component";
+import {Resource} from "../../models/resource";
+import {ForgotPasswordComponent} from "../forgot-password/forgot-password.component";
+import {MatDialog} from "@angular/material/dialog";
 
 @Component({
   selector: 'app-login-form',
@@ -18,9 +22,11 @@ import {AuthData, LaravelResponse} from "../../models/laravel-response";
   styleUrls: ['./login-form.component.scss']
 })
 export class LoginFormComponent extends BaseComponent implements OnInit {
-
+  @Input() user!: User
   loginForm!: FormGroup;
   isLoading = true;
+
+  isEditLoading = false
 
   constructor(
     private _authorizationService: AuthorizationService,
@@ -29,13 +35,36 @@ export class LoginFormComponent extends BaseComponent implements OnInit {
     private _userService: UserService,
     private _formBuilder: FormBuilder,
     private _router: Router,
-    private _snackbarService: SnackbarService
+    private _snackbarService: SnackbarService,
+    private _dialog: MatDialog
   ) {
     super('login-form', _authorizationService);
   }
 
   ngOnInit(): void {
     this.buildForm();
+  }
+
+  onForgotPassword() {
+    const dialogRef = this._dialog.open(ForgotPasswordComponent)
+
+    dialogRef.afterClosed().subscribe(value => console.log(value))
+
+    // dialogRef.afterClosed().pipe(
+    //   tap(data => data && (this.isEditLoading = false)),
+    //   filter((data: Resource) => !!data.id),
+    //   switchMap((data: Resource) => this._resourceService.update(data))
+    // ).subscribe({
+    //   next: resource => {
+    //     this.resource = resource
+    //     this._snackbarService.success('La ressource a été mise à jour avec succès.')
+    //     this.isEditLoading = false
+    //   },
+    //   error: _ => {
+    //     this._snackbarService.error('Une erreur est survenue pendant la mise à jour de la ressource.')
+    //     this.isEditLoading = false
+    //   }
+    // })
   }
 
   onSubmit() {
