@@ -10,11 +10,13 @@ export const ACCESS_RIGHTS: Map<ERole, string[]> = new Map<ERole, string[]>([
   ]],
   [ERole.USER, [
     'home',
+    'account',
     'resources/:id',
     'profiles/:id'
   ]],
   [ERole.MODERATOR, [
     'home',
+    'account',
     'resources/:id',
     'profiles/:id',
     'admin',
@@ -22,6 +24,7 @@ export const ACCESS_RIGHTS: Map<ERole, string[]> = new Map<ERole, string[]>([
   ]],
   [ERole.ADMIN, [
     'home',
+    'account',
     'resources/:id',
     'profiles/:id',
     'admin',
@@ -31,6 +34,7 @@ export const ACCESS_RIGHTS: Map<ERole, string[]> = new Map<ERole, string[]>([
   ]],
   [ERole.SUPER_ADMIN, [
     'home',
+    'account',
     'resources/:id',
     'profiles/:id',
     'admin',
