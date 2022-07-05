@@ -6,13 +6,14 @@ import {SnackbarService} from "../../services/snackbar.service";
 import {UserService} from "../../services/user.service";
 import {User} from "../../models/user";
 import {RelationService, RelationInterface} from "../../services/relation.service";
-import {ERelationType, Relation, RELATION_ICONS, RELATION_TYPES} from "../../models/relation";
+import {Relation} from "../../models/relation";
 import {environment} from "../../../environments/environment";
 import {SessionService} from "../../services/session.service";
 import {SessionState} from "../../services/session-state";
 import {filter, iif, Subscription, switchMap} from "rxjs";
 import {MatDialog} from "@angular/material/dialog";
 import {ConfirmationDialogComponent} from "../confirmation-dialog/confirmation-dialog.component";
+import {ERelationType, RELATION_ICONS, RELATION_TYPES} from "../../models/relation-type";
 
 @Component({
   selector: 'app-profile',

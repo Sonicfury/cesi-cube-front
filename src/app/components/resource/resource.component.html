@@ -43,7 +43,12 @@
         </span>
       </ng-template>
       <div class="flex justify-end flex-wrap gap-1 md:gap-3 items-center">
-        <span *ngIf="resource.scope" class="badge badge-outline">{{scopeLabels.get(resource.scope)}}</span>
+        <div *ngFor="let scope of (resource | getScopes : mode)">
+          <label matTooltip="{{scope.label}}" matTooltipPosition="above"
+                  class="btn btn-circle btn-sm btn-ghost no-animation bg-base-200 cursor-default">
+            <mat-icon>{{scope.icon}}</mat-icon>
+          </label>
+        </div>
         <span class="badge flex gap-1">{{resource.views ?? 0}} <span class="hidden md:flex">vues</span></span>
         <button matTooltip="{{resource.readLater.length}}"
                 matTooltipPosition="above"

@@ -1,5 +1,4 @@
 import {AfterViewInit, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {SCOPE_LABELS} from "../../models/resource";
 import {BaseComponent} from "../base-component";
 import {AuthorizationService} from "../../services/authorization.service";
 import {ResourceService} from "../../services/resource.service";
@@ -10,7 +9,8 @@ import {TypeService} from "../../services/type.service";
 import {CategoryService} from "../../services/category.service";
 import {Type} from "../../models/type";
 import {Category} from "../../models/category";
-import {tap} from "rxjs";
+import {ERelationType, RELATION_ICONS, RELATION_TYPES, RelationType} from "../../models/relation-type";
+import {RelationService} from "../../services/relation.service";
 
 @Component({
   selector: 'app-create-resource',
@@ -21,7 +21,6 @@ export class CreateResourceComponent extends BaseComponent implements OnInit, Af
   resource = this._resourceService.currentlyCreating
   resourceMedia = this._resourceService.currentlyCreatingMedia
   api = environment.apiUrl
-  scopeLabels = Array.from(SCOPE_LABELS)
   isLoadingPublish = false
   isLoadingMedia = false
   resourceFormGroup: FormGroup
@@ -29,10 +28,11 @@ export class CreateResourceComponent extends BaseComponent implements OnInit, Af
 
   types: Type[] = this._typeService.types
   categories: Category[] = this._categoryService.categories
+  relationTypes: RelationType[] = this._relationService.relationTypes
 
   titleFormControl = new FormControl(this.resource.title, [Validators.required])
   richTextContentFormControl = new FormControl(this.resource.richTextContent, [Validators.required])
-  scopeFormControl = new FormControl(this.resource.scope, [Validators.required])
+  relationTypesFormControl = new FormControl(this.resource.relationTypes)
   typeFormControl = new FormControl(this.resource.type?.id, [Validators.required])
   categoryFormControl = new FormControl(this.resource.category?.id, [Validators.required])
 
@@ -42,13 +42,14 @@ export class CreateResourceComponent extends BaseComponent implements OnInit, Af
               private _resourceService: ResourceService,
               private _snackbarService: SnackbarService,
               private _typeService: TypeService,
-              private _categoryService: CategoryService
+              private _categoryService: CategoryService,
+              private _relationService: RelationService
   ) {
     super('create-resource', _authorizationService);
     this.resourceFormGroup = new FormGroup({
       title: this.titleFormControl,
       richTextContent: this.richTextContentFormControl,
-      scope: this.scopeFormControl,
+      relationTypes: this.relationTypesFormControl,
       type: this.typeFormControl,
       category: this.categoryFormControl,
     })
@@ -61,6 +62,9 @@ export class CreateResourceComponent extends BaseComponent implements OnInit, Af
       this.categories = categories
       this.categoryFormControl.setValue(this.resource.category?.id)
     })
+    _relationService.relationTypes$.subscribe((relationTypes: RelationType[]) => {
+      this.relationTypes = relationTypes
+    })
   }
 
   ngOnInit(): void {
@@ -72,6 +76,14 @@ export class CreateResourceComponent extends BaseComponent implements OnInit, Af
       this.mediaRef.nativeElement.src = this.resourceMedia
       this.isLoadingMedia = false
     }
+  }
+
+  getScopeLabel(name?: string): string {
+    return RELATION_TYPES.get(name as ERelationType) as string
+  }
+
+  getScopeIcon(name?: string): string {
+    return RELATION_ICONS.get(name as ERelationType) as string
   }
 
   listenFormChanges() {

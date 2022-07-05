@@ -1,6 +1,6 @@
 import {Component, ElementRef, Inject, OnInit, ViewChild} from '@angular/core';
 import {MAT_DIALOG_DATA} from "@angular/material/dialog";
-import {Resource, SCOPE_LABELS} from "../../models/resource";
+import {Resource} from "../../models/resource";
 import {Type} from "../../models/type";
 import {Category} from "../../models/category";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
@@ -9,6 +9,8 @@ import {CategoryService} from "../../services/category.service";
 import {environment} from "../../../environments/environment";
 import {ResourceService} from "../../services/resource.service";
 import {SnackbarService} from "../../services/snackbar.service";
+import {ERelationType, RELATION_ICONS, RELATION_TYPES, RelationType} from "../../models/relation-type";
+import {RelationService} from "../../services/relation.service";
 
 @Component({
   selector: 'app-edit-resource-dialog',
@@ -16,10 +18,10 @@ import {SnackbarService} from "../../services/snackbar.service";
   styleUrls: ['./edit-resource-dialog.component.scss']
 })
 export class EditResourceDialogComponent implements OnInit {
-  scopeLabels = Array.from(SCOPE_LABELS)
   api = environment.apiUrl.slice(0, -4)
   types: Type[] = this._typeService.types
   categories: Category[] = this._categoryService.categories
+  relationTypes: RelationType[] = this._relationService.relationTypes
   mediaFile!: File
   resourceMedia!: File
   isLoadingMedia = false
@@ -30,7 +32,7 @@ export class EditResourceDialogComponent implements OnInit {
 
   titleFormControl = new FormControl(this.data.title, [Validators.required])
   richTextContentFormControl = new FormControl(this.data.richTextContent, [Validators.required])
-  scopeFormControl = new FormControl(this.data.scope, [Validators.required])
+  relationTypesFormControl = new FormControl(this.data.relationTypes)
   typeFormControl = new FormControl(this.data.type?.id, [Validators.required])
   categoryFormControl = new FormControl(this.data.type?.id, [Validators.required])
 
@@ -38,6 +40,7 @@ export class EditResourceDialogComponent implements OnInit {
 
   constructor(private _typeService: TypeService,
               private _categoryService: CategoryService,
+              private _relationService: RelationService,
               private _resourceService: ResourceService,
               private _snackbarService: SnackbarService,
               @Inject(MAT_DIALOG_DATA) public data: Resource) {
@@ -45,7 +48,7 @@ export class EditResourceDialogComponent implements OnInit {
     this.resourceFormGroup = new FormGroup({
       title: this.titleFormControl,
       richTextContent: this.richTextContentFormControl,
-      scope: this.scopeFormControl,
+      relationTypes: this.relationTypesFormControl,
       type: this.typeFormControl,
       category: this.categoryFormControl
     })
@@ -58,6 +61,14 @@ export class EditResourceDialogComponent implements OnInit {
         formGroup.type = this.types.find(t => t.id === formGroup.type)
         this.resource = {...formGroup, mediaUrl: this.resource.mediaUrl}
       })
+  }
+
+  getScopeLabel(name?: string): string {
+    return RELATION_TYPES.get(name as ERelationType) as string
+  }
+
+  getScopeIcon(name?: string): string {
+    return RELATION_ICONS.get(name as ERelationType) as string
   }
 
   onMediaInput(event: any) {

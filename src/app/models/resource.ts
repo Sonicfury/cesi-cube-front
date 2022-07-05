@@ -2,6 +2,7 @@ import {User} from "./user";
 import {Type} from "./type";
 import {Category} from "./category";
 import {Comment} from "./comment";
+import {RelationType} from "./relation-type";
 
 export class Resource {
   public id?: number
@@ -10,10 +11,9 @@ export class Resource {
   public views?: number
   public richTextContent?: string
   public mediaUrl?: string
-  public isExploited?: boolean
   public status?: string
-  public scope?: EScope
   public type?: Type
+  public relationTypes: RelationType[] = []
   public comments: Comment[] = []
   public exploited: {id: number}[] = []
   public favorites: {id: number}[] = []
@@ -26,15 +26,3 @@ export class Resource {
   constructor() {
   }
 }
-
-export enum EScope {
-  PUBLIC = 'public',
-  SHARED = 'shared',
-  PRIVATE = 'private'
-}
-
-export const SCOPE_LABELS = new Map<EScope, string>([
-  [EScope.PUBLIC, 'Publique'],
-  [EScope.SHARED, 'Partagée'],
-  [EScope.PRIVATE, 'Privée'],
-])

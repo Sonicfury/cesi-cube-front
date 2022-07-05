@@ -3,10 +3,11 @@ import {BaseService} from "./base.service"
 import {Relation} from "../models/relation"
 import {HttpClient} from "@angular/common/http"
 import {SessionService} from "./session.service"
-import {filter, map, Observable, Subscription, switchMap, timer} from "rxjs"
+import {filter, map, Observable, Subject, Subscription, switchMap, timer} from "rxjs"
 import {LaravelResponse} from "../models/laravel-response"
 import {User} from "../models/user";
 import {SessionState} from "./session-state";
+import {RelationType} from "../models/relation-type";
 
 export interface RelationInterface {
   pending: Relation[]
@@ -18,6 +19,8 @@ export interface RelationInterface {
 })
 export class RelationService extends BaseService<RelationInterface> {
   private _currentUser!: User
+  private _relationTypes: RelationType[] = []
+  private _relationTypes$ = new Subject<RelationType[]>()
   private _pending: Relation[] = []
   private _accepted: Relation[] = []
   private _timer$!: Subscription
@@ -40,6 +43,19 @@ export class RelationService extends BaseService<RelationInterface> {
 
       this.emit({pending: this._pending, accepted: this._accepted})
     })
+
+    this.getTypes().subscribe(types => {
+      this._relationTypes = types
+      this._relationTypes$.next(types)
+    })
+  }
+
+  getTypes(): Observable<RelationType[]> {
+    const url = `${RelationService.BASE_API_URL}/relation_types`
+
+    return this._http.get<LaravelResponse<RelationType[]>>(url).pipe(
+      map(resp => resp.data as RelationType[])
+    )
   }
 
   get(id?: number): Observable<Relation[]> {
@@ -74,5 +90,13 @@ export class RelationService extends BaseService<RelationInterface> {
 
   get accepted(): Relation[] {
     return this._accepted;
+  }
+
+  get relationTypes(): RelationType[] {
+    return this._relationTypes;
+  }
+
+  get relationTypes$(): Subject<RelationType[]> {
+    return this._relationTypes$;
   }
 }

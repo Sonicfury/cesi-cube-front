@@ -8,7 +8,6 @@ import {ResourceService} from "../../services/resource.service";
 import {Resource} from "../../models/resource";
 import {AuthenticationService} from "../../services/authentication.service";
 import {ViewportScroller} from "@angular/common";
-import {combineLatest, merge, Observable, of} from "rxjs";
 
 @Component({
   selector: 'app-home',

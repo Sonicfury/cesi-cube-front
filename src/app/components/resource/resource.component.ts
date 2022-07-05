@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {Resource, SCOPE_LABELS} from "../../models/resource";
+import {Resource} from "../../models/resource";
 import {BaseComponent} from "../base-component";
 import {AuthorizationService} from "../../services/authorization.service";
 import {environment} from "../../../environments/environment";
@@ -16,6 +16,7 @@ import {FormControl} from "@angular/forms";
 import {EditCommentDialogComponent} from "../edit-comment-dialog/edit-comment-dialog.component";
 import {Comment} from "../../models/comment";
 import {EStatus} from "../../models/status";
+import {ERelationType, RELATION_ICONS, RELATION_TYPES} from "../../models/relation-type";
 
 @Component({
   selector: 'app-resource',
@@ -27,7 +28,6 @@ export class ResourceComponent extends BaseComponent implements OnInit {
   @Input() mode!: 'simple' | 'extended'
 
   apiUrl = environment.apiUrl
-  scopeLabels = SCOPE_LABELS
 
   isDeleteLoading = false
   isBookmarkLoading = false
@@ -50,6 +50,22 @@ export class ResourceComponent extends BaseComponent implements OnInit {
   }
 
   ngOnInit(): void {
+  }
+
+  getScopes(resource: Resource): { icon: string, label: string }[] {
+    if (!resource.relationTypes || !resource.relationTypes.length){
+      return [{icon: 'public', label: 'Publique'}]
+    }
+
+    if (this.mode === 'simple') {
+      return [{icon: 'share', label: 'Partagée'}]
+    }
+
+    return resource.relationTypes.map(
+      rt => ({
+        icon: RELATION_ICONS.get(rt.name as ERelationType) as string,
+        label: RELATION_TYPES.get(rt.name as ERelationType) as string
+      }))
   }
 
   isAction(action: string) {

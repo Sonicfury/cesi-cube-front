@@ -49,6 +49,7 @@ import {
   NgAisSearchBoxModule
 } from "angular-instantsearch";
 import { SearchDialogComponent } from './components/search-dialog/search-dialog.component';
+import { GetScopesPipe } from './pipes/get-scope.pipe';
 
 
 @NgModule({
@@ -70,7 +71,8 @@ import { SearchDialogComponent } from './components/search-dialog/search-dialog.
     EditCommentDialogComponent,
     ProfileCardComponent,
     ProfileComponent,
-    SearchDialogComponent
+    SearchDialogComponent,
+    GetScopesPipe
   ],
   imports: [
     CommonModule,

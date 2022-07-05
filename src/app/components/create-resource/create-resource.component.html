@@ -8,9 +8,11 @@
       </mat-form-field>
       <div class="flex justify-end gap-1 md:gap-3 items-center">
         <mat-form-field appearance="fill">
-          <mat-label>Visibilité</mat-label>
-          <mat-select [formControl]="scopeFormControl">
-            <mat-option [value]="scope[0]" *ngFor="let scope of scopeLabels">{{scope[1]}}</mat-option>
+          <mat-label>Restreindre à</mat-label>
+          <mat-select multiple [formControl]="relationTypesFormControl">
+            <mat-option class="flex gap-2" [value]="rt" *ngFor="let rt of relationTypes">
+              <mat-icon>{{getScopeIcon(rt.name)}}</mat-icon>{{getScopeLabel(rt.name)}}
+            </mat-option>
           </mat-select>
         </mat-form-field>
       </div>
