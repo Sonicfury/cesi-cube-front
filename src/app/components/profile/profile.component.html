@@ -1,128 +1,140 @@
 <div class="flex flex-col gap-2 md:gap-4">
   <div *ngIf="canSeeRelationActions()" class="flex w-full mt-4 flex-wrap md:justify-start gap-2 md:gap-4">
-    <div matTooltip="Conjoint.e" class="flex rounded-xl p-1 md:p-2 shadow form-control flex-row gap-2">
+    <button matTooltip="Ajouter en tant que conjoint.e" class="btn btn-sm md:btn-md btn-ghost shadow">
       <mat-icon>favorite</mat-icon>
-      <input type="checkbox" class="toggle"/>
-    </div>
-    <div matTooltip="Ami.e" class="flex rounded-xl p-1 md:p-2 shadow form-control flex-row gap-2">
+    </button>
+    <button matTooltip="Ajouter en tant qu'ami.e" class="btn btn-sm md:btn-md btn-ghost shadow">
       <mat-icon>diversity_2</mat-icon>
-      <input type="checkbox" class="toggle"/>
-    </div>
-    <div matTooltip="Famille" class="flex rounded-xl p-1 md:p-2 shadow form-control flex-row gap-2">
+    </button>
+    <button matTooltip="Ajouter en tant que relation familiale" class="btn btn-sm md:btn-md btn-ghost shadow">
       <mat-icon>family_restroom</mat-icon>
-      <input type="checkbox" class="toggle"/>
-    </div>
-    <div matTooltip="Professionnel" class="flex rounded-xl p-1 md:p-2 shadow form-control flex-row gap-2">
+    </button>
+    <button matTooltip="Ajouter en tant que relation professionnele" class="btn btn-sm md:btn-md btn-ghost shadow">
       <mat-icon>business_center</mat-icon>
-      <input type="checkbox" class="toggle"/>
-    </div>
-    <div matTooltip="Autres" class="flex rounded-xl p-1 md:p-2 shadow form-control flex-row gap-2">
+    </button>
+    <button matTooltip="Ajouter en tant qu'autre relation" class="btn btn-sm md:btn-md btn-ghost shadow">
       <mat-icon>public</mat-icon>
-      <input type="checkbox" class="toggle"/>
-    </div>
+    </button>
   </div>
   <app-profile-card [user]="user"></app-profile-card>
-  <div *ngIf="canSeeRelationRequests()" class="flex flex-col">
-    <h1>Mes demandes en attente</h1>
-    <div *ngIf="!isLoadingRelations; else progress"
-         class="overflow-x-auto w-full max-h-[33vh] overflow-y-scroll shadow">
-      <table class="table w-full relative">
-        <thead class="sticky top-0 z-20">
-        <tr>
-          <th>Nom</th>
-          <th class="hidden md:table-cell">Ville</th>
-          <th class="hidden md:table-cell">Courriel</th>
-          <th>Type</th>
-          <th></th>
-        </tr>
-        </thead>
-        <tbody>
-        <ng-container *ngFor="let relation of pendingRelations">
+  <div class="flex flex-col 2xl:flex-row gap-2 md:gap-4 justify-between">
+    <div *ngIf="canSeeRelationRequests()" class="flex grow flex-col">
+      <h1>Mes demandes en attente</h1>
+      <div *ngIf="!isLoadingRelations; else progress"
+           class="overflow-x-auto w-full max-h-[33vh] overflow-y-scroll shadow">
+        <table class="table w-full relative">
+          <thead class="sticky top-0 z-20">
           <tr>
-            <td>
-              <div class="flex items-center space-x-3">
-                <div class="avatar hidden md:flex">
-                  <div class="mask mask-squircle z-0 w-10 h-10">
-                    <ng-container [ngTemplateOutlet]="firstUserAvatar"
-                                  [ngTemplateOutletContext]="{relation: relation}"></ng-container>
+            <th>Nom</th>
+            <th class="hidden md:table-cell">Ville</th>
+            <th class="hidden md:table-cell">Courriel</th>
+            <th>Type</th>
+            <th *ngIf="canSeeRelationRequestActions()"></th>
+          </tr>
+          </thead>
+          <tbody>
+          <ng-container *ngFor="let relation of pendingRelations">
+            <tr>
+              <td>
+                <div class="flex items-center space-x-3">
+                  <div class="avatar hidden md:flex">
+                    <div class="mask mask-squircle z-0 w-10 h-10">
+                      <ng-container [ngTemplateOutlet]="firstUserAvatar"
+                                    [ngTemplateOutletContext]="{relation: relation}"></ng-container>
+                    </div>
+                  </div>
+                  <div>
+                    <a class="link" [routerLink]="['/profiles', relation.firstUser?.id]">
+                      <div class="font-bold">{{relation.firstUser?.firstname}} {{relation.firstUser?.lastname}}</div>
+                    </a>
                   </div>
                 </div>
-                <div>
-                  <a class="link" [routerLink]="['/profiles', relation.firstUser?.id]">
-                    <div class="font-bold">{{relation.firstUser?.firstname}} {{relation.firstUser?.lastname}}</div>
-                  </a>
-                </div>
-              </div>
-            </td>
-            <td class="hidden md:table-cell">{{relation.firstUser?.city}}</td>
-            <td class="hidden md:table-cell">{{relation.firstUser?.email}}</td>
-            <td>
-              <div class="flex gap-2">
-                <mat-icon>{{getIcon(relation.relationType)}}</mat-icon>
-                <span class="hidden md:flex">
+              </td>
+              <td class="hidden md:table-cell">{{relation.firstUser?.city}}</td>
+              <td class="hidden md:table-cell">{{relation.firstUser?.email}}</td>
+              <td>
+                <div class="flex gap-2">
+                  <mat-icon>{{getIcon(relation.relationType)}}</mat-icon>
+                  <span class="hidden md:flex">
                               {{getTypeLabel(relation.relationType)}}
                             </span></div>
-            </td>
-            <th>
-              <button class="btn btn-primary btn-xs md:btn-sm">Accepter</button>
-            </th>
-          </tr>
-        </ng-container>
-        </tbody>
-      </table>
+              </td>
+              <th *ngIf="canSeeRelationRequestActions()">
+                <div class="flex flex-col gap-2 grow md:justify-end">
+                  <button (click)="onAccept(relation)"
+                          class="btn btn-primary btn-xs md:btn-sm gap-2 flex-nowrap {{isLoadingRelationAccept(relation) ? 'loading': ''}}">
+                    <mat-icon>done</mat-icon>
+                    <span class="hidden md:flex text-xs">Accepter</span></button>
+                  <button (click)="onDelete(relation)"
+                          class="btn btn-error btn-xs md:btn-sm gap-2 flex-nowrap {{isLoadingRelationDelete(relation) ? 'loading': ''}}">
+                    <mat-icon>close</mat-icon>
+                    <span class="hidden md:flex text-xs">Refuser</span></button>
+                </div>
+              </th>
+            </tr>
+          </ng-container>
+          </tbody>
+        </table>
+      </div>
     </div>
-  </div>
-  <div *ngIf="canSeeRelations()" class="flex flex-col">
-    <h1>Relations</h1>
-    <div *ngIf="!isLoadingRelations; else progress"
-         class="overflow-x-auto w-full max-h-[33vh] overflow-y-scroll shadow">
-      <table class="table w-full relative">
-        <thead class="sticky top-0 z-20">
-        <tr>
-          <th>Nom</th>
-          <th class="hidden md:table-cell">Ville</th>
-          <th class="hidden md:table-cell">Courriel</th>
-          <th>Type</th>
-          <th></th>
-        </tr>
-        </thead>
-        <tbody>
-        <ng-container *ngFor="let relation of acceptedRelations">
+    <div *ngIf="canSeeRelations()" class="flex grow flex-col">
+      <h1>Relations</h1>
+      <div *ngIf="!isLoadingRelations; else progress"
+           class="overflow-x-auto w-full max-h-[33vh] overflow-y-scroll shadow">
+        <table class="table w-full relative">
+          <thead class="sticky top-0 z-20">
           <tr>
-            <td>
-              <div class="flex items-center space-x-3">
-                <div class="avatar hidden md:flex">
-                  <div class="mask mask-squircle z-0 w-10 h-10">
+            <th>Nom</th>
+            <th class="hidden md:table-cell">Ville</th>
+            <th class="hidden md:table-cell">Courriel</th>
+            <th>Type</th>
+            <th *ngIf="canSeeRelationRequestActions()"></th>
+          </tr>
+          </thead>
+          <tbody>
+          <ng-container *ngFor="let relation of acceptedRelations">
+            <tr>
+              <td>
+                <div class="flex items-center space-x-3">
+                  <div class="avatar hidden md:flex">
+                    <div class="mask mask-squircle z-0 w-10 h-10">
+                      <ng-container
+                        [ngTemplateOutlet]="relation.firstUser?.id !== user?.id ? firstUserAvatar : secondUserAvatar"
+                        [ngTemplateOutletContext]="{relation: relation}">
+                      </ng-container>
+                    </div>
+                  </div>
+                  <div>
                     <ng-container
-                      [ngTemplateOutlet]="relation.firstUser?.id !== user?.id ? firstUserAvatar : secondUserAvatar"
+                      [ngTemplateOutlet]="relation.firstUser?.id !== user?.id ? firstUserRelation : secondUserRelation"
                       [ngTemplateOutletContext]="{relation: relation}">
                     </ng-container>
                   </div>
                 </div>
-                <div>
-                  <ng-container
-                    [ngTemplateOutlet]="relation.firstUser?.id !== user?.id ? firstUserRelation : secondUserRelation"
-                    [ngTemplateOutletContext]="{relation: relation}">
-                  </ng-container>
-                </div>
-              </div>
-            </td>
-            <td class="hidden md:table-cell">{{relation.firstUser?.city}}</td>
-            <td class="hidden md:table-cell">{{relation.firstUser?.email}}</td>
-            <td>
-              <div class="flex gap-2">
-                <mat-icon>{{getIcon(relation.relationType)}}</mat-icon>
-                <span class="hidden md:flex">
+              </td>
+              <td class="hidden md:table-cell">{{relation.firstUser?.city}}</td>
+              <td class="hidden md:table-cell">{{relation.firstUser?.email}}</td>
+              <td>
+                <div class="flex gap-2">
+                  <mat-icon>{{getIcon(relation.relationType)}}</mat-icon>
+                  <span class="hidden md:flex">
                              {{getTypeLabel(relation.relationType)}}
                            </span></div>
-            </td>
-            <th>
-              <button class="btn btn-error btn-xs md:btn-sm">Supprimer</button>
-            </th>
-          </tr>
-        </ng-container>
-        </tbody>
-      </table>
+              </td>
+              <th *ngIf="canSeeRelationRequestActions()">
+                <div class="flex gap-2 grow justify-end">
+                  <button (click)="onDelete(relation, true)"
+                          class="btn btn-error btn-xs md:btn-sm gap-2 {{isLoadingRelationDelete(relation) ? 'loading': ''}}">
+                    <mat-icon>person_remove</mat-icon>
+                    <span class="hidden md:flex">Supprimer</span>
+                  </button>
+                </div>
+              </th>
+            </tr>
+          </ng-container>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
 </div>

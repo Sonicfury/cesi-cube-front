@@ -18,11 +18,13 @@ const routes: Routes = [
   {
     path: 'resources/:id',
     component: ResourceDetailComponent,
+    runGuardsAndResolvers: 'always'
   },
   {
     path: 'profiles/:id',
     component: ProfileComponent,
-    canActivate: [CanActivateApp]
+    canActivate: [CanActivateApp],
+    runGuardsAndResolvers: 'always'
   },
   {
     path: 'account',
@@ -51,7 +53,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes, {anchorScrolling: 'enabled'})],
+  imports: [RouterModule.forRoot(routes, {anchorScrolling: 'enabled', onSameUrlNavigation: 'reload'})],
   exports: [RouterModule]
 })
 export class AppRoutingModule {

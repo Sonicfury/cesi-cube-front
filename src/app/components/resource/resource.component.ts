@@ -116,7 +116,7 @@ export class ResourceComponent extends BaseComponent implements OnInit {
     const dialogRef = this._dialog.open(ConfirmationDialogComponent, {
       data:
         {
-          title: 'Êtes-vous sûr ?',
+          title: 'Êtes-vous sûr.e ?',
           body: `Cette action va supprimer la Ressource "${this.resource.title}" et est irréversible.`
         }
     })
@@ -161,7 +161,6 @@ export class ResourceComponent extends BaseComponent implements OnInit {
   }
 
   onComment() {
-    console.log(this.commentFormControl.value.length)
     if (this.commentFormControl.value.length < 3) {
       this._snackbarService.info('Votre commentaire doit compter au moins 3 caractères')
       return
@@ -213,7 +212,7 @@ export class ResourceComponent extends BaseComponent implements OnInit {
   onCommentDelete(id?: number) {
     const dialogRef = this._dialog.open(ConfirmationDialogComponent, {
       data: {
-        title: 'Êtes-vous sûr ?',
+        title: 'Êtes-vous sûr.e ?',
         body: `Cette action va supprimer le commentaire sélectionné et est irréversible.`
       }
     })
