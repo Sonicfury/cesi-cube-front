@@ -2,28 +2,6 @@
   <figure><img *ngIf="user.avatar; else placeholderAvatar" class="w-40 h-40 rounded-full"
                [src]="getMediaUrl(user.avatar)" alt="avatar"/></figure>
   <div class="card-body relative">
-    <div class="flex w-full flex-wrap md:justify-end gap-2 md:gap-4">
-      <div matTooltip="Conjoint.e" class="flex rounded-xl p-1 md:p-2 outline outline-1 form-control flex-row gap-2">
-        <mat-icon>favorite</mat-icon>
-        <input type="checkbox" class="toggle"/>
-      </div>
-      <div matTooltip="Ami.e" class="flex rounded-xl p-1 md:p-2 outline outline-1 form-control flex-row gap-2">
-        <mat-icon>diversity_2</mat-icon>
-        <input type="checkbox" class="toggle"/>
-      </div>
-      <div matTooltip="Famille" class="flex rounded-xl p-1 md:p-2 outline outline-1 form-control flex-row gap-2">
-        <mat-icon>family_restroom</mat-icon>
-        <input type="checkbox" class="toggle"/>
-      </div>
-      <div matTooltip="Professionnel" class="flex rounded-xl p-1 md:p-2 outline outline-1 form-control flex-row gap-2">
-        <mat-icon>business_center</mat-icon>
-        <input type="checkbox" class="toggle"/>
-      </div>
-      <div matTooltip="Autres" class="flex rounded-xl p-1 md:p-2 outline outline-1 form-control flex-row gap-2">
-        <mat-icon>public</mat-icon>
-        <input type="checkbox" class="toggle"/>
-      </div>
-    </div>
     <div class="flex flex-col md:flex-row gap-4">
       <div class="flex flex-col gap-2">
         <h1 class="card-title">{{user.firstname}} {{user.lastname}}</h1>

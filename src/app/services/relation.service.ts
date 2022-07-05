@@ -31,10 +31,9 @@ export class RelationService extends BaseService<RelationInterface> {
 
     timer(500, 10000).pipe(
       switchMap(_ => this.get(this._currentUser.id))
-    ).subscribe(requests => {
-      this._pending = requests.filter(r => (r.secondUser?.id === this._currentUser.id) && !r.isAccepted)
-      this._accepted = requests.filter(r => r.secondUser?.id === this._currentUser.id && r.isAccepted)
-      console.log(this._pending, this._accepted)
+    ).subscribe(relations => {
+      this._pending = relations.filter(r => (r.secondUser?.id === this._currentUser.id) && !r.isAccepted)
+      this._accepted = relations.filter(r => r.isAccepted == true)
 
       this.emit({pending: this._pending, accepted: this._accepted})
     })

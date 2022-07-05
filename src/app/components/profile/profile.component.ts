@@ -21,13 +21,12 @@ export class ProfileComponent extends BaseComponent implements OnInit {
   currentUser: User = this._sessionService.currentUser
   pendingRelations: Relation[] = []
   acceptedRelations: Relation[] = []
-  relationTypes = RELATION_TYPES
-  relationIcons = RELATION_ICONS
+  isLoadingRelations = false
 
   constructor(private _authorizationService: AuthorizationService,
               private _userService: UserService,
               private _route: ActivatedRoute,
-              private _relationRequestService: RelationService,
+              private _relationService: RelationService,
               private _sessionService: SessionService,
               private _snackbarService: SnackbarService) {
     super('profile', _authorizationService);
@@ -38,10 +37,7 @@ export class ProfileComponent extends BaseComponent implements OnInit {
 
     this._sessionService.watch((state: SessionState) => this.currentUser = this._sessionService.currentUser)
 
-    this._relationRequestService.watch((requests: RelationInterface) => {
-      this.pendingRelations = requests.pending
-      this.acceptedRelations = requests.accepted
-    })
+
   }
 
   loadUser() {
@@ -49,8 +45,29 @@ export class ProfileComponent extends BaseComponent implements OnInit {
 
     this._userService.get(Number(id))
       .subscribe({
-        next: user => this.user = user
+        next: user => {
+          this.user = user
+          this.loadRelations()
+        }
       })
+  }
+
+  loadRelations() {
+    this.isLoadingRelations = true
+
+    if (this.currentUser?.id === this.user?.id) {
+      this._relationService.watch((requests: RelationInterface) => {
+        this.pendingRelations = requests.pending
+        this.acceptedRelations = requests.accepted
+        this.isLoadingRelations = false
+      })
+    } else {
+      this._relationService.get(this.user?.id).subscribe(relations => {
+        this.pendingRelations = relations.filter(r => (r.secondUser?.id === this.user?.id) && !r.isAccepted)
+        this.acceptedRelations = relations.filter(r => r.isAccepted)
+        this.isLoadingRelations = false
+      })
+    }
   }
 
   getMediaUrl(url?: any) {
@@ -58,11 +75,30 @@ export class ProfileComponent extends BaseComponent implements OnInit {
   }
 
   getTypeLabel(type?: ERelationType) {
-    console.log(type)
     return RELATION_TYPES.get(type as ERelationType)
   }
 
   getIcon(type?: ERelationType) {
     return RELATION_ICONS.get(type as ERelationType)
+  }
+
+  canSeeRelations() {
+    return true
+  }
+
+  canSeeRelationActions() {
+    if (!this.currentUser) {
+      return false
+    }
+
+    return this.currentUser && (this.currentUser?.id !== this.user?.id)
+  }
+
+  canSeeRelationRequests() {
+    if (!this.currentUser) {
+      return false
+    }
+
+    return this.currentUser && (this.currentUser?.id === this.user?.id)
   }
 }
