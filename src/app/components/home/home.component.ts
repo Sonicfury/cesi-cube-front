@@ -30,7 +30,12 @@ export class HomeComponent extends BaseComponent implements OnInit {
 
     this.currentUser = _sessionService.currentUser
 
-    _sessionService.watch((state: SessionState) => this.currentUser = _sessionService.currentUser)
+    _sessionService.watch((state: SessionState) => {
+      this.currentUser = _sessionService.currentUser
+      if (state === SessionState.DISCONNECTED) {
+        this.ngOnInit()
+      }
+    })
 
     _resourceService.onResourceCreate$.subscribe( _ => this.loadResources())
     _resourceService.onResourceDelete$.subscribe(_ =>  this.loadResources())
