@@ -5,7 +5,7 @@
 export const environment = {
   production: false,
 
-  appName: '(Re)sources Relationnelles',
+  appName: '(Re)sources (Re)lationnelles',
   description: 'La plateforme pour améliorer vos relations',
   version: '1.0.0',
 

@@ -20,6 +20,9 @@ export class AuthorizationService extends BaseService<boolean> {
       return ACCESS_RIGHTS.get(ERole.GUEST)?.includes(path) ?? false
     }
 
+    console.log(path, currentUser.roles.some(
+      role => ACCESS_RIGHTS.get(role.name as ERole)?.includes(path) ?? false
+    ) )
     return currentUser.roles.some(
       role => ACCESS_RIGHTS.get(role.name as ERole)?.includes(path) ?? false
     )

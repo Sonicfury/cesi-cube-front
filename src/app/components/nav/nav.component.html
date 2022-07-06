@@ -4,6 +4,21 @@
     <a [matTooltip]="headerLinkTitle" class="text-white text-sm bg-teal-400 p-2 rounded"
        [routerLink]="['/']">{{appName}}</a>
     <a class="text-primary text-sm"
+       *ngIf="isRouteGranted('saved/:type') && (isConnected | async)"
+       [routerLinkActive]="['font-bold', 'underline']"
+       [routerLink]="['/saved/read_later']">
+      À lire plus tard</a>
+    <a class="text-primary text-sm"
+       *ngIf="isRouteGranted('saved/:type') && (isConnected | async)"
+       [routerLinkActive]="['font-bold', 'underline']"
+       [routerLink]="['/saved/favorites']">
+      Favoris</a>
+    <a class="text-primary text-sm"
+       *ngIf="isRouteGranted('saved/:type') && (isConnected | async)"
+       [routerLinkActive]="['font-bold', 'underline']"
+       [routerLink]="['/saved/exploited']">
+      Exploités</a>
+    <a class="text-primary text-sm"
        *ngIf="isRouteGranted('admin/resources') && (isConnected | async)"
        [routerLinkActive]="['font-bold', 'underline']"
        [routerLink]="['/admin/resources']">Resources</a>
@@ -18,9 +33,9 @@
   </div>
 
   <div *ngIf="isConnected | async; else registerBtns" class="md:flex gap-4 hidden">
-    <a [routerLink]="['/profiles', currentUser.id]" [routerLinkActive]="['bg-accent-focus', 'text-white']"
+    <a [routerLink]="['/profiles', currentUser.id]" [routerLinkActive]="['btn-active']"
        matTooltip="Mon profil"
-       class="flex gap-2 items-center rounded hover:bg-accent hover:text-white ring-inset ring-accent ring-1 py-1 px-2 cursor-pointer indicator">
+       class="btn btn-accent gap-2 items-center btn-outline indicator">
 
       <span
         class="indicator-item indicator-bottom indicator-start badge badge-secondary">{{pendingRequestsAmount}}</span>
@@ -32,7 +47,17 @@
            class="w-10 h-10 rounded-full"
            src="{{apiUrl.slice(0, -4)}}{{currentUser.avatar}}" alt="avatar-thumbnail">
     </a>
-    <button [matTooltip]="shortcutName" (click)="openSearchBox()" class="btn">
+    <button [matTooltip]="shortcutName" (click)="openSearchBox()" class="btn btn-accent gap-2">
+      <div *ngIf="shortcutName === 'cmd + K'" class="flex gap-1 items-center">
+        <kbd class="kbd">cmd</kbd>
+        +
+        <kbd class="kbd">K</kbd>
+      </div>
+      <div *ngIf="shortcutName === 'ctrl + K'" class="flex gap-1  items-center">
+        <kbd class="kbd">ctrl</kbd>
+        +
+        <kbd class="kbd">K</kbd>
+      </div>
       <mat-icon>search</mat-icon>
     </button>
     <a [routerLink]="['/account']" class="btn btn-primary" matTooltip="Mon compte">
@@ -49,13 +74,13 @@
     </button>
 
     <a *ngIf="isConnected | async"
-       [routerLink]="['/profiles', currentUser.id]" [routerLinkActive]="['bg-accent-focus', 'text-white']"
+       [routerLink]="['/profiles', currentUser.id]" [routerLinkActive]="['btn-active']"
        matTooltip="Mon profil"
-       class="flex gap-2 items-center rounded hover:bg-accent hover:text-white py-1 px-2 cursor-pointer ring-inset ring-accent ring-1 indicator">
+       class="btn btn-accent gap-2 items-center btn-outline indicator">
       <span
         class="indicator-item indicator-bottom indicator-start z-40 badge badge-secondary">{{pendingRequestsAmount}}</span>
       <div class="flex gap-2 text-sm">
-        <span>{{currentUser.firstname}}</span>
+        <span>{{currentUser.firstname?.slice(0,1)}}.</span>
         <span>{{currentUser.lastname}}</span>
       </div>
       <img *ngIf="currentUser.avatar; else placeholderThumbnail"
@@ -75,6 +100,24 @@
       <mat-icon>home</mat-icon>
       <span>{{appName}}</span>
     </a>
+    <a class="text-primary flex gap-2 items-center"
+       *ngIf="isRouteGranted('saved/:type') && (isConnected | async)"
+       (click)="isSidenavOpen = false"
+       [routerLink]="['/saved/read_later']">
+      <mat-icon>bookmark</mat-icon>
+      À lire plus tard</a>
+    <a class="text-primary flex gap-2 items-center"
+       *ngIf="isRouteGranted('saved/:type') && (isConnected | async)"
+       (click)="isSidenavOpen = false"
+       [routerLink]="['/saved/favorites']">
+      <mat-icon>favorite</mat-icon>
+      Favoris</a>
+    <a class="text-primary flex gap-2 items-center"
+       *ngIf="isRouteGranted('saved/:type') && (isConnected | async)"
+       (click)="isSidenavOpen = false"
+       [routerLink]="['/saved/exploited']">
+      <mat-icon>thumb_up</mat-icon>
+      Exploitées</a>
     <!--    back office-->
     <a class="text-primary flex gap-2 items-center"
        *ngIf="isRouteGranted('admin/profiles') && (isConnected | async)"

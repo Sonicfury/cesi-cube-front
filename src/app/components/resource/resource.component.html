@@ -86,7 +86,7 @@
       <span class="badge badge-secondary truncate overflow-hidden max-w-1/4">{{resource.category?.name}}</span>
     </div>
     <div class="flex gap-4 justify-between w-full">
-      <span *ngIf="mode !== 'mini'"
+      <span *ngIf="!(mode == 'mini' && isIdAuthor(resource.author?.id))"
         class="font-semibold hidden md:flex {{isIdAuthor(resource.author?.id) ? 'badge badge-primary font-medium' : ''}}">
         {{resource.author?.firstname}} {{resource.author?.lastname}}
       </span>

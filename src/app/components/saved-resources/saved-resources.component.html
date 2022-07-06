@@ -1,0 +1,10 @@
+<div class="lg:w-2/3 xl:w-1/2 mx-auto p-4">
+  <h1>Mes ressources {{displayTitle}}</h1>
+  <progress *ngIf="isLoading" class="progress progress-primary  w-full mb-2"></progress>
+  <div class="{{isLoading ? '' : 'mt-5 mb-5'}} flex flex-col gap-4">
+    <div *ngFor="let resource of resources; trackBy: trackBy"
+         class="flex flex-col gap-4 w-full mx-auto">
+      <app-resource [resource]="resource" mode="mini"></app-resource>
+    </div>
+  </div>
+</div>

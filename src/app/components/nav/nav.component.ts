@@ -47,7 +47,7 @@ export class NavComponent extends BaseComponent implements OnInit {
               private _dialog: MatDialog,
               private _router: Router) {
     super('Navigation', _authorizationService);
-    this.shortcutName = navigator.userAgent.includes('Macintosh') ? 'Cmd + K' : 'Ctrl + K'
+    this.shortcutName = navigator.userAgent.includes('Macintosh') ? 'cmd + K' : 'ctrl + K'
     this.enableShortcut = navigator.userAgent.includes('Macintosh') || navigator.userAgent.includes('Windows')
     this.isConnected = of(this._sessionService.state === SessionState.CONNECTED);
     this._sessionService.watch((state: SessionState) => {

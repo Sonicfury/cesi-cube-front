@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {User} from "../models/user";
 import {BaseService} from "./base.service";
 import {HttpClient} from "@angular/common/http";
-import {iif, map, Observable, of, tap} from "rxjs";
+import {iif, map, Observable} from "rxjs";
 import {LaravelResponse} from "../models/laravel-response";
 import {SessionService} from "./session.service";
 import {SessionState} from "./session-state";
@@ -70,6 +70,14 @@ export class UserService extends BaseService<User> {
       this._http.delete<LaravelResponse<Resource>>(url, {observe: 'response', headers: this.headers})
     ).pipe(
       map(resp => resp.body?.data as Resource)
+    )
+  }
+
+  getSaved(type: string): Observable<Resource[]> {
+    let url = `${this._url}/${this._currentUser.id}/${type}`
+
+    return this._http.get<LaravelResponse<Resource[]>>(url).pipe(
+      map(resp => resp.data as Resource[])
     )
   }
 }

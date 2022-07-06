@@ -50,6 +50,8 @@ import {
 } from "angular-instantsearch";
 import { SearchDialogComponent } from './components/search-dialog/search-dialog.component';
 import { GetScopesPipe } from './pipes/get-scopes.pipe';
+import { SavedResourcesComponent } from './components/saved-resources/saved-resources.component';
+import { FooterComponent } from './components/footer/footer.component';
 
 
 @NgModule({
@@ -72,7 +74,9 @@ import { GetScopesPipe } from './pipes/get-scopes.pipe';
     ProfileCardComponent,
     ProfileComponent,
     SearchDialogComponent,
-    GetScopesPipe
+    GetScopesPipe,
+    SavedResourcesComponent,
+    FooterComponent
   ],
   imports: [
     CommonModule,

@@ -105,7 +105,7 @@
   </div>
 </div>
 
-<div class="flex flex-col gap-4 2xl:flex-row justify-between mt-8">
+<div *ngIf="canSeeRelationRequests()" class="flex flex-col gap-4 2xl:flex-row justify-between mt-8">
   <div class="flex flex-col 2xl:grow">
     <h1>Mes ressources en attente de validation</h1>
     <progress *ngIf="isLoadingPendingResources" class="progress progress-primary  w-full mb-2"></progress>

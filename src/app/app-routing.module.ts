@@ -9,6 +9,7 @@ import {CanActivateLogin} from "./services/can-activate-login.guard";
 import {PageNotFoundComponent} from "./components/page-not-found/page-not-found.component";
 import {ResourceDetailComponent} from "./components/resource-detail/resource-detail.component";
 import {ProfileComponent} from "./components/profile/profile.component";
+import {SavedResourcesComponent} from "./components/saved-resources/saved-resources.component";
 
 const routes: Routes = [
   {
@@ -23,6 +24,12 @@ const routes: Routes = [
   {
     path: 'profiles/:id',
     component: ProfileComponent,
+    canActivate: [CanActivateApp],
+    runGuardsAndResolvers: 'always'
+  },
+  {
+    path: 'saved/:type',
+    component: SavedResourcesComponent,
     canActivate: [CanActivateApp],
     runGuardsAndResolvers: 'always'
   },
