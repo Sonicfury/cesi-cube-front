@@ -39,8 +39,8 @@
                 <div class="flex items-center space-x-3">
                   <div class="avatar hidden md:flex">
                     <div class="mask mask-squircle z-0 w-10 h-10">
-                      <ng-container [ngTemplateOutlet]="firstUserAvatar"
-                                    [ngTemplateOutletContext]="{relation: relation}"></ng-container>
+                      <ng-container [ngTemplateOutlet]="relation.firstUser?.avatar ? avatarTemplate : placeholderThumbnail"
+                                    [ngTemplateOutletContext]="{user: relation.firstUser}"></ng-container>
                     </div>
                   </div>
                   <div>
@@ -93,45 +93,10 @@
           </thead>
           <tbody>
           <ng-container *ngFor="let relation of acceptedRelations">
-            <tr>
-              <td>
-                <div class="flex items-center space-x-3">
-                  <div class="avatar hidden md:flex">
-                    <div class="mask mask-squircle z-0 w-10 h-10">
-                      <ng-container
-                        [ngTemplateOutlet]="relation.firstUser?.id !== user?.id ? firstUserAvatar : secondUserAvatar"
-                        [ngTemplateOutletContext]="{relation: relation}">
-<!--                        todo : check accepted relations templates-->
-                      </ng-container>
-                    </div>
-                  </div>
-                  <div>
-                    <ng-container
-                      [ngTemplateOutlet]="relation.firstUser?.id !== user?.id ? firstUserRelation : secondUserRelation"
-                      [ngTemplateOutletContext]="{relation: relation}">
-                    </ng-container>
-                  </div>
-                </div>
-              </td>
-              <td class="hidden md:table-cell">{{relation.firstUser?.city}}</td>
-              <td class="hidden md:table-cell">{{relation.firstUser?.email}}</td>
-              <td>
-                <div class="flex gap-2">
-                  <mat-icon>{{getIcon(relation.relationType)}}</mat-icon>
-                  <span class="hidden md:flex">
-                             {{getTypeLabel(relation.relationType)}}
-                           </span></div>
-              </td>
-              <th *ngIf="canSeeRelationRequestActions()">
-                <div class="flex gap-2 grow justify-end">
-                  <button (click)="onDelete(relation, true)"
-                          class="btn btn-error btn-xs md:btn-sm gap-2 {{isLoadingRelationDelete(relation) ? 'loading': ''}}">
-                    <mat-icon>person_remove</mat-icon>
-                    <span class="hidden md:flex">Supprimer</span>
-                  </button>
-                </div>
-              </th>
-            </tr>
+            <ng-container
+              [ngTemplateOutlet]="relation.firstUser?.id === user?.id ? secondUserRelation : firstUserRelation"
+              [ngTemplateOutletContext]="{relation: relation}">
+            </ng-container>
           </ng-container>
           </tbody>
         </table>
@@ -139,29 +104,87 @@
     </div>
   </div>
 </div>
+
+<ng-template #firstUserRelation let-relation="relation">
+  <tr>
+    <td>
+      <div class="flex items-center space-x-3">
+        <div class="avatar hidden md:flex">
+          <div class="mask mask-squircle z-0 w-10 h-10">
+            <ng-container [ngTemplateOutlet]="relation.firstUser?.avatar ? avatarTemplate : placeholderThumbnail"
+                          [ngTemplateOutletContext]="{user: relation.firstUser}"></ng-container>
+          </div>
+        </div>
+        <div>
+          <a class="link" [routerLink]="['/profiles', relation.firstUser?.id]">
+            <div class="font-bold">{{relation.firstUser?.firstname}} {{relation.firstUser?.lastname}}</div>
+          </a>
+        </div>
+      </div>
+    </td>
+    <td class="hidden md:table-cell">{{relation.firstUser?.city}}</td>
+    <td class="hidden md:table-cell">{{relation.firstUser?.email}}</td>
+    <td>
+      <div class="flex gap-2">
+        <mat-icon>{{getIcon(relation.relationType)}}</mat-icon>
+        <span class="hidden md:flex">
+                             {{getTypeLabel(relation.relationType)}}
+                           </span></div>
+    </td>
+    <th *ngIf="canSeeRelationRequestActions()">
+      <div class="flex gap-2 grow justify-end">
+        <button (click)="onDelete(relation, true)"
+                class="btn btn-error btn-xs md:btn-sm gap-2 {{isLoadingRelationDelete(relation) ? 'loading': ''}}">
+          <mat-icon>person_remove</mat-icon>
+          <span class="hidden md:flex">Supprimer</span>
+        </button>
+      </div>
+    </th>
+  </tr>
+</ng-template>
+<ng-template #secondUserRelation let-relation="relation">
+  <tr>
+    <td>
+      <div class="flex items-center space-x-3">
+        <div class="avatar hidden md:flex">
+          <div class="mask mask-squircle z-0 w-10 h-10">
+            <ng-container [ngTemplateOutlet]="relation.secondUser?.avatar ? avatarTemplate : placeholderThumbnail"
+                          [ngTemplateOutletContext]="{user: relation.secondUser}"></ng-container>
+          </div>
+        </div>
+        <div>
+          <a class="link" [routerLink]="['/profiles', relation.secondUser?.id]">
+            <div class="font-bold">{{relation.secondUser?.firstname}} {{relation.secondUser?.lastname}}</div>
+          </a>
+        </div>
+      </div>
+    </td>
+    <td class="hidden md:table-cell">{{relation.secondUser?.city}}</td>
+    <td class="hidden md:table-cell">{{relation.secondUser?.email}}</td>
+    <td>
+      <div class="flex gap-2">
+        <mat-icon>{{getIcon(relation.relationType)}}</mat-icon>
+        <span class="hidden md:flex">
+                             {{getTypeLabel(relation.relationType)}}
+                           </span></div>
+    </td>
+    <th *ngIf="canSeeRelationRequestActions()">
+      <div class="flex gap-2 grow justify-end">
+        <button (click)="onDelete(relation, true)"
+                class="btn btn-error btn-xs md:btn-sm gap-2 {{isLoadingRelationDelete(relation) ? 'loading': ''}}">
+          <mat-icon>person_remove</mat-icon>
+          <span class="hidden md:flex">Supprimer</span>
+        </button>
+      </div>
+    </th>
+  </tr>
+</ng-template>
+
 <ng-template #placeholderThumbnail let-user="user">
   <div
     class="flex justify-center items-center w-10 h-10 bg-blue-300 text-white font-medium text-xl">
     {{user.firstname?.slice(0, 1) | uppercase}}{{user.lastname?.slice(0, 1) | uppercase}}
   </div>
-</ng-template>
-<ng-template #firstUserRelation let-relation="relation">
-  <a class="link" [routerLink]="['/profiles', relation.firstUser?.id]">
-    <div class="font-bold">{{relation.firstUser?.firstname}} {{relation.firstUser?.lastname}}</div>
-  </a>
-</ng-template>
-<ng-template #secondUserRelation let-relation="relation">
-  <a class="link" [routerLink]="['/profiles', relation.secondUser?.id]">
-    <div class="font-bold">{{relation.secondUser?.firstname}} {{relation.secondUser?.lastname}}</div>
-  </a>
-</ng-template>
-<ng-template #firstUserAvatar let-relation="relation">
-  <ng-container [ngTemplateOutlet]="relation.firstUser.avatar ? avatarTemplate : placeholderThumbnail"
-                [ngTemplateOutletContext]="{user: relation.firstUser}"></ng-container>
-</ng-template>
-<ng-template #secondUserAvatar let-relation="relation">
-  <ng-container [ngTemplateOutlet]="relation.secondUser.avatar ? avatarTemplate : placeholderThumbnail"
-                [ngTemplateOutletContext]="{user: relation.secondUser}"></ng-container>
 </ng-template>
 <ng-template #avatarTemplate let-user="user">
   <img [src]="getMediaUrl(user.avatar)" alt="Avatar"/>
