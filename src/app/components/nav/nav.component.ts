@@ -1,4 +1,4 @@
-import {Component, HostListener, OnInit} from '@angular/core';
+import {Component, EventEmitter, HostListener, OnInit, Output} from '@angular/core';
 import {SessionService} from "../../services/session.service";
 import {environment} from "../../../environments/environment";
 import {BaseComponent} from "../base-component";
@@ -29,6 +29,8 @@ export class NavComponent extends BaseComponent implements OnInit {
   enableShortcut = true
 
   pendingRequestsAmount: number = 0
+
+  @Output() isSideNavOpen$ = new EventEmitter<boolean>()
 
   @HostListener('document:keydown.meta.k')
   openMac() {
@@ -62,6 +64,11 @@ export class NavComponent extends BaseComponent implements OnInit {
     })
   }
 
+  toggleSideNav() {
+    this.isSidenavOpen = !this.isSidenavOpen
+    this.isSideNavOpen$.emit(this.isSidenavOpen)
+  }
+
   logout() {
     this.isSidenavOpen = false
 
@@ -82,6 +89,9 @@ export class NavComponent extends BaseComponent implements OnInit {
     }
     this.dialogRef = this._dialog.open(SearchDialogComponent, {})
     this.dialogRef.afterOpened().subscribe(_ => this.isSearchBoxOpen = true)
-    this.dialogRef.afterClosed().subscribe(_ => this.isSearchBoxOpen = false)
+    this.dialogRef.afterClosed().subscribe(_ => {
+      this.isSearchBoxOpen = false
+      this.isSidenavOpen = false
+    })
   }
 }

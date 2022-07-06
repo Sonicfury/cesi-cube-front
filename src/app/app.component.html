@@ -1,6 +1,9 @@
-<app-nav></app-nav>
-<div class="md:w-11/12 p-2 min-h-screen mx-auto md:p-4 z-0 relative">
-<router-outlet></router-outlet>
+<div class="{{isSideNavOpen ? 'max-h-screen overflow-y-hidden' : ''}}">
+  <app-nav (isSideNavOpen$)="handleSideNav($event)"></app-nav>
+  <div
+    class="md:w-11/12 p-2 min-h-screen mx-auto md:p-4 z-0 relative ">
+    <router-outlet></router-outlet>
+  </div>
+  <app-footer *ngIf="!isSideNavOpen"></app-footer>
 </div>
-<app-footer></app-footer>
 

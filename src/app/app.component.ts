@@ -6,5 +6,10 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'cube-front';
+  title = 'cube-front'
+  isSideNavOpen = false
+
+  handleSideNav(isSideNavOpen: boolean){
+    this.isSideNavOpen = isSideNavOpen
+  }
 }
