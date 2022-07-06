@@ -38,7 +38,7 @@ export class RelationService extends BaseService<RelationInterface> {
       filter(_ => !!this._currentUser),
       switchMap(_ => this.get(this._currentUser.id))
     ).subscribe(relations => {
-      this._pending = relations.filter(r => (r.secondUser?.id === this._currentUser.id) && !r.isAccepted)
+      this._pending = relations.filter(r => !r.isAccepted)
       this._accepted = relations.filter(r => r.isAccepted == true)
 
       this.emit({pending: this._pending, accepted: this._accepted})
@@ -71,6 +71,17 @@ export class RelationService extends BaseService<RelationInterface> {
     relation.isAccepted = 1
 
     return this._http.put<LaravelResponse<Relation>>(url, JSON.stringify(relation), {
+      headers: this.headers,
+      observe: 'response'
+    }).pipe(
+      map(resp => resp.body?.data as Relation)
+    )
+  }
+
+  create(relation: Relation): Observable<Relation> {
+    const url = `${RelationService.BASE_API_URL}/users/${this._currentUser.id}/relations`
+
+    return this._http.post<LaravelResponse<Relation>>(url, JSON.stringify(relation), {
       headers: this.headers,
       observe: 'response'
     }).pipe(

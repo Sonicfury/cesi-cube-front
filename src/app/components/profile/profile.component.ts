@@ -10,7 +10,7 @@ import {Relation} from "../../models/relation";
 import {environment} from "../../../environments/environment";
 import {SessionService} from "../../services/session.service";
 import {SessionState} from "../../services/session-state";
-import {filter, Subscription, switchMap, tap} from "rxjs";
+import {filter, Subscription, switchMap} from "rxjs";
 import {MatDialog} from "@angular/material/dialog";
 import {ConfirmationDialogComponent} from "../confirmation-dialog/confirmation-dialog.component";
 import {ERelationType, RELATION_ICONS, RELATION_TYPES} from "../../models/relation-type";
@@ -18,6 +18,7 @@ import {ResourceService} from "../../services/resource.service";
 import {Resource} from "../../models/resource";
 import {LaravelQueryBuilder} from "../../helpers/filters.helper";
 import {EStatus} from "../../models/status";
+import {ERole} from "../../models/role";
 
 @Component({
   selector: 'app-profile',
@@ -41,6 +42,18 @@ export class ProfileComponent extends BaseComponent implements OnInit, OnDestroy
   pendingResources: Resource[] = []
   filter?: string
   resourceStatus = EStatus
+  relationTypes = ERelationType
+
+  isConjointBtnVisible = false
+  isConjointBtnDisabled = false
+  isAmiBtnVisible = false
+  isAmiBtnDisabled = false
+  isFamilleBtnVisible = false
+  isFamilleBtnDisabled = false
+  isProfessionnelBtnVisible = false
+  isProfessionnelBtnDisabled = false
+  isAutresBtnVisible = false
+  isAutresBtnDisabled = false
 
   constructor(private _authorizationService: AuthorizationService,
               private _userService: UserService,
@@ -98,6 +111,7 @@ export class ProfileComponent extends BaseComponent implements OnInit, OnDestroy
         this.pendingResources = resources.filter(r => r.status === EStatus.PENDING)
         this.isLoadingPendingResources = false
         this.isLoadingAcceptedResource = false
+        this.buttonChecks()
       })
   }
 
@@ -111,6 +125,7 @@ export class ProfileComponent extends BaseComponent implements OnInit, OnDestroy
           this.filter = this.getUserFilter()
           this.loadRelations()
           this.loadResources()
+          this.buttonChecks()
         }
       })
   }
@@ -122,7 +137,7 @@ export class ProfileComponent extends BaseComponent implements OnInit, OnDestroy
       this.pendingRelations = this._relationService.pending
       this.acceptedRelations = this._relationService.accepted
       this._relationService.watch((requests: RelationInterface) => {
-        this.pendingRelations = requests.pending
+        this.pendingRelations = requests.pending.filter(r => (r.secondUser?.id === this.user?.id) && !r.isAccepted)
         this.acceptedRelations = requests.accepted
         this.isLoadingRelations = false
       })
@@ -171,7 +186,11 @@ export class ProfileComponent extends BaseComponent implements OnInit, OnDestroy
   }
 
   canSeeRelations() {
-    return this._relationService.accepted.some(r => r.firstUser?.id === this.user?.id || r.secondUser?.id === this.user?.id)
+    if (this._relationService.accepted.some(r => r.firstUser?.id === this.user?.id || r.secondUser?.id === this.user?.id)){
+      return true
+    }
+
+    return (this.currentUser.roles.some(r => [ERole.ADMIN, ERole.SUPER_ADMIN].includes(r.name as ERole)))
   }
 
   canSeeRelationActions() {
@@ -218,6 +237,64 @@ export class ProfileComponent extends BaseComponent implements OnInit, OnDestroy
 
   isLoadingRelationDelete(relation: Relation) {
     return this.loadingRelationDelete.some(lrd => lrd.id === relation.id)
+  }
+
+  getRelationWithCurrentUser(type: ERelationType): Relation | undefined {
+    const relations = [...this._relationService.accepted, ...this._relationService.pending]
+      .filter(relation => relation.firstUser?.id === this.user?.id || relation.secondUser?.id === this.user?.id)
+
+    return relations.find(r => r.relationType === type)
+  }
+
+  isAddButtonDisabled(type: ERelationType): boolean {
+    const relation = this.getRelationWithCurrentUser(type)
+
+    if (!relation){
+      return false
+    }
+
+    return true
+  }
+
+  isAddButtonVisible(type: ERelationType): boolean {
+    const relation = this.getRelationWithCurrentUser(type)
+
+    if (!relation) {
+      return true
+    }
+
+    return !relation.isAccepted;
+  }
+
+  buttonChecks() {
+    this.isConjointBtnVisible = this.isAddButtonVisible(ERelationType.CONJOINT)
+    this.isConjointBtnDisabled = this.isAddButtonDisabled(ERelationType.CONJOINT)
+    this.isAmiBtnVisible = this.isAddButtonVisible(ERelationType.AMI)
+    this.isAmiBtnDisabled = this.isAddButtonDisabled(ERelationType.AMI)
+    this.isFamilleBtnVisible = this.isAddButtonVisible(ERelationType.FAMILLE)
+    this.isFamilleBtnDisabled = this.isAddButtonDisabled(ERelationType.FAMILLE)
+    this.isProfessionnelBtnVisible = this.isAddButtonVisible(ERelationType.PROFESSIONNEL)
+    this.isProfessionnelBtnDisabled = this.isAddButtonDisabled(ERelationType.PROFESSIONNEL)
+    this.isAutresBtnVisible = this.isAddButtonVisible(ERelationType.AUTRES)
+    this.isAutresBtnDisabled = this.isAddButtonDisabled(ERelationType.AUTRES)
+  }
+
+  onAddUserAs(type: ERelationType){
+    const relation = new Relation()
+
+    relation.relationType = type
+    relation.firstUser = this.currentUser
+    relation.secondUser = this.user
+
+    this._relationService.create(relation).subscribe({
+      next: _ => {
+        this._snackbarService.success('La relation a été créée avec succès.')
+        this.buttonChecks()
+      },
+      error: _ => {
+        this._snackbarService.error('Une erreur est survenue pendant la création de la relation.')
+      }
+    })
   }
 
   onDelete(relation: Relation, confirm = false) {

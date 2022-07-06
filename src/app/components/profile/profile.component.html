@@ -1,18 +1,38 @@
 <div class="flex flex-col gap-2 md:gap-4">
   <div *ngIf="canSeeRelationActions()" class="flex w-full mt-4 flex-wrap md:justify-start gap-2 md:gap-4">
-    <button matTooltip="Ajouter en tant que conjoint.e" class="btn btn-sm md:btn-md btn-ghost shadow">
+    <button *ngIf="isConjointBtnVisible"
+            [disabled]="isConjointBtnDisabled"
+            (click)="onAddUserAs(relationTypes.CONJOINT)"
+            matTooltip="{{isConjointBtnDisabled ? 'En attente de validation':  'Ajouter en tant que conjoint.e'}}"
+            class="btn btn-sm md:btn-md btn-ghost shadow">
       <mat-icon>favorite</mat-icon>
     </button>
-    <button matTooltip="Ajouter en tant qu'ami.e" class="btn btn-sm md:btn-md btn-ghost shadow">
+    <button *ngIf="isAmiBtnVisible"
+            [disabled]="isAmiBtnDisabled"
+            (click)="onAddUserAs(relationTypes.AMI)"
+            matTooltip="{{isAmiBtnDisabled ? 'En attente de validation':  'Ajouter en tant qu\'ami.e'}}"
+            class="btn btn-sm md:btn-md btn-ghost shadow">
       <mat-icon>diversity_2</mat-icon>
     </button>
-    <button matTooltip="Ajouter en tant que relation familiale" class="btn btn-sm md:btn-md btn-ghost shadow">
+    <button *ngIf="isFamilleBtnVisible"
+            [disabled]="isFamilleBtnDisabled"
+            (click)="onAddUserAs(relationTypes.FAMILLE)"
+            matTooltip="{{isFamilleBtnDisabled ? 'En attente de validation':  'Ajouter en tant que relation familiale'}}"
+            class="btn btn-sm md:btn-md btn-ghost shadow">
       <mat-icon>family_restroom</mat-icon>
     </button>
-    <button matTooltip="Ajouter en tant que relation professionnele" class="btn btn-sm md:btn-md btn-ghost shadow">
+    <button *ngIf="isProfessionnelBtnVisible"
+            [disabled]="isProfessionnelBtnDisabled"
+            (click)="onAddUserAs(relationTypes.PROFESSIONNEL)"
+            matTooltip="{{isProfessionnelBtnDisabled ? 'En attente de validation':  'Ajouter en tant que relation professionnele'}}"
+            class="btn btn-sm md:btn-md btn-ghost shadow">
       <mat-icon>business_center</mat-icon>
     </button>
-    <button matTooltip="Ajouter en tant qu'autre relation" class="btn btn-sm md:btn-md btn-ghost shadow">
+    <button *ngIf="isAutresBtnVisible"
+            [disabled]="isAutresBtnDisabled"
+            (click)="onAddUserAs(relationTypes.AUTRES)"
+            matTooltip="{{isAutresBtnDisabled ? 'En attente de validation':  'Ajouter en tant qu\'autre relation'}}"
+            class="btn btn-sm md:btn-md btn-ghost shadow">
       <mat-icon>public</mat-icon>
     </button>
   </div>
@@ -39,8 +59,9 @@
                 <div class="flex items-center space-x-3">
                   <div class="avatar hidden md:flex">
                     <div class="mask mask-squircle z-0 w-10 h-10">
-                      <ng-container [ngTemplateOutlet]="relation.firstUser?.avatar ? avatarTemplate : placeholderThumbnail"
-                                    [ngTemplateOutletContext]="{user: relation.firstUser}"></ng-container>
+                      <ng-container
+                        [ngTemplateOutlet]="relation.firstUser?.avatar ? avatarTemplate : placeholderThumbnail"
+                        [ngTemplateOutletContext]="{user: relation.firstUser}"></ng-container>
                     </div>
                   </div>
                   <div>
@@ -109,7 +130,8 @@
   <div class="flex flex-col 2xl:grow">
     <h1>Mes ressources en attente de validation</h1>
     <progress *ngIf="isLoadingPendingResources" class="progress progress-primary  w-full mb-2"></progress>
-    <div class="{{isLoadingPendingResources ? '' : 'mt-5 mb-5'}} flex flex-col gap-4 max-h-[33vh] overflow-y-scroll p-2">
+    <div
+      class="{{isLoadingPendingResources ? '' : 'mt-5 mb-5'}} flex flex-col gap-4 max-h-[33vh] overflow-y-scroll p-2">
       <div *ngFor="let resource of pendingResources; trackBy: trackBy"
            infinite-scroll
            [infiniteScrollThrottle]="500"
@@ -120,23 +142,26 @@
         <app-resource [resource]="resource" mode="mini"></app-resource>
       </div>
     </div>
-    <progress *ngIf="isLoadingPendingResources && pendingPage > 1" class="progress progress-primary w-full mt-2"></progress>
+    <progress *ngIf="isLoadingPendingResources && pendingPage > 1"
+              class="progress progress-primary w-full mt-2"></progress>
   </div>
   <div class="flex flex-col 2xl:grow">
     <h1>Mes ressources</h1>
     <progress *ngIf="isLoadingAcceptedResource" class="progress progress-primary  w-full mb-2"></progress>
-    <div class="{{isLoadingAcceptedResource ? '' : 'mt-5 mb-5'}} flex flex-col gap-4 max-h-[33vh] overflow-y-scroll p-2">
+    <div
+      class="{{isLoadingAcceptedResource ? '' : 'mt-5 mb-5'}} flex flex-col gap-4 max-h-[33vh] overflow-y-scroll p-2">
       <ng-container *ngFor="let resource of acceptedResources; trackBy: trackBy"
-           infinite-scroll
-           [infiniteScrollThrottle]="500"
-           [infiniteScrollDistance]="2"
-           [scrollWindow]="false"
-           (scrolled)="onScroll(resourceStatus.ACCEPTED)"
-           class="flex flex-col gap-4 w-full mx-auto">
+                    infinite-scroll
+                    [infiniteScrollThrottle]="500"
+                    [infiniteScrollDistance]="2"
+                    [scrollWindow]="false"
+                    (scrolled)="onScroll(resourceStatus.ACCEPTED)"
+                    class="flex flex-col gap-4 w-full mx-auto">
         <app-resource [resource]="resource" mode="mini"></app-resource>
       </ng-container>
     </div>
-    <progress *ngIf="isLoadingAcceptedResource && acceptedPage > 1" class="progress progress-primary w-full mt-2"></progress>
+    <progress *ngIf="isLoadingAcceptedResource && acceptedPage > 1"
+              class="progress progress-primary w-full mt-2"></progress>
   </div>
 </div>
 

@@ -57,7 +57,9 @@ export class NavComponent extends BaseComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.relationService.watch((requests: RelationInterface) => this.pendingRequestsAmount = requests.pending.length)
+    this.relationService.watch((requests: RelationInterface) => {
+      this.pendingRequestsAmount = requests.pending.filter(r => (r.firstUser?.id !== this.currentUser?.id) && !r.isAccepted).length
+    })
   }
 
   logout() {
