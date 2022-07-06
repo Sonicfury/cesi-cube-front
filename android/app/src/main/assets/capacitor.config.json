@@ -1,0 +1,6 @@
+{
+	"appId": "com.cube.www",
+	"appName": "cube-front",
+	"webDir": "dist/cube-front",
+	"bundledWebRuntime": false
+}
