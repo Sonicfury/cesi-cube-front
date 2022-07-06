@@ -52,6 +52,7 @@ import { SearchDialogComponent } from './components/search-dialog/search-dialog.
 import { GetScopesPipe } from './pipes/get-scopes.pipe';
 import { SavedResourcesComponent } from './components/saved-resources/saved-resources.component';
 import { FooterComponent } from './components/footer/footer.component';
+import { PendingResourcesComponent } from './components/pending-resources/pending-resources.component';
 
 
 @NgModule({
@@ -76,7 +77,8 @@ import { FooterComponent } from './components/footer/footer.component';
     SearchDialogComponent,
     GetScopesPipe,
     SavedResourcesComponent,
-    FooterComponent
+    FooterComponent,
+    PendingResourcesComponent
   ],
   imports: [
     CommonModule,

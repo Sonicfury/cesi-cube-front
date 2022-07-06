@@ -18,15 +18,15 @@
        [routerLinkActive]="['font-bold', 'underline']"
        [routerLink]="['/saved/exploited']">
       Exploités</a>
-    <a class="text-primary text-sm"
+    <a class="text-secondary text-sm"
        *ngIf="isRouteGranted('admin/resources') && (isConnected | async)"
        [routerLinkActive]="['font-bold', 'underline']"
-       [routerLink]="['/admin/resources']">Resources</a>
-    <a class="text-primary text-sm"
+       [routerLink]="['/admin/resources']">Resources en attente</a>
+    <a class="text-secondary text-sm"
        *ngIf="isRouteGranted('admin/profiles') && (isConnected | async)"
        [routerLinkActive]="['font-bold', 'underline']"
        [routerLink]="['/admin/profiles']">Utilisateurs</a>
-    <a class="text-primary text-sm"
+    <a class="text-secondary text-sm"
        *ngIf="isRouteGranted('admin/statistics') && (isConnected | async)"
        [routerLinkActive]="['font-bold', 'underline']"
        [routerLink]="['/admin/statistics']">Statistiques</a>
@@ -48,7 +48,7 @@
            src="{{apiUrl.slice(0, -4)}}{{currentUser.avatar}}" alt="avatar-thumbnail">
     </a>
     <button [matTooltip]="shortcutName" (click)="openSearchBox()" class="btn btn-accent gap-2">
-      <div *ngIf="shortcutName === 'cmd + K'" class="flex gap-1 items-center">
+      <div *ngIf="shortcutName === 'cmd + K'" class="gap-1 items-center hidden xl:flex">
         <kbd class="kbd">cmd</kbd>
         +
         <kbd class="kbd">K</kbd>
@@ -119,19 +119,19 @@
       <mat-icon>thumb_up</mat-icon>
       Exploitées</a>
     <!--    back office-->
-    <a class="text-primary flex gap-2 items-center"
+    <a class="text-secondary flex gap-2 items-center"
        *ngIf="isRouteGranted('admin/profiles') && (isConnected | async)"
        (click)="isSidenavOpen = false"
        [routerLink]="['/admin/profiles']">
       <mat-icon>group</mat-icon>
       Utilisateurs</a>
-    <a class="text-primary flex gap-2 items-center"
+    <a class="text-secondary flex gap-2 items-center"
        *ngIf="isRouteGranted('admin/resources') && (isConnected | async)"
        (click)="isSidenavOpen = false"
        [routerLink]="['/admin/resources']">
       <mat-icon>auto_stories</mat-icon>
-      <span>Ressources</span></a>
-    <a class="text-primary flex gap-2 items-center"
+      <span>Ressources en attente</span></a>
+    <a class="text-secondary flex gap-2 items-center"
        *ngIf="isRouteGranted('admin/statistics') && (isConnected | async)"
        (click)="isSidenavOpen = false"
        [routerLink]="['/admin/statistics']">

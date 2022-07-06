@@ -16,6 +16,7 @@ import {FormControl} from "@angular/forms";
 import {EditCommentDialogComponent} from "../edit-comment-dialog/edit-comment-dialog.component";
 import {Comment} from "../../models/comment";
 import {EStatus} from "../../models/status";
+import {ERole} from "../../models/role";
 
 @Component({
   selector: 'app-resource',
@@ -247,5 +248,21 @@ export class ResourceComponent extends BaseComponent implements OnInit {
       default:
         return 'font-medium'
     }
+  }
+
+  canHandleResource(resource: Resource): boolean {
+    if (this.isIdAuthor(resource.author?.id)) {
+      return true
+    }
+
+    return this._sessionService.currentUser.roles.some(r => [ERole.MODERATOR, ERole.ADMIN, ERole.SUPER_ADMIN].includes(r.name as ERole))
+  }
+
+  canHandleComment(comment: Comment): boolean{
+    if (this.isIdAuthor(comment.author?.id)) {
+      return true
+    }
+
+    return this._sessionService.currentUser.roles.some(r => [ERole.MODERATOR, ERole.ADMIN, ERole.SUPER_ADMIN].includes(r.name as ERole))
   }
 }

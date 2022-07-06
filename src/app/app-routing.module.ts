@@ -10,6 +10,7 @@ import {PageNotFoundComponent} from "./components/page-not-found/page-not-found.
 import {ResourceDetailComponent} from "./components/resource-detail/resource-detail.component";
 import {ProfileComponent} from "./components/profile/profile.component";
 import {SavedResourcesComponent} from "./components/saved-resources/saved-resources.component";
+import {PendingResourcesComponent} from "./components/pending-resources/pending-resources.component";
 
 const routes: Routes = [
   {
@@ -32,7 +33,21 @@ const routes: Routes = [
     component: SavedResourcesComponent,
     canActivate: [CanActivateApp],
     runGuardsAndResolvers: 'always'
+  },{
+    path: 'admin/resources',
+    component: PendingResourcesComponent,
+    canActivate: [CanActivateApp]
   },
+  // {
+  //   path: 'admin/profiles',
+  //   component: ProfileAdminComponent,
+  //   canActivate: [CanActivateApp]
+  // },
+  // {
+  //   path: 'admin/statistics',
+  //   component: StatisticsComponent,
+  //   canActivate: [CanActivateApp]
+  // },
   {
     path: 'account',
     component: AccountComponent,

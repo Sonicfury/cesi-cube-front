@@ -26,7 +26,7 @@
 
 <div class="card shadow bg-white max-w-full">
   <div *ngIf="!isDeleteLoading; else progressError" class="card-body">
-    <button *ngIf="isIdAuthor(resource.author?.id) && isResourcePending(resource)"
+    <button *ngIf="canHandleResource(resource) && isResourcePending(resource)"
             matTooltip="Cette ressource est en attente de validation" class="btn btn-warning btn-sm btn-circle">
       <mat-icon>
         warning
@@ -71,7 +71,7 @@
                 class="btn btn-ghost btn-circle btn-sm">
           <mat-icon class="text-md {{isAction('thumbUp') ? 'text-info' : ''}}">thumb_up</mat-icon>
         </button>
-        <button *ngIf="isIdAuthor(resource.author?.id)"
+        <button *ngIf="canHandleResource(resource)"
                 class="btn btn-ghost btn-circle btn-sm"
                 [matMenuTriggerFor]="menu" aria-label="Author actions">
           <mat-icon>more_vert</mat-icon>
@@ -135,7 +135,7 @@
           <p class="prose prose-sm max-w-none">{{comment.content}}</p>
         </div>
         <div class="flex items-center">
-          <button *ngIf="isIdAuthor(comment.author?.id)"
+          <button *ngIf="canHandleComment(comment)"
                   class="btn btn-ghost btn-circle btn-sm"
                   [matMenuTriggerFor]="commentMenu" [matMenuTriggerData]="{comment: comment}"
                   aria-label="Comment author actions">
