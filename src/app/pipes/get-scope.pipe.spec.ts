@@ -1,4 +1,4 @@
-import { GetScopesPipe } from './get-scope.pipe';
+import { GetScopesPipe } from './get-scopes.pipe';
 
 describe('GetScopePipe', () => {
   it('create an instance', () => {
