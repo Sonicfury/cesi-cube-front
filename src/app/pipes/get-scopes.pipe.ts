@@ -13,7 +13,11 @@ export class GetScopesPipe implements PipeTransform {
     }
 
     if (mode === 'simple') {
-      return [{icon: 'share', label: 'Partagée'}]
+      const labels = value.relationTypes
+        .reduce((a, c) => `${a}, ${RELATION_TYPES.get(c.name as ERelationType)}`, '')
+        .slice(2)
+
+      return [{icon: 'share', label: labels}]
     }
 
     return value.relationTypes.map(
