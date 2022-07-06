@@ -4,20 +4,9 @@ export class LaravelQueryBuilder {
   private _page: LaravelQueryPage = new LaravelQueryPage(0, 10)
   private _sums: Set<string> = new Set<string>()
   private _withs: Set<string> = new Set<string>()
+  private _query: string = ''
 
   constructor() {
-  }
-
-  public query(): string {
-    const query = JSON.stringify({
-      page: this._page,
-      sorts: this._sorts,
-      filters: this._filters,
-      sums: Array.from(this._sums),
-      withs: Array.from(this._withs)
-    })
-
-    return `q=${query}`
   }
 
   public addFilter(field: string,
@@ -102,6 +91,19 @@ export class LaravelQueryBuilder {
     this._withs.delete(wiz)
 
     return this
+  }
+
+
+  get query(): string {
+    this._query = `q=${JSON.stringify({
+      page: this._page,
+      sorts: this._sorts,
+      filters: this._filters,
+      sums: Array.from(this._sums),
+      withs: Array.from(this._withs)
+    })}`
+
+    return this._query;
   }
 }
 

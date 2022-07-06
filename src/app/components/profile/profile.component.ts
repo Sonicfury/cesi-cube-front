@@ -5,15 +5,19 @@ import {ActivatedRoute, NavigationEnd, Router} from "@angular/router";
 import {SnackbarService} from "../../services/snackbar.service";
 import {UserService} from "../../services/user.service";
 import {User} from "../../models/user";
-import {RelationService, RelationInterface} from "../../services/relation.service";
+import {RelationInterface, RelationService} from "../../services/relation.service";
 import {Relation} from "../../models/relation";
 import {environment} from "../../../environments/environment";
 import {SessionService} from "../../services/session.service";
 import {SessionState} from "../../services/session-state";
-import {filter, iif, Subscription, switchMap} from "rxjs";
+import {filter, Subscription, switchMap, tap} from "rxjs";
 import {MatDialog} from "@angular/material/dialog";
 import {ConfirmationDialogComponent} from "../confirmation-dialog/confirmation-dialog.component";
 import {ERelationType, RELATION_ICONS, RELATION_TYPES} from "../../models/relation-type";
+import {ResourceService} from "../../services/resource.service";
+import {Resource} from "../../models/resource";
+import {LaravelQueryBuilder} from "../../helpers/filters.helper";
+import {EStatus} from "../../models/status";
 
 @Component({
   selector: 'app-profile',
@@ -24,17 +28,26 @@ export class ProfileComponent extends BaseComponent implements OnInit, OnDestroy
   user!: User
   nav$!: Subscription
   currentUser: User = this._sessionService.currentUser
-  pendingRelations: Relation[] = []
-  acceptedRelations: Relation[] = []
+  acceptedPage = 1
+  pendingPage = 1
+  isLoadingPendingResources = false
+  isLoadingAcceptedResource = false
   isLoadingRelations = false
   loadingRelationAccept: Relation[] = []
   loadingRelationDelete: Relation[] = []
+  pendingRelations: Relation[] = []
+  acceptedRelations: Relation[] = []
+  acceptedResources: Resource[] = []
+  pendingResources: Resource[] = []
+  filter?: string
+  resourceStatus = EStatus
 
   constructor(private _authorizationService: AuthorizationService,
               private _userService: UserService,
               private _route: ActivatedRoute,
               private _router: Router,
               private _relationService: RelationService,
+              private _resourceService: ResourceService,
               private _sessionService: SessionService,
               private _dialog: MatDialog,
               private _snackbarService: SnackbarService) {
@@ -47,14 +60,45 @@ export class ProfileComponent extends BaseComponent implements OnInit, OnDestroy
     });
   }
 
+  getUserFilter(): string {
+    const qb = new LaravelQueryBuilder()
+    qb.addFilter('user_id', '=', this.user.id as number)
+      .addSort('updated_at', 'desc')
+      .addSort('created_at', 'desc')
+
+    return qb.query
+  }
+
+  getResourceStatusFilter(status: EStatus) {
+    const qb = new LaravelQueryBuilder()
+    qb.addFilter('user_id', '=', this.user.id as number)
+      .addFilter('status', '=', status)
+      .addSort('updated_at', 'desc')
+      .addSort('created_at', 'desc')
+
+    return qb.query
+  }
+
   ngOnInit(): void {
     this.loadUser()
-
+    this.loadResources()
     this._sessionService.watch((state: SessionState) => this.currentUser = this._sessionService.currentUser)
   }
 
   ngOnDestroy() {
     this.nav$.unsubscribe()
+  }
+
+  loadResources() {
+    this.isLoadingPendingResources = true
+    this.isLoadingAcceptedResource = true
+    this._resourceService.get(1, this.filter)
+      .subscribe((resources: Resource[]) => {
+        this.acceptedResources = resources.filter(r => r.status === EStatus.ACCEPTED)
+        this.pendingResources = resources.filter(r => r.status === EStatus.PENDING)
+        this.isLoadingPendingResources = false
+        this.isLoadingAcceptedResource = false
+      })
   }
 
   loadUser() {
@@ -64,7 +108,9 @@ export class ProfileComponent extends BaseComponent implements OnInit, OnDestroy
       .subscribe({
         next: user => {
           this.user = user
+          this.filter = this.getUserFilter()
           this.loadRelations()
+          this.loadResources()
         }
       })
   }
@@ -87,6 +133,29 @@ export class ProfileComponent extends BaseComponent implements OnInit, OnDestroy
         this.isLoadingRelations = false
       })
     }
+  }
+
+  onScroll(status: EStatus) {
+    let page = status === EStatus.PENDING ? this.pendingPage : this.acceptedPage
+
+    if (page < this._resourceService.lastPage) {
+      page += 1
+
+      this._resourceService.get(page, this.getResourceStatusFilter(status))
+        .subscribe(resources => {
+          if (status === EStatus.ACCEPTED) {
+            this.acceptedResources = [...new Set([...this.acceptedResources, ...resources])]
+          }
+
+          if (status === EStatus.PENDING) {
+            this.pendingResources = [...new Set([...this.pendingResources, ...resources])]
+          }
+        })
+    }
+  }
+
+  trackBy(index: number, resource: Resource) {
+    return resource.id
   }
 
   getMediaUrl(url?: any) {

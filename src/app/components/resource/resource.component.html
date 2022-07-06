@@ -33,7 +33,7 @@
       </mat-icon>
     </button>
     <div class="flex flex-col-reverse gap-2 md:gap-4 md:flex-row md:items-center justify-between w-full">
-      <a *ngIf="mode === 'simple'; else title" class="card-title font-serif text-primary grow hover:underline"
+      <a *ngIf="mode !== 'extended'; else title" class="card-title font-serif text-primary grow hover:underline"
          [routerLink]="['/resources', resource.id]">
         {{resource.title}}
       </a>
@@ -86,17 +86,17 @@
       <span class="badge badge-secondary truncate overflow-hidden max-w-1/4">{{resource.category?.name}}</span>
     </div>
     <div class="flex gap-4 justify-between w-full">
-      <span
+      <span *ngIf="mode !== 'mini'"
         class="font-semibold hidden md:flex {{isIdAuthor(resource.author?.id) ? 'badge badge-primary font-medium' : ''}}">
         {{resource.author?.firstname}} {{resource.author?.lastname}}
       </span>
-      <span
+      <span *ngIf="mode !== 'mini'"
         class="font-semibold flex md:hidden {{isIdAuthor(resource.author?.id) ? 'badge badge-primary font-medium' : ''}}">
         {{resource.author?.firstname?.slice(0, 1)}}. {{resource.author?.lastname}}
       </span>
       <span class="text-primary text-right">{{resource.createdAt | date: 'medium' : 'CEST' : 'fr-FR'}}</span>
     </div>
-    <p class="prose prose-sm max-w-none {{mode === 'simple' ? 'truncate' : ''}}">
+    <p *ngIf="mode !== 'mini'" class="prose prose-sm max-w-none {{mode === 'simple' ? 'truncate' : ''}}">
       {{resource.richTextContent}}
     </p>
     <button *ngIf="mode === 'extended'" class="btn {{showComments? 'btn-accent-focus' : 'btn-accent'}} w-fit"
@@ -104,7 +104,7 @@
       Commentaires
     </button>
   </div>
-  <figure *ngIf="resource.mediaUrl && !isDeleteLoading">
+  <figure *ngIf="resource.mediaUrl && !isDeleteLoading && mode !== 'mini'">
     <img [src]="getMediaUrl(resource.mediaUrl)" alt="figure">
   </figure>
 

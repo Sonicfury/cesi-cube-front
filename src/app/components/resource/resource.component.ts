@@ -24,7 +24,7 @@ import {EStatus} from "../../models/status";
 })
 export class ResourceComponent extends BaseComponent implements OnInit {
   @Input() resource!: Resource
-  @Input() mode!: 'simple' | 'extended'
+  @Input() mode!: 'simple' | 'extended' | 'mini'
 
   apiUrl = environment.apiUrl
 

@@ -105,6 +105,41 @@
   </div>
 </div>
 
+<div class="flex flex-col gap-4 2xl:flex-row justify-between mt-8">
+  <div class="flex flex-col 2xl:grow">
+    <h1>Mes ressources en attente de validation</h1>
+    <progress *ngIf="isLoadingPendingResources" class="progress progress-primary  w-full mb-2"></progress>
+    <div class="{{isLoadingPendingResources ? '' : 'mt-5 mb-5'}} flex flex-col gap-4 max-h-[33vh] overflow-y-scroll p-2">
+      <div *ngFor="let resource of pendingResources; trackBy: trackBy"
+           infinite-scroll
+           [infiniteScrollThrottle]="500"
+           [infiniteScrollDistance]="2"
+           [scrollWindow]="false"
+           (scrolled)="onScroll(resourceStatus.PENDING)"
+           class="flex flex-col gap-4 w-full mx-auto">
+        <app-resource [resource]="resource" mode="mini"></app-resource>
+      </div>
+    </div>
+    <progress *ngIf="isLoadingPendingResources && pendingPage > 1" class="progress progress-primary w-full mt-2"></progress>
+  </div>
+  <div class="flex flex-col 2xl:grow">
+    <h1>Mes ressources</h1>
+    <progress *ngIf="isLoadingAcceptedResource" class="progress progress-primary  w-full mb-2"></progress>
+    <div class="{{isLoadingAcceptedResource ? '' : 'mt-5 mb-5'}} flex flex-col gap-4 max-h-[33vh] overflow-y-scroll p-2">
+      <ng-container *ngFor="let resource of acceptedResources; trackBy: trackBy"
+           infinite-scroll
+           [infiniteScrollThrottle]="500"
+           [infiniteScrollDistance]="2"
+           [scrollWindow]="false"
+           (scrolled)="onScroll(resourceStatus.ACCEPTED)"
+           class="flex flex-col gap-4 w-full mx-auto">
+        <app-resource [resource]="resource" mode="mini"></app-resource>
+      </ng-container>
+    </div>
+    <progress *ngIf="isLoadingAcceptedResource && acceptedPage > 1" class="progress progress-primary w-full mt-2"></progress>
+  </div>
+</div>
+
 <ng-template #firstUserRelation let-relation="relation">
   <tr>
     <td>
@@ -179,7 +214,6 @@
     </th>
   </tr>
 </ng-template>
-
 <ng-template #placeholderThumbnail let-user="user">
   <div
     class="flex justify-center items-center w-10 h-10 bg-blue-300 text-white font-medium text-xl">

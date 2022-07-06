@@ -33,9 +33,10 @@ export class ResourceService extends BaseService<Resource[]> {
     if (localResourceMedia) this._currentlyCreatingMedia = localResourceMedia
   }
 
-  getAll(page?: number): Observable<Resource[]> {
+  get(page?: number, query?: string): Observable<Resource[]> {
     const baseUrl = this._authenticationService.isAuthenticated() ? this._url : `${ResourceService.BASE_API_URL}/public/resources`
-    const url = page ? `${baseUrl}/?page=${page}` : baseUrl
+    let url = page ? `${baseUrl}/?page=${page}` : baseUrl
+    url = !query ? url : `${url}&${query}`
 
     return this._http.get<LaravelResponse<Paginated<Resource>>>(url).pipe(
       tap(resp => this._lastPage = resp.data.last_page ?? 1),
@@ -43,7 +44,7 @@ export class ResourceService extends BaseService<Resource[]> {
     );
   }
 
-  get(id: number): Observable<Resource> {
+  getOne(id: number): Observable<Resource> {
 
     return this._http.get<LaravelResponse<Resource>>(`${this._url}/${id}`).pipe(
       map(resp => resp.data as Resource),
@@ -97,7 +98,7 @@ export class ResourceService extends BaseService<Resource[]> {
       observe: 'response',
       headers: this.headers
     }).pipe(
-      switchMap(_ => this.get(id))
+      switchMap(_ => this.getOne(id))
     )
   }
 

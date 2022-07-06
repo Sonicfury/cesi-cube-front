@@ -42,7 +42,7 @@ export class HomeComponent extends BaseComponent implements OnInit {
 
   loadResources() {
     this.isLoadingResources = true
-    this._resourceService.getAll()
+    this._resourceService.get()
       .subscribe((resources: Resource[]) => {
         this.isLoadingResources = false
         this.resources = resources
@@ -57,7 +57,7 @@ export class HomeComponent extends BaseComponent implements OnInit {
   onScroll() {
     if (this.page < this._resourceService.lastPage) {
       this.page += 1
-      this._resourceService.getAll(this.page)
+      this._resourceService.get(this.page)
         .subscribe(resources => {
           this.resources = [...new Set([...this.resources, ...resources])]
         })

@@ -28,7 +28,7 @@ export class ResourceDetailComponent extends BaseComponent implements OnInit {
 
   loadResource() {
     const id = this._route.snapshot.paramMap.get('id') as string
-    this._resourceService.get(Number(id))
+    this._resourceService.getOne(Number(id))
       .subscribe({
         next: resource => this.resource = resource,
         error: _ => this._snackbarService.error('Une erreur est survenue pendant le chargement de la ressource')
