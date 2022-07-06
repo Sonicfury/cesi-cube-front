@@ -25,8 +25,4 @@ export class ProfileCardComponent extends BaseComponent implements OnInit {
   getMediaUrl(url?: any): string {
     return `${this.apiUrl.slice(0, -4)}${url}`
   }
-
-  onAdd(type: string) {
-
-  }
 }

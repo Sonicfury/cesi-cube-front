@@ -11,6 +11,8 @@ import {ResourceDetailComponent} from "./components/resource-detail/resource-det
 import {ProfileComponent} from "./components/profile/profile.component";
 import {SavedResourcesComponent} from "./components/saved-resources/saved-resources.component";
 import {PendingResourcesComponent} from "./components/pending-resources/pending-resources.component";
+import {ProfilesListComponent} from "./components/profiles-list/profiles-list.component";
+import { StatisticsComponent } from './components/statistics/statistics.component';
 
 const routes: Routes = [
   {
@@ -38,16 +40,16 @@ const routes: Routes = [
     component: PendingResourcesComponent,
     canActivate: [CanActivateApp]
   },
-  // {
-  //   path: 'admin/profiles',
-  //   component: ProfileAdminComponent,
-  //   canActivate: [CanActivateApp]
-  // },
-  // {
-  //   path: 'admin/statistics',
-  //   component: StatisticsComponent,
-  //   canActivate: [CanActivateApp]
-  // },
+  {
+    path: 'admin/profiles',
+    component: ProfilesListComponent,
+    canActivate: [CanActivateApp]
+  },
+  {
+    path: 'admin/statistics',
+    component: StatisticsComponent,
+    canActivate: [CanActivateApp]
+  },
   {
     path: 'account',
     component: AccountComponent,

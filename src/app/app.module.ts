@@ -53,6 +53,8 @@ import { GetScopesPipe } from './pipes/get-scopes.pipe';
 import { SavedResourcesComponent } from './components/saved-resources/saved-resources.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { PendingResourcesComponent } from './components/pending-resources/pending-resources.component';
+import { ProfilesListComponent } from './components/profiles-list/profiles-list.component';
+import { StatisticsComponent } from './components/statistics/statistics.component';
 
 
 @NgModule({
@@ -78,7 +80,9 @@ import { PendingResourcesComponent } from './components/pending-resources/pendin
     GetScopesPipe,
     SavedResourcesComponent,
     FooterComponent,
-    PendingResourcesComponent
+    PendingResourcesComponent,
+    ProfilesListComponent,
+    StatisticsComponent
   ],
   imports: [
     CommonModule,
