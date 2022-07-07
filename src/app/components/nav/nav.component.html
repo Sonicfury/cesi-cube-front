@@ -95,45 +95,45 @@
             transition-all duration-300 bg-gray-100 shadow">
   <div class="flex flex-col gap-4">
     <a class="bg-teal-400 p-2 rounded text-white flex gap-2 items-center"
-       (click)="isSidenavOpen = false"
+       (click)="closeSidenav()"
        [routerLink]="['/']">
       <mat-icon>home</mat-icon>
       <span>{{appName}}</span>
     </a>
     <a class="text-primary flex gap-2 items-center"
        *ngIf="isRouteGranted('saved/:type') && (isConnected | async)"
-       (click)="isSidenavOpen = false"
+       (click)="closeSidenav()"
        [routerLink]="['/saved/read_later']">
       <mat-icon>bookmark</mat-icon>
       À lire plus tard</a>
     <a class="text-primary flex gap-2 items-center"
        *ngIf="isRouteGranted('saved/:type') && (isConnected | async)"
-       (click)="isSidenavOpen = false"
+       (click)="closeSidenav()"
        [routerLink]="['/saved/favorites']">
       <mat-icon>favorite</mat-icon>
       Favoris</a>
     <a class="text-primary flex gap-2 items-center"
        *ngIf="isRouteGranted('saved/:type') && (isConnected | async)"
-       (click)="isSidenavOpen = false"
+       (click)="closeSidenav()"
        [routerLink]="['/saved/exploited']">
       <mat-icon>thumb_up</mat-icon>
       Exploitées</a>
     <!--    back office-->
     <a class="text-secondary flex gap-2 items-center"
        *ngIf="isRouteGranted('admin/profiles') && (isConnected | async)"
-       (click)="isSidenavOpen = false"
+       (click)="closeSidenav()"
        [routerLink]="['/admin/profiles']">
       <mat-icon>group</mat-icon>
       Utilisateurs</a>
     <a class="text-secondary flex gap-2 items-center"
        *ngIf="isRouteGranted('admin/resources') && (isConnected | async)"
-       (click)="isSidenavOpen = false"
+       (click)="closeSidenav()"
        [routerLink]="['/admin/resources']">
       <mat-icon>auto_stories</mat-icon>
       <span>Ressources en attente</span></a>
     <a class="text-secondary flex gap-2 items-center"
        *ngIf="isRouteGranted('admin/statistics') && (isConnected | async)"
-       (click)="isSidenavOpen = false"
+       (click)="closeSidenav()"
        [routerLink]="['/admin/statistics']">
       <mat-icon>insights</mat-icon>
       <span>Statistiques</span></a>
@@ -145,7 +145,7 @@
     </button>
     <a [routerLink]="['/account']"
        class="btn btn-primary"
-       (click)="isSidenavOpen = false"
+       (click)="closeSidenav()"
        matTooltip="Mon compte">
       <mat-icon>manage_accounts</mat-icon>
     </a>
@@ -181,13 +181,13 @@
       <mat-icon>search</mat-icon>
     </button>
     <a matTooltip="Se connecter"
-       (click)="isSidenavOpen = false"
+       (click)="closeSidenav()"
        class="btn btn-primary"
        [routerLink]="['/login']">
       <mat-icon>login</mat-icon>
     </a>
     <a matTooltip="S'enregistrer"
-       (click)="isSidenavOpen = false"
+       (click)="closeSidenav()"
        class="btn btn-primary"
        [routerLink]="['/register']">
       <mat-icon>badge</mat-icon>

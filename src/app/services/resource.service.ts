@@ -73,7 +73,7 @@ export class ResourceService extends BaseService<Resource[]> {
   }
 
   update(resource: Resource) {
-
+    console.log(resource)
     return this._http.put<LaravelResponse<Resource>>(`${this._url}/${resource.id}`, JSON.stringify(resource), {
       observe: 'response',
       headers: this.headers

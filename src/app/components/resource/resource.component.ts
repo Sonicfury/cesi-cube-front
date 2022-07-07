@@ -145,6 +145,7 @@ export class ResourceComponent extends BaseComponent implements OnInit {
     dialogRef.afterOpened().subscribe(_ => this.isEditLoading = true)
 
     dialogRef.afterClosed().pipe(
+      tap(data => console.log(data)),
       tap(data => data && (this.isEditLoading = false)),
       filter((data: Resource) => !!data.id),
       switchMap((data: Resource) => this._resourceService.update(data))
@@ -251,14 +252,18 @@ export class ResourceComponent extends BaseComponent implements OnInit {
   }
 
   canHandleResource(resource: Resource): boolean {
+    if (!this._sessionService.currentUser) {
+      return false
+    }
+
     if (this.isIdAuthor(resource.author?.id)) {
       return true
     }
 
-    return this._sessionService.currentUser.roles.some(r => [ERole.MODERATOR, ERole.ADMIN, ERole.SUPER_ADMIN].includes(r.name as ERole))
+    return this._sessionService.currentUser.roles?.some(r => [ERole.MODERATOR, ERole.ADMIN, ERole.SUPER_ADMIN].includes(r.name as ERole))
   }
 
-  canHandleComment(comment: Comment): boolean{
+  canHandleComment(comment: Comment): boolean {
     if (this.isIdAuthor(comment.author?.id)) {
       return true
     }

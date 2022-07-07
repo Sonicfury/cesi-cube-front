@@ -69,8 +69,13 @@ export class NavComponent extends BaseComponent implements OnInit {
     this.isSideNavOpen$.emit(this.isSidenavOpen)
   }
 
-  logout() {
+  closeSidenav() {
     this.isSidenavOpen = false
+    this.isSideNavOpen$.emit(this.isSidenavOpen)
+  }
+
+  logout() {
+    this.closeSidenav()
 
     this._sessionService.logout().subscribe(_ => {
       this._snackbarService.success('Deconnecté')
@@ -91,7 +96,7 @@ export class NavComponent extends BaseComponent implements OnInit {
     this.dialogRef.afterOpened().subscribe(_ => this.isSearchBoxOpen = true)
     this.dialogRef.afterClosed().subscribe(_ => {
       this.isSearchBoxOpen = false
-      this.isSidenavOpen = false
+      this.closeSidenav()
     })
   }
 }
