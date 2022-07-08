@@ -145,7 +145,6 @@ export class ResourceComponent extends BaseComponent implements OnInit {
     dialogRef.afterOpened().subscribe(_ => this.isEditLoading = true)
 
     dialogRef.afterClosed().pipe(
-      tap(data => console.log(data)),
       tap(data => data && (this.isEditLoading = false)),
       filter((data: Resource) => !!data.id),
       switchMap((data: Resource) => this._resourceService.update(data))

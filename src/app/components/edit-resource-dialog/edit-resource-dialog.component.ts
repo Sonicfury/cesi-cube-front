@@ -59,7 +59,7 @@ export class EditResourceDialogComponent implements OnInit {
       .subscribe(formGroup => {
         formGroup.category = this.categories.find(c => c.id === formGroup.category)
         formGroup.type = this.types.find(t => t.id === formGroup.type)
-        this.resource = {...formGroup, mediaUrl: this.resource.mediaUrl}
+        this.resource = {...formGroup, mediaUrl: this.resource.mediaUrl, id: this.resource.id}
       })
   }
 
